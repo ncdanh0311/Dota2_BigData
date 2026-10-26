@@ -1,0 +1,182 @@
+[
+  {
+    "match_id": 7002075569,
+    "radiant_heroes": [
+      7,
+      38,
+      48,
+      85,
+      106
+    ],
+    "dire_heroes": [
+      11,
+      86,
+      123,
+      128,
+      136
+    ],
+    "radiant_win": 0
+  },
+  {
+    "match_id": 7002098040,
+    "radiant_heroes": [
+      41,
+      58,
+      86,
+      120,
+      137
+    ],
+    "dire_heroes": [
+      9,
+      43,
+      52,
+      95,
+      100
+    ],
+    "radiant_win": 0
+  },
+  {
+    "match_id": 7002100837,
+    "radiant_heroes": [
+      43,
+      51,
+      75,
+      106,
+      109
+    ],
+    "dire_heroes": [
+      48,
+      65,
+      85,
+      86,
+      92
+    ],
+    "radiant_win": 0
+  },
+  {
+    "match_id": 7002182336,
+    "radiant_heroes": [
+      13,
+      14,
+      30,
+      76,
+      89
+    ],
+    "dire_heroes": [
+      5,
+      19,
+      47,
+      69,
+      70
+    ],
+    "radiant_win": 1
+  },
+  {
+    "match_id": 7002186566,
+    "radiant_heroes": [
+      19,
+      43,
+      75,
+      98,
+      109
+    ],
+    "dire_heroes": [
+      49,
+      52,
+      53,
+      83,
+      86
+    ],
+    "radiant_win": 0
+  },
+  {
+    "match_id": 7002193879,
+    "radiant_heroes": [
+      52,
+      100,
+      109,
+      128,
+      129
+    ],
+    "dire_heroes": [
+      32,
+      43,
+      64,
+      74,
+      94
+    ],
+    "radiant_win": 1
+  },
+  {
+    "match_id": 7002240408,
+    "radiant_heroes": [
+      14,
+      106,
+      128,
+      135,
+      137
+    ],
+    "dire_heroes": [
+      19,
+      52,
+      61,
+      75,
+      93
+    ],
+    "radiant_win": 0
+  },
+  {
+    "match_id": 7002283768,
+    "radiant_heroes": [
+      25,
+      37,
+      93,
+      110,
+      128
+    ],
+    "dire_heroes": [
+      6,
+      43,
+      71,
+      85,
+      112
+    ],
+    "radiant_win": 1
+  },
+  {
+    "match_id": 7002312609,
+    "radiant_heroes": [
+      5,
+      7,
+      19,
+      89,
+      96
+    ],
+    "dire_heroes": [
+      8,
+      31,
+      61,
+      106,
+      128
+    ],
+    "radiant_win": 1
+  },
+  {
+    "match_id": 7002324645,
+    "radiant_heroes": [
+      5,
+      22,
+      33,
+      49,
+      93
+    ],
+    "dire_heroes": [
+      2,
+      13,
+      37,
+      46,
+      123
+    ],
+    "radiant_win": 0
+  }
+]

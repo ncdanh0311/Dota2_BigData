@@ -1,0 +1,6 @@
+{
+  "stopped_node": "dn3",
+  "sha256": "61b3852b5eedbf0f6f0688564dbd178238c22001741089eb64e736ad1102d044",
+  "read_succeeded": true,
+  "note": "Process failure only; all nodes share the WSL host."
+}

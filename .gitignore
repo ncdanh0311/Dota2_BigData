@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+.venv*/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Large/generated assets stay in WSL/HDFS, not Git.
+data/raw/
+data/processed/
+*.parquet
+*.csv.part
+*.range-*
+*.log
+artifacts/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Keep compact evidence reports; omit diagnostic dumps.
+evidence/hdfs/format.txt
+evidence/hdfs/namenode_jmx.json

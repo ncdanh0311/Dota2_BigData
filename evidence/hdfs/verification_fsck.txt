@@ -1,0 +1,48 @@
+Connecting to namenode via http://127.0.0.1:9870/fsck?ugi=danh&files=1&blocks=1&locations=1&path=%2Fdota%2Fraw%2Fzenodo_v3%2FDB_03_Live_Features_ANALYSIS_v3.csv
+FSCK started by danh (auth:SIMPLE) from /127.0.0.1 for path /dota/raw/zenodo_v3/DB_03_Live_Features_ANALYSIS_v3.csv at Sat Oct 24 16:47:52 UTC 2026
+
+/dota/raw/zenodo_v3/DB_03_Live_Features_ANALYSIS_v3.csv 223002035 bytes, replicated: replication=2, 4 block(s):  OK
+0. BP-1869621100-127.0.1.1-1792860241474:blk_1073741825_1001 len=67108864 Live_repl=2  [DatanodeInfoWithStorage[127.0.0.1:9966,DS-004d73c4-250f-422c-a2ea-c2486dfe3e2e,DISK], DatanodeInfoWithStorage[127.0.0.1:10066,DS-7f211e99-1a17-4d02-a713-dbe794015aa2,DISK]]
+1. BP-1869621100-127.0.1.1-1792860241474:blk_1073741826_1002 len=67108864 Live_repl=2  [DatanodeInfoWithStorage[127.0.0.1:10066,DS-7f211e99-1a17-4d02-a713-dbe794015aa2,DISK], DatanodeInfoWithStorage[127.0.0.1:9866,DS-1571d72b-a771-4034-89d9-3a3284c80ba8,DISK]]
+2. BP-1869621100-127.0.1.1-1792860241474:blk_1073741827_1003 len=67108864 Live_repl=2  [DatanodeInfoWithStorage[127.0.0.1:9866,DS-1571d72b-a771-4034-89d9-3a3284c80ba8,DISK], DatanodeInfoWithStorage[127.0.0.1:10066,DS-7f211e99-1a17-4d02-a713-dbe794015aa2,DISK]]
+3. BP-1869621100-127.0.1.1-1792860241474:blk_1073741828_1004 len=21675443 Live_repl=2  [DatanodeInfoWithStorage[127.0.0.1:9866,DS-1571d72b-a771-4034-89d9-3a3284c80ba8,DISK], DatanodeInfoWithStorage[127.0.0.1:9966,DS-004d73c4-250f-422c-a2ea-c2486dfe3e2e,DISK]]
+
+
+Status: HEALTHY
+ Number of data-nodes:	3
+ Number of racks:		1
+ Total dirs:			0
+ Total symlinks:		0
+
+Replicated Blocks:
+ Total size:	223002035 B
+ Total files:	1
+ Total blocks (validated):	4 (avg. block size 55750508 B)
+ Minimally replicated blocks:	4 (100.0 %)
+ Over-replicated blocks:	0 (0.0 %)
+ Under-replicated blocks:	0 (0.0 %)
+ Mis-replicated blocks:		0 (0.0 %)
+ Default replication factor:	2
+ Average block replication:	2.0
+ Missing blocks:		0
+ Corrupt blocks:		0
+ Missing replicas:		0 (0.0 %)
+ Blocks queued for replication:	0
+
+Erasure Coded Block Groups:
+ Total size:	0 B
+ Total files:	0
+ Total block groups (validated):	0
+ Minimally erasure-coded block groups:	0
+ Over-erasure-coded block groups:	0
+ Under-erasure-coded block groups:	0
+ Unsatisfactory placement block groups:	0
+ Average block group size:	0.0
+ Missing block groups:		0
+ Corrupt block groups:		0
+ Missing internal blocks:	0
+ Blocks queued for replication:	0
+FSCK ended at Sat Oct 24 16:47:52 UTC 2026 in 17 milliseconds
+
+
+The filesystem under path '/dota/raw/zenodo_v3/DB_03_Live_Features_ANALYSIS_v3.csv' is HEALTHY

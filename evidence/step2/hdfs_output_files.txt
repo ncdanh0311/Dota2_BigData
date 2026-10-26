@@ -1,0 +1,4 @@
+Found 3 items
+-rw-r--r--   2 danh supergroup          0 2026-10-25 13:52 /dota/processed/match_drafts_v1/_SUCCESS
+-rw-r--r--   2 danh supergroup    669.5 K 2026-10-25 13:52 /dota/processed/match_drafts_v1/part-00000-c1bd1e0d-2273-4418-a2e4-dfaf2db9c496-c000.snappy.parquet
+-rw-r--r--   2 danh supergroup    669.5 K 2026-10-25 13:52 /dota/processed/match_drafts_v1/part-00001-c1bd1e0d-2273-4418-a2e4-dfaf2db9c496-c000.snappy.parquet

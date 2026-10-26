@@ -1,0 +1,11 @@
+{
+  "distribution": "Ubuntu",
+  "user": "danh",
+  "cluster_root": "/home/danh/dota-hdfs",
+  "hadoop_home": "/usr/local/hadoop",
+  "java_home": "/usr/lib/jvm/java-17-openjdk-amd64",
+  "spark_submit": "/home/danh/.local/bin/spark-submit",
+  "spark_python": "/usr/bin/python3",
+  "spark_master": "local[2]",
+  "spark_driver_memory": "1g"
+}
