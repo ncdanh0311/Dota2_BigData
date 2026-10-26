@@ -135,10 +135,3 @@ quả thật nằm trong báo cáo Gold liên kết ở trên.
 Dữ liệu trải nhiều patch và chỉ đến tháng 3/2026. Không dùng các biến trong
 trận cho mô hình dự đoán trước trận; nguồn hiện không có patch/start_time.
 Ba DataNode cùng WSL chỉ mô phỏng phân tán và lỗi tiến trình trên một máy.
-
-## Tham khảo tổ chức
-
-Tham khảo cách tách pipeline, script WSL, cấu hình, tests và CI từ
-[chicago-crime-bigdata-analysis](https://github.com/DuyLinh0212/chicago-crime-bigdata-analysis).
-Xem [giải thích cấu trúc và khác biệt](docs/PROJECT_STRUCTURE.md).
-Giấy phép MIT trong repo áp dụng cho mã nguồn dự án; dataset lấy từ nguồn Zenodo.
