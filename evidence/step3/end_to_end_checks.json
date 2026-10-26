@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "run_id": "step3-20261026-v2",
+  "completed_marker": true,
+  "prior_run_invalidated": true,
+  "same_input_business_metrics_reproduced": {
+    "match_overview": "PASS",
+    "hero_stats": "PASS",
+    "hero_side_stats": "PASS",
+    "hero_pair_stats": "PASS"
+  },
+  "parquet_data_files": {
+    "match_overview": 1,
+    "hero_stats": 1,
+    "hero_side_stats": 1,
+    "hero_pair_stats": 1,
+    "analysis_runs": 1
+  },
+  "source_inventory_files": 2,
+  "report_sha256": "304e99db7eb90494760998c88f9bb5071f142f39058eb471bc0a3ea692a380c2",
+  "hdfs_and_local_report_match": true
+}

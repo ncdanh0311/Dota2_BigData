@@ -36,8 +36,9 @@ Không cần tải lại dataset hoặc chạy lại chuẩn hóa chỉ vì đ�
 ## CI hiện tại
 
 Workflow `Spark rule checks` cài dependency, kiểm tra cú pháp Python và chạy
-22 dòng fixture. Không yêu cầu WSL/HDFS trên runner. Artifact chỉ là kết quả
-rule tests. Toàn bộ pipeline thật vẫn chạy trên WSL qua PowerShell.
+22 dòng fixture normalization cùng 199 trận fixture analytics. Không yêu cầu
+WSL/HDFS trên runner. Artifact chỉ là kết quả rule tests. Toàn bộ pipeline
+thật vẫn chạy trên WSL qua PowerShell.
 
 Chưa có CI toàn cụm, tự động phân tích, Kafka hoặc Airflow. Chỉ thêm các luồng
 đó sau khi triển khai và kiểm chứng từng bước trên dự án Dota 2.

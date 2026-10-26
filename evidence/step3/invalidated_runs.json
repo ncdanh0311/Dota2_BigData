@@ -1,0 +1,5 @@
+{
+  "status": "INVALIDATED",
+  "reason": "Statistics verified, but source file inventory was empty. Do not consume this run; replaced by step3-20261026-v2.",
+  "replacement_run_id": "step3-20261026-v2"
+}

@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "fixture_matches": 199,
+  "quality_checks": {
+    "status": "PASS",
+    "row_counts": {
+      "match_overview": 1,
+      "hero_stats": 20,
+      "hero_side_stats": 20,
+      "hero_pair_stats": 40
+    },
+    "appearances": {
+      "team_matches": {
+        "rows": 398,
+        "wins": 199
+      },
+      "hero_appearances": {
+        "rows": 1990,
+        "wins": 995
+      },
+      "pair_appearances": {
+        "rows": 3980,
+        "wins": 1990
+      }
+    },
+    "hero_picks": 1990,
+    "hero_wins": 995,
+    "pair_matches": 3980,
+    "pair_wins": 1990,
+    "overview": {
+      "total_matches": 199,
+      "radiant_wins": 50,
+      "dire_wins": 149,
+      "radiant_win_rate": 0.25125628140703515,
+      "dire_win_rate": 0.7487437185929648,
+      "analysis_run_id": "fixture-a"
+    }
+  },
+  "scenarios": [
+    "hand-calculated hero and pair metrics",
+    "Dire outcome inversion",
+    "99/100 sample threshold",
+    "insufficient samples retained",
+    "missing side not replaced with zero",
+    "Parquet round-trip",
+    "nonempty source file inventory",
+    "corrupted output rejected",
+    "array/partition/order invariance",
+    "both-side hero comparison",
+    "invalid/empty/duplicate Silver rejected",
+    "schema mismatch rejected",
+    "run overwrite blocked",
+    "no completion marker for unfinished run"
+  ]
+}

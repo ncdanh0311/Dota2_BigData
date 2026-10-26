@@ -1,6 +1,7 @@
 # Kế hoạch phân tích Dota 2 bằng Spark SQL
 
-**Trạng thái: kế hoạch cho bước 3, chưa có kết quả Gold hoặc mã phân tích.**
+**Trạng thái: đã triển khai bước 3.** Xem [hướng dẫn chạy và kiểm chứng](STEP3_DRAFT_ANALYTICS.md)
+và [báo cáo thực tế](../evidence/step3/step3-20261026-v2/report.md).
 Tham khảo phương pháp trong `PREMIER_LEAGUE_ANALYSIS_PLAN.md` do người dùng
 cung cấp: chốt câu hỏi, đơn vị phân tích, công thức, coverage, output contract
 và kiểm chứng trước khi hiển thị trên website.
@@ -138,9 +139,8 @@ vẫn hiển thị `Hero <id>`. Không dùng metadata hiện tại để suy di�
 
 ## 5. Thứ tự triển khai phù hợp làm một mình
 
-1. Tạo một entrypoint `analytics/draft_stats.py`, chạy một Spark session
-   `local[2]`, heap 1 GB, shuffle partitions 8; chưa tạo file này trong lần
-   sắp xếp repo hiện tại.
+1. Entrypoint `analytics/draft_stats.py` chạy một Spark session
+   `local[2]`, heap 1 GB, shuffle partitions 8.
 2. Kiểm tra bốn cột Silver, khóa duy nhất, đủ 10 hero khác nhau và nhãn 0/1.
 3. Tạo view `team_matches`, explode hero rồi tạo cặp bằng vị trí i < j.
 4. Dùng `spark.sql` tổng hợp bốn bảng nghiệp vụ theo công thức trên.
@@ -197,4 +197,5 @@ phần lịch sử ban đầu với phần replay và chống trùng match_id.
 
 Definition of Done bước 3: có bốn bảng thống kê đúng công thức, manifest run,
 quality report, bằng chứng kiểm thử, đọc lại Gold thành công và báo cáo truy
-vết được về Silver v1. Chưa đánh dấu hoàn thành chỉ dựa trên tài liệu này.
+vết được về Silver v1. Kết quả được ghi trong báo cáo thực tế, không dựa vào
+tài liệu kế hoạch để khẳng định số liệu.
