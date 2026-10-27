@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      AIRFLOW_HOME: ${{ runner.temp }}/dota-airflow-ci
+      AIRFLOW_HOME: /tmp/dota-airflow-ci
       AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
     steps:
       - uses: actions/checkout@v4
