@@ -1,0 +1,41 @@
+name: Repository checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate JSON and tracked file policy
+        run: python scripts/check_repository.py
+      - name: Parse PowerShell scripts without launching WSL or services
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $paths = @(git ls-files -- '*.ps1')
+          if ($LASTEXITCODE -ne 0 -or $paths.Count -eq 0) { throw 'Cannot enumerate PowerShell scripts.' }
+          $allErrors = @()
+          foreach ($path in $paths) {
+            $tokens = $null
+            $parseErrors = $null
+            $null = [System.Management.Automation.Language.Parser]::ParseFile((Join-Path $PWD $path), [ref]$tokens, [ref]$parseErrors)
+            $allErrors += $parseErrors
+          }
+          if ($allErrors.Count) { $allErrors | Format-List; throw 'PowerShell syntax check failed.' }
+          Write-Host "PowerShell syntax PASS: $($paths.Count) scripts"
