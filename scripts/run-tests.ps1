@@ -8,7 +8,7 @@ try {
     $runtime = Get-DotaRuntime
     $repoRoot = Split-Path $PSScriptRoot -Parent
     foreach ($testName in @('test_prepare_match_drafts.py', 'test_draft_stats.py',
-                            'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py')) {
+                            'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py')) {
       $testPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot "tests\$testName") -Runtime $runtime
       & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec env `
         "JAVA_HOME=$($runtime.java_home)" `
@@ -18,7 +18,24 @@ try {
         $testPath
       if ($LASTEXITCODE -ne 0) { throw "Spark rule tests failed: $testName" }
     }
-    Write-Host 'Spark rule tests passed.' -ForegroundColor Green
+    $apiTest = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_web_api.py') -Runtime $runtime
+    $linuxRepo = $apiTest.Substring(0, $apiTest.LastIndexOf('/tests/'))
+    $webPython = "$linuxRepo/.venv-web/bin/python"
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec test -x $webPython
+    if ($LASTEXITCODE -ne 0) {
+      & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python -m venv "$linuxRepo/.venv-web"
+      if ($LASTEXITCODE -ne 0) { throw 'Cannot create web test environment.' }
+    }
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython -m pip install -r "$linuxRepo/requirements-web-test.txt"
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot install pinned web test dependencies.' }
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython $apiTest
+    if ($LASTEXITCODE -ne 0) { throw 'Web API tests failed.' }
+    if (Get-Command node -ErrorAction SilentlyContinue) {
+      & node (Join-Path $repoRoot 'tests\test_web_logic.mjs')
+      if ($LASTEXITCODE -ne 0) { throw 'Web display rule tests failed.' }
+    }
+    else { Write-Host 'Optional JavaScript unit check skipped (Node is only required for this check, not the website).' }
+    Write-Host 'Spark and web rule tests passed.' -ForegroundColor Green
 }
 catch {
     [Console]::Error.WriteLine($_.Exception.Message)

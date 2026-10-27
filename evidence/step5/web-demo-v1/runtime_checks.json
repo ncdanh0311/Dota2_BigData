@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "source": "real Gold/model snapshot",
+  "snapshot_id": "web-demo-v1",
+  "api_bundle_parity_cases": 26,
+  "hero_image_routes_checked": 127,
+  "spark_imported": false,
+  "hdfs_port_9000_confirmed_down": true,
+  "network": "socket connection creation blocked throughout snapshot loading and TestClient requests",
+  "os_network_configuration_changed": false
+}

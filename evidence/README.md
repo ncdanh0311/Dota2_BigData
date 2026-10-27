@@ -15,6 +15,10 @@
 - `step4/step4-20261027-v1/`: kết quả Logistic Regression trên dataset thật, ba
   cấu hình validation, baseline, test, parity và mười ví dụ dự đoán.
 - `step4/end_to_end_checks.json`, `overwrite_guard.json`: hash/marker và chống ghi đè run.
+- `step5/*_tests.json`: fixture exporter, API và quy tắc hiển thị JavaScript.
+- `step5/web-demo-v1/`: export Gold/model thật, trạng thái ảnh, runtime không
+  cần HDFS/mạng và kiểm chứng browser desktop/mobile. Bản demo dùng 127 ảnh
+  thay thế local do CDN Steam lỗi kết nối; bốn PNG ghi đúng trạng thái đó.
 
 Các báo cáo lịch sử được giữ nguyên nội dung. Đường dẫn cũ trong báo cáo là
 đường dẫn tại thời điểm chạy, không phải cấu hình runtime hiện tại.

@@ -71,6 +71,11 @@ def main():
             with patch('web.export_snapshot.PROJECT', root), patch('web.export_snapshot.download', download):
                 execute(spark, args)
                 rejected(lambda: execute(spark, args), FileExistsError)
+                args.snapshot_id = 'failed-web'
+                with patch('web.export_snapshot.prepare_heroes', side_effect=OSError('Fixture metadata outage')):
+                    rejected(lambda: execute(spark, args), OSError)
+                failed = root/'artifacts/web/failed-web'
+                assert (failed/'_FAILED.json').is_file() and not (failed/'_COMPLETED').exists()
             snapshot = root/'artifacts/web/fixture-web'
             loaded = load_snapshot(snapshot)
             assert loaded['dashboard']['total_matches'] == 4
@@ -86,7 +91,7 @@ def main():
         evidence.mkdir(exist_ok=True)
         write_json(evidence/'export_tests.json', {'status': 'PASS', 'source': 'local synthetic fixture',
             'checks': ['Gold keyed JSON parity', 'source completion/invalidation', 'fingerprint/checksum rejection',
-                       'no overwrite', 'asset retry/fallback', 'snapshot integrity']})
+                       'no overwrite', 'asset retry/fallback', 'snapshot integrity', 'failed run has no completion marker']})
     finally:
         spark.stop()
 
