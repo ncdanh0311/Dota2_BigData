@@ -2,7 +2,8 @@
 param(
     [string]$GoldRunId = 'step3-20261026-v2',
     [string]$ModelRunId = 'step4-20261027-v1',
-    [string]$SnapshotId = ''
+    [string]$SnapshotId = '',
+    [string]$HeroAssetsSnapshotId = ''
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -12,6 +13,11 @@ try {
     $job = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'web\export_snapshot.py') -Runtime $runtime
     $jobArgs = @('--gold-run-id', $GoldRunId, '--model-run-id', $ModelRunId)
     if ($SnapshotId) { $jobArgs += @('--snapshot-id', $SnapshotId) }
+    if ($HeroAssetsSnapshotId) {
+        if ($HeroAssetsSnapshotId -notmatch '^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$') { throw 'Invalid hero asset snapshot ID.' }
+        $linuxRepo=$job.Substring(0,$job.LastIndexOf('/web/'))
+        $jobArgs += @('--hero-assets-from',"$linuxRepo/artifacts/web/$HeroAssetsSnapshotId")
+    }
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec env `
         "JAVA_HOME=$($runtime.java_home)" "HADOOP_CONF_DIR=$($runtime.cluster_root)/conf/namenode" `
         SPARK_LOCAL_IP=127.0.0.1 "PYSPARK_PYTHON=$($runtime.spark_python)" `

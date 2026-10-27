@@ -16,6 +16,7 @@ from analytics.draft_stats import (KEYS, assert_same_table, build_tables, check_
                                   fs_for, input_inventory, validate_input)
 from web.snapshot import (PROJECT, checksum, load_snapshot, read_json, reserve_snapshot,
                           safe_id, verify_sources, write_json)
+from web.hero_assets import reuse_heroes
 
 
 def hdfs_bytes(spark, uri):
@@ -141,7 +142,9 @@ def execute(spark, args):
             (target/'model_bundle.json').write_bytes(bundle_bytes)
             (target/'model_metrics.json').write_bytes(hdfs_bytes(spark, model_uri+'/metrics.json'))
             hero_ids = set(bundle['hero_ids']) | {r['hero_id'] for r in dashboard['hero_stats']}
-            heroes, asset_info = prepare_heroes(target, hero_ids, set(bundle['hero_ids']))
+            cache_source = getattr(args, 'hero_assets_from', None)
+            heroes, asset_info = (reuse_heroes(target, hero_ids, set(bundle['hero_ids']), cache_source)
+                                 if cache_source else prepare_heroes(target, hero_ids, set(bundle['hero_ids'])))
             manifest = {'snapshot_id': args.snapshot_id, 'gold_run_id': args.gold_run_id,
                         'model_run_id': args.model_run_id, 'gold_uri': gold_uri, 'model_uri': model_uri,
                         'input_fingerprint_sha256': fingerprint, 'row_counts': checks['row_counts'],
@@ -175,6 +178,7 @@ def main():
     parser.add_argument('--gold-run-id', default='step3-20261026-v2')
     parser.add_argument('--model-run-id', default='step4-20261027-v1')
     parser.add_argument('--snapshot-id', default=datetime.now(timezone.utc).strftime('web-%Y%m%dT%H%M%SZ-')+uuid.uuid4().hex[:6])
+    parser.add_argument('--hero-assets-from', type=Path, help='Reuse a completed snapshot instead of downloading display assets')
     args = parser.parse_args()
     spark = SparkSession.builder.appName('DotaWebSnapshot').getOrCreate()
     spark.sparkContext.setLogLevel('WARN')
