@@ -8,7 +8,7 @@
 </head>
 <body>
   <header class="topbar"><a class="brand" href="#stats" aria-label="DotaLens trang chủ"><span class="brand-mark">◈</span>Dota<span>Lens</span><small>ĐỘI HÌNH & DỮ LIỆU</small></a>
-    <nav aria-label="Điều hướng chính"><button class="nav-tab active" data-tab="stats">Thống kê</button><button class="nav-tab" data-tab="draft">Dự đoán đội hình <span>↗</span></button></nav>
+    <nav aria-label="Điều hướng chính"><button class="nav-tab active" data-tab="stats">Thống kê</button><button class="nav-tab" data-tab="draft">Dự đoán đội hình <span>↗</span></button><button class="nav-tab" data-tab="replay">Mô phỏng Kafka</button></nav>
     <span class="live-badge"><i></i> SNAPSHOT LOCAL</span>
   </header>
   <main>
@@ -39,6 +39,14 @@
       <div id="prediction-error" class="notice error" role="alert" hidden></div><div id="prediction-result" aria-live="polite" hidden></div>
       <article class="panel hero-library"><div class="panel-heading"><div><p class="eyebrow">HERO POOL</p><h2>Chọn người ra trận</h2></div><input id="draft-search" type="search" placeholder="Tìm tên hoặc ID hero…" aria-label="Tìm hero để chọn"></div><div class="library-meta"><span id="library-count"></span><span>Hero đã chọn được khóa ở cả hai đội</span></div><div id="hero-library" class="hero-grid"></div></article>
       <details class="panel metrics-panel"><summary>Mô hình đã được đánh giá như thế nào? <span>＋</span></summary><div id="model-metrics"></div></details>
+    </section>
+    <section id="replay-page" hidden aria-label="Mô phỏng Kafka">
+      <div class="page-heading"><div><p class="eyebrow">KAFKA → STRUCTURED STREAMING</p><h1>Theo dõi từng trận được phát lại.</h1><p>Phát lại dữ liệu lịch sử · Thống kê riêng, không cộng vào Gold.</p></div><span id="replay-run" class="outline-badge"></span></div>
+      <div id="replay-status" class="notice" role="status">Đang đọc trạng thái phiên mô phỏng…</div>
+      <div id="replay-content" hidden><div id="replay-kpis" class="kpi-grid"></div>
+        <div class="overview-grid"><article class="panel"><div class="panel-heading"><div><p class="eyebrow">LƯỢT CHỌN TRONG PHIÊN</p><h2>10 hero xuất hiện nhiều nhất</h2></div></div><div id="replay-chart" class="bar-chart"></div></article><article class="panel"><p class="eyebrow">KẾT QUẢ REPLAY</p><h2>Radiant / Dire</h2><div id="replay-overview" style="margin-top:24px"></div><p id="replay-updated" class="muted footnote"></p><div class="insight"><p>Thời điểm phát là thời gian mô phỏng, không phải thời gian diễn ra trận. Các record gửi lại không được tính thêm trận.</p></div></article></div>
+        <article class="panel section-panel"><div class="panel-heading"><div><p class="eyebrow">HERO TRONG LUỒNG</p><h2>Lượt chọn và tỷ lệ thắng</h2></div><span class="muted">Ngưỡng đủ mẫu: 100 trận</span></div><div class="filters"><input id="replay-search" type="search" placeholder="Tìm tên hoặc ID hero…" aria-label="Tìm hero replay"><select id="replay-sort" aria-label="Sắp xếp hero replay"><option value="picks">Lượt chọn</option><option value="win_rate">Tỷ lệ thắng</option></select><label class="checkbox"><input id="replay-insufficient" type="checkbox">Hiện mẫu chưa đủ</label></div><div class="table-scroll"><table><thead><tr><th>Hero</th><th>Lượt chọn</th><th>Thắng / Thua</th><th>Pick rate</th><th>Win rate</th><th>Mẫu</th></tr></thead><tbody id="replay-rows"></tbody></table></div><div id="replay-pagination" class="pagination"></div></article>
+      </div>
     </section>
     <footer id="footer" hidden><div><span class="brand mini">◈ DotaLens</span><p>Đồ án cá nhân · Thực hành Big Data</p></div><p>Dữ liệu lịch sử, chưa đại diện meta hiện tại.<br><span id="provenance"></span></p></footer>
   </main>
