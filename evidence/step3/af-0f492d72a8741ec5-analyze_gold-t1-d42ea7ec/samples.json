@@ -1,0 +1,790 @@
+{
+  "top20_picks": [
+    {
+      "hero_id": 86,
+      "picks": 24051,
+      "wins": 12069,
+      "losses": 11982,
+      "pick_rate": 0.2656688390588755,
+      "win_rate": 0.501808656604715,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 19,
+      "picks": 16024,
+      "wins": 7885,
+      "losses": 8139,
+      "pick_rate": 0.17700209875179498,
+      "win_rate": 0.49207438841737394,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 5,
+      "picks": 13741,
+      "wins": 6957,
+      "losses": 6784,
+      "pick_rate": 0.15178393902573734,
+      "win_rate": 0.5062950294738374,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 106,
+      "picks": 13650,
+      "wins": 6822,
+      "losses": 6828,
+      "pick_rate": 0.15077874737656025,
+      "win_rate": 0.4997802197802198,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 100,
+      "picks": 13392,
+      "wins": 6622,
+      "losses": 6770,
+      "pick_rate": 0.14792886336021208,
+      "win_rate": 0.4944743130227001,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 11,
+      "picks": 13239,
+      "wins": 6789,
+      "losses": 6450,
+      "pick_rate": 0.14623881586214516,
+      "win_rate": 0.5128030818037617,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 21,
+      "picks": 13165,
+      "wins": 6626,
+      "losses": 6539,
+      "pick_rate": 0.14542140726830885,
+      "win_rate": 0.5033042157235093,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 14,
+      "picks": 12742,
+      "wins": 6357,
+      "losses": 6385,
+      "pick_rate": 0.1407489230089473,
+      "win_rate": 0.4989012713859677,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 49,
+      "picks": 12586,
+      "wins": 6048,
+      "losses": 6538,
+      "pick_rate": 0.13902573732464377,
+      "win_rate": 0.48053392658509453,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 87,
+      "picks": 12236,
+      "wins": 6070,
+      "losses": 6166,
+      "pick_rate": 0.13515961559703965,
+      "win_rate": 0.4960771493952272,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 64,
+      "picks": 12172,
+      "wins": 5947,
+      "losses": 6225,
+      "pick_rate": 0.13445266762399205,
+      "win_rate": 0.4885803483404535,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 46,
+      "picks": 12087,
+      "wins": 6177,
+      "losses": 5910,
+      "pick_rate": 0.13351375234728818,
+      "win_rate": 0.5110449242988334,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 84,
+      "picks": 11927,
+      "wins": 5924,
+      "losses": 6003,
+      "pick_rate": 0.13174638241466918,
+      "win_rate": 0.49668818646767837,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 129,
+      "picks": 11570,
+      "wins": 5507,
+      "losses": 6063,
+      "pick_rate": 0.127802938252513,
+      "win_rate": 0.4759723422644771,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 26,
+      "picks": 11554,
+      "wins": 5548,
+      "losses": 6006,
+      "pick_rate": 0.1276262012592511,
+      "win_rate": 0.4801800242340315,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 128,
+      "picks": 11502,
+      "wins": 5648,
+      "losses": 5854,
+      "pick_rate": 0.1270518060311499,
+      "win_rate": 0.4910450356459746,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 120,
+      "picks": 11404,
+      "wins": 5692,
+      "losses": 5712,
+      "pick_rate": 0.12596929194742074,
+      "win_rate": 0.4991231146965977,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 51,
+      "picks": 11100,
+      "wins": 5677,
+      "losses": 5423,
+      "pick_rate": 0.12261128907544461,
+      "win_rate": 0.5114414414414414,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 39,
+      "picks": 10945,
+      "wins": 5480,
+      "losses": 5465,
+      "pick_rate": 0.12089914945321993,
+      "win_rate": 0.5006852444038373,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 96,
+      "picks": 10945,
+      "wins": 5622,
+      "losses": 5323,
+      "pick_rate": 0.12089914945321993,
+      "win_rate": 0.5136592051164915,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    }
+  ],
+  "top20_hero_win_rate": [
+    {
+      "hero_id": 66,
+      "picks": 2852,
+      "wins": 1693,
+      "losses": 1159,
+      "pick_rate": 0.031503369048934055,
+      "win_rate": 0.5936185133239832,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 62,
+      "picks": 4040,
+      "wins": 2243,
+      "losses": 1797,
+      "pick_rate": 0.04462609079863029,
+      "win_rate": 0.5551980198019802,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 83,
+      "picks": 5602,
+      "wins": 3103,
+      "losses": 2499,
+      "pick_rate": 0.061880039765823486,
+      "win_rate": 0.5539093181006783,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 89,
+      "picks": 4194,
+      "wins": 2297,
+      "losses": 1897,
+      "pick_rate": 0.0463271843587761,
+      "win_rate": 0.5476871721506915,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 155,
+      "picks": 590,
+      "wins": 322,
+      "losses": 268,
+      "pick_rate": 0.006517176626532641,
+      "win_rate": 0.5457627118644067,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 33,
+      "picks": 3436,
+      "wins": 1874,
+      "losses": 1562,
+      "pick_rate": 0.03795426930299348,
+      "win_rate": 0.5454016298020955,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 61,
+      "picks": 3330,
+      "wins": 1807,
+      "losses": 1523,
+      "pick_rate": 0.03678338672263338,
+      "win_rate": 0.5426426426426426,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 80,
+      "picks": 1740,
+      "wins": 929,
+      "losses": 811,
+      "pick_rate": 0.019220148017231858,
+      "win_rate": 0.5339080459770115,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 3,
+      "picks": 3754,
+      "wins": 2000,
+      "losses": 1754,
+      "pick_rate": 0.041466917044073785,
+      "win_rate": 0.5327650506126798,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 53,
+      "picks": 10229,
+      "wins": 5449,
+      "losses": 4780,
+      "pick_rate": 0.11299016900474981,
+      "win_rate": 0.5327011438068238,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 55,
+      "picks": 5089,
+      "wins": 2706,
+      "losses": 2383,
+      "pick_rate": 0.056213409919363744,
+      "win_rate": 0.531735114953822,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 77,
+      "picks": 3815,
+      "wins": 2027,
+      "losses": 1788,
+      "pick_rate": 0.04214072683088479,
+      "win_rate": 0.5313237221494103,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 79,
+      "picks": 8934,
+      "wins": 4693,
+      "losses": 4241,
+      "pick_rate": 0.0986855186126146,
+      "win_rate": 0.5252966196552497,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 57,
+      "picks": 2427,
+      "wins": 1272,
+      "losses": 1155,
+      "pick_rate": 0.02680879266541478,
+      "win_rate": 0.5241038318912238,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 52,
+      "picks": 7206,
+      "wins": 3774,
+      "losses": 3432,
+      "pick_rate": 0.07959792334032917,
+      "win_rate": 0.5237302248126561,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 45,
+      "picks": 7576,
+      "wins": 3964,
+      "losses": 3612,
+      "pick_rate": 0.08368496630951065,
+      "win_rate": 0.5232312565997888,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 9,
+      "picks": 7085,
+      "wins": 3700,
+      "losses": 3385,
+      "pick_rate": 0.07826134982878603,
+      "win_rate": 0.5222300635144672,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 73,
+      "picks": 4357,
+      "wins": 2273,
+      "losses": 2084,
+      "pick_rate": 0.048127692477631726,
+      "win_rate": 0.5216892357126464,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 91,
+      "picks": 4307,
+      "wins": 2245,
+      "losses": 2062,
+      "pick_rate": 0.04757538937368828,
+      "win_rate": 0.5212444857209194,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_id": 40,
+      "picks": 4258,
+      "wins": 2219,
+      "losses": 2039,
+      "pick_rate": 0.04703413233182371,
+      "win_rate": 0.5211366838891498,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    }
+  ],
+  "top20_pair_win_rate": [
+    {
+      "hero_a": 7,
+      "hero_b": 66,
+      "pair_matches": 116,
+      "pair_wins": 82,
+      "pair_losses": 34,
+      "pair_pick_rate": 0.0012813432011487904,
+      "pair_win_rate": 0.7068965517241379,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 65,
+      "hero_b": 66,
+      "pair_matches": 158,
+      "pair_wins": 108,
+      "pair_losses": 50,
+      "pair_pick_rate": 0.0017452778084612835,
+      "pair_win_rate": 0.6835443037974683,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 66,
+      "hero_b": 102,
+      "pair_matches": 104,
+      "pair_wins": 70,
+      "pair_losses": 34,
+      "pair_pick_rate": 0.0011487904562023639,
+      "pair_win_rate": 0.6730769230769231,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 66,
+      "hero_b": 114,
+      "pair_matches": 171,
+      "pair_wins": 115,
+      "pair_losses": 56,
+      "pair_pick_rate": 0.001888876615486579,
+      "pair_win_rate": 0.672514619883041,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 53,
+      "hero_b": 92,
+      "pair_matches": 116,
+      "pair_wins": 78,
+      "pair_losses": 38,
+      "pair_pick_rate": 0.0012813432011487904,
+      "pair_win_rate": 0.6724137931034483,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 90,
+      "hero_b": 91,
+      "pair_matches": 109,
+      "pair_wins": 73,
+      "pair_losses": 36,
+      "pair_pick_rate": 0.0012040207665967083,
+      "pair_win_rate": 0.6697247706422018,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 17,
+      "hero_b": 56,
+      "pair_matches": 139,
+      "pair_wins": 93,
+      "pair_losses": 46,
+      "pair_pick_rate": 0.0015354026289627748,
+      "pair_win_rate": 0.6690647482014388,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 17,
+      "hero_b": 66,
+      "pair_matches": 187,
+      "pair_wins": 124,
+      "pair_losses": 63,
+      "pair_pick_rate": 0.0020656136087484813,
+      "pair_win_rate": 0.6631016042780749,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 66,
+      "hero_b": 93,
+      "pair_matches": 108,
+      "pair_wins": 71,
+      "pair_losses": 37,
+      "pair_pick_rate": 0.0011929747045178393,
+      "pair_win_rate": 0.6574074074074074,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 53,
+      "hero_b": 61,
+      "pair_matches": 105,
+      "pair_wins": 69,
+      "pair_losses": 36,
+      "pair_pick_rate": 0.0011598365182812328,
+      "pair_win_rate": 0.6571428571428571,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 80,
+      "hero_b": 84,
+      "pair_matches": 102,
+      "pair_wins": 67,
+      "pair_losses": 35,
+      "pair_pick_rate": 0.0011266983320446261,
+      "pair_win_rate": 0.6568627450980392,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 66,
+      "hero_b": 119,
+      "pair_matches": 137,
+      "pair_wins": 89,
+      "pair_losses": 48,
+      "pair_pick_rate": 0.001513310504805037,
+      "pair_win_rate": 0.6496350364963503,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 66,
+      "hero_b": 100,
+      "pair_matches": 185,
+      "pair_wins": 120,
+      "pair_losses": 65,
+      "pair_pick_rate": 0.0020435214845907434,
+      "pair_win_rate": 0.6486486486486487,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 23,
+      "hero_b": 66,
+      "pair_matches": 109,
+      "pair_wins": 70,
+      "pair_losses": 39,
+      "pair_pick_rate": 0.0012040207665967083,
+      "pair_win_rate": 0.6422018348623854,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 48,
+      "hero_b": 92,
+      "pair_matches": 162,
+      "pair_wins": 104,
+      "pair_losses": 58,
+      "pair_pick_rate": 0.001789462056776759,
+      "pair_win_rate": 0.6419753086419753,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 53,
+      "hero_b": 62,
+      "pair_matches": 195,
+      "pair_wins": 125,
+      "pair_losses": 70,
+      "pair_pick_rate": 0.002153982105379432,
+      "pair_win_rate": 0.6410256410256411,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 62,
+      "hero_b": 64,
+      "pair_matches": 267,
+      "pair_wins": 171,
+      "pair_losses": 96,
+      "pair_pick_rate": 0.0029492985750579916,
+      "pair_win_rate": 0.6404494382022472,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 33,
+      "hero_b": 37,
+      "pair_matches": 105,
+      "pair_wins": 67,
+      "pair_losses": 38,
+      "pair_pick_rate": 0.0011598365182812328,
+      "pair_win_rate": 0.638095238095238,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 33,
+      "hero_b": 58,
+      "pair_matches": 163,
+      "pair_wins": 104,
+      "pair_losses": 59,
+      "pair_pick_rate": 0.001800508118855628,
+      "pair_win_rate": 0.6380368098159509,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    },
+    {
+      "hero_a": 52,
+      "hero_b": 66,
+      "pair_matches": 138,
+      "pair_wins": 88,
+      "pair_losses": 50,
+      "pair_pick_rate": 0.0015243565668839059,
+      "pair_win_rate": 0.6376811594202898,
+      "sample_status": "eligible",
+      "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+    }
+  ],
+  "top5_side_comparison": [
+    {
+      "hero_id": 86,
+      "hero_name": "Hero 86",
+      "radiant": {
+        "hero_id": 86,
+        "side": "radiant",
+        "picks": 12186,
+        "wins": 6161,
+        "losses": 6025,
+        "side_pick_rate": 0.1346073124930962,
+        "side_win_rate": 0.5055801739701297,
+        "side_baseline": 0.5114879045620236,
+        "delta_vs_side_baseline": -0.005907730591893978,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "dire": {
+        "hero_id": 86,
+        "side": "dire",
+        "picks": 11865,
+        "wins": 5908,
+        "losses": 5957,
+        "side_pick_rate": 0.1310615265657793,
+        "side_win_rate": 0.49793510324483775,
+        "side_baseline": 0.48851209543797636,
+        "delta_vs_side_baseline": 0.009423007806861394,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "comparison_status": "eligible",
+      "delta_radiant_minus_dire": 0.007645070725291914
+    },
+    {
+      "hero_id": 19,
+      "hero_name": "Hero 19",
+      "radiant": {
+        "hero_id": 19,
+        "side": "radiant",
+        "picks": 7914,
+        "wins": 3944,
+        "losses": 3970,
+        "side_pick_rate": 0.08741853529216834,
+        "side_win_rate": 0.4983573414202679,
+        "side_baseline": 0.5114879045620236,
+        "delta_vs_side_baseline": -0.013130563141755758,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "dire": {
+        "hero_id": 19,
+        "side": "dire",
+        "picks": 8110,
+        "wins": 3941,
+        "losses": 4169,
+        "side_pick_rate": 0.08958356345962665,
+        "side_win_rate": 0.48594327990135633,
+        "side_baseline": 0.48851209543797636,
+        "delta_vs_side_baseline": -0.0025688155366200283,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "comparison_status": "eligible",
+      "delta_radiant_minus_dire": 0.012414061518911557
+    },
+    {
+      "hero_id": 5,
+      "hero_name": "Hero 5",
+      "radiant": {
+        "hero_id": 5,
+        "side": "radiant",
+        "picks": 6884,
+        "wins": 3507,
+        "losses": 3377,
+        "side_pick_rate": 0.0760410913509334,
+        "side_win_rate": 0.5094421847762929,
+        "side_baseline": 0.5114879045620236,
+        "delta_vs_side_baseline": -0.0020457197857307596,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "dire": {
+        "hero_id": 5,
+        "side": "dire",
+        "picks": 6857,
+        "wins": 3450,
+        "losses": 3407,
+        "side_pick_rate": 0.07574284767480394,
+        "side_win_rate": 0.5031354819892081,
+        "side_baseline": 0.48851209543797636,
+        "delta_vs_side_baseline": 0.014623386551231743,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "comparison_status": "eligible",
+      "delta_radiant_minus_dire": 0.006306702787084784
+    },
+    {
+      "hero_id": 106,
+      "hero_name": "Hero 106",
+      "radiant": {
+        "hero_id": 106,
+        "side": "radiant",
+        "picks": 6826,
+        "wins": 3451,
+        "losses": 3375,
+        "side_pick_rate": 0.075400419750359,
+        "side_win_rate": 0.5055669498974509,
+        "side_baseline": 0.5114879045620236,
+        "delta_vs_side_baseline": -0.005920954664572764,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "dire": {
+        "hero_id": 106,
+        "side": "dire",
+        "picks": 6824,
+        "wins": 3371,
+        "losses": 3453,
+        "side_pick_rate": 0.07537832762620125,
+        "side_win_rate": 0.4939917936694021,
+        "side_baseline": 0.48851209543797636,
+        "delta_vs_side_baseline": 0.005479698231425745,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "comparison_status": "eligible",
+      "delta_radiant_minus_dire": 0.011575156228048777
+    },
+    {
+      "hero_id": 100,
+      "hero_name": "Hero 100",
+      "radiant": {
+        "hero_id": 100,
+        "side": "radiant",
+        "picks": 6844,
+        "wins": 3474,
+        "losses": 3370,
+        "side_pick_rate": 0.07559924886777863,
+        "side_win_rate": 0.5075978959672706,
+        "side_baseline": 0.5114879045620236,
+        "delta_vs_side_baseline": -0.0038900085947530805,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "dire": {
+        "hero_id": 100,
+        "side": "dire",
+        "picks": 6548,
+        "wins": 3148,
+        "losses": 3400,
+        "side_pick_rate": 0.07232961449243344,
+        "side_win_rate": 0.4807574832009774,
+        "side_baseline": 0.48851209543797636,
+        "delta_vs_side_baseline": -0.00775461223699897,
+        "sample_status": "eligible",
+        "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+      },
+      "comparison_status": "eligible",
+      "delta_radiant_minus_dire": 0.026840412766293176
+    }
+  ]
+}

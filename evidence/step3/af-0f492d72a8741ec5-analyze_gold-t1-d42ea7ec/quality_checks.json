@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "row_counts": {
+    "match_overview": 1,
+    "hero_stats": 127,
+    "hero_side_stats": 254,
+    "hero_pair_stats": 7996
+  },
+  "appearances": {
+    "team_matches": {
+      "rows": 181060,
+      "wins": 90530
+    },
+    "hero_appearances": {
+      "rows": 905300,
+      "wins": 452650
+    },
+    "pair_appearances": {
+      "rows": 1810600,
+      "wins": 905300
+    }
+  },
+  "hero_picks": 905300,
+  "hero_wins": 452650,
+  "pair_matches": 1810600,
+  "pair_wins": 905300,
+  "overview": {
+    "total_matches": 90530,
+    "radiant_wins": 46305,
+    "dire_wins": 44225,
+    "radiant_win_rate": 0.5114879045620236,
+    "dire_win_rate": 0.48851209543797636,
+    "analysis_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec"
+  }
+}

@@ -22,6 +22,14 @@
 - `step6/rule_tests.json`, `api_tests.json`: fixture streaming/checkpoint và API.
 - `step6/replay-demo-v1/`: replay Kafka thật, dừng/khôi phục, phát lại chống trùng,
   đối chiếu catalog độc lập, progress/RAM và ảnh giao diện.
+- `step7/runner_tests.json`, `dag_tests.json`: fixture runner/cache ảnh và parse
+  bằng SDK Airflow; không cần HDFS/Kafka.
+- `step7/RESULTS.md`, `acceptance.json`: nghiệm thu các DAG chạy thật; gồm run
+  preflight cố ý thất bại khi HDFS tắt, batch 90.530 trận và Kafka retry.
+- `step7/af-*/`: trạng thái Airflow run/task, báo cáo lineage và ảnh Grid/Graph.
+- `step7/resources.json`: mẫu PSS/RAM Linux trong lúc demo; không phải benchmark.
+- `step7/web_snapshot_checks.json`: app phục vụ artifact thật do Airflow tạo,
+  đối chiếu bundle và chặn truy cập mạng trong bài kiểm tra ASGI.
 
 Các báo cáo lịch sử được giữ nguyên nội dung. Đường dẫn cũ trong báo cáo là
 đường dẫn tại thời điểm chạy, không phải cấu hình runtime hiện tại.

@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "source": "real WSL commands and Airflow REST checks, 2026-10-27",
+  "start_while_running": "returned already running; no duplicate instance",
+  "stop_while_task_active": {
+    "exit_code": 1,
+    "expected": true,
+    "message": "Airflow has active tasks; wait for the DAG or stop it before shutdown."
+  },
+  "stop_when_idle": {"exit_code": 0, "database_and_history_retained": true},
+  "restart": {"exit_code": 0, "scheduler_healthy": true, "port": 8080},
+  "history_after_restart": {
+    "step7-preflight-offline-v1": "failed",
+    "step7-batch-real-v1": "success",
+    "step7-replay-retry-v1": "success"
+  },
+  "cli_check": {"airflow": "3.3.2", "database": "connection successful", "dag_import_errors": 0},
+  "hdfs_and_kafka_stopped_after_demo": true,
+  "raw_and_existing_completed_outputs_overwritten": false,
+  "git_head_unchanged": "7c1a24debc6c1b379e7926e7e732c160e873c00d",
+  "committed_or_pushed_step7": false,
+  "remote_ci_run": false
+}

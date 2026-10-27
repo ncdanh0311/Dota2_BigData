@@ -4,8 +4,8 @@
 dự đoán xác suất thắng của hai đội Radiant/Dire trước trận.
 
 **Đã hoàn thành:** nạp HDFS, chuẩn hóa đội hình, phân tích Spark SQL, mô hình
-Logistic Regression, website DotaLens và Kafka replay + Spark Structured Streaming.
-Airflow chưa triển khai.
+Logistic Regression, website DotaLens, Kafka replay + Spark Structured Streaming
+và điều phối bằng Airflow với hai DAG chạy thủ công.
 
 ## Kết quả đã kiểm chứng
 
@@ -23,6 +23,7 @@ Airflow chưa triển khai.
 | ML bước 4 | Test accuracy 54,49% (baseline 51,23%); ROC-AUC 0,5589 |
 | Website bước 5 | Snapshot Gold/model đã kiểm chứng; API + dashboard và chọn 10 hero |
 | Streaming bước 6 | Replay 2.000 records, 1.000 trận duy nhất, 1.000 trùng; không cộng vào Gold |
+| Airflow bước 7 | DAG batch đã chạy CSV thật qua Silver → Gold → ML → snapshot; DAG replay có demo retry |
 
 Xem [kết quả HDFS](evidence/hdfs/RESULTS.md) và
 [báo cáo chất lượng dữ liệu](evidence/step2/report.md).
@@ -73,6 +74,7 @@ analytics/                    Spark SQL tạo bảng Gold và báo cáo đội h
 ml/                           Chia tập, mã hóa hero, Spark ML và portable inference
 web/                          Export snapshot, API FastAPI và giao diện không cần build
 streaming/                    Kafka replay, kiểm tra sự kiện, archive batch và Spark SQL
+orchestration/                Airflow DAG, adapter job, lifecycle và kiểm chứng demo
 data/reference/                Manifest nguồn và schema, không chứa CSV lớn
 docs/                         Hướng dẫn HDFS, chuẩn hóa và cách tổ chức dự án
 evidence/hdfs/                Bằng chứng lưu trữ, checksum và chịu lỗi tiến trình
@@ -80,10 +82,12 @@ evidence/step2/               Báo cáo chuẩn hóa, mẫu trận và kết qu�
 evidence/step3/               Thống kê Gold, fixture tests và kiểm chứng
 evidence/step4/               Metric, split audit, parity và ví dụ dự đoán
 evidence/step5/               Export, API, browser và ảnh demo desktop/mobile
+evidence/step6/               Kafka replay thật, checkpoint, chống đếm trùng và API
+evidence/step7/               Trạng thái DAG, lineage, retry, ảnh UI và tài nguyên
 pipeline/                     Spark job chuẩn hóa dữ liệu
 scripts/                      Quản lý HDFS, bridge WSL và lệnh kiểm thử
 tests/                        Fixture và kiểm thử quy tắc chuẩn hóa
-.github/workflows/            Kiểm thử Spark trên GitHub Actions
+.github/workflows/            CI riêng cho Spark/web, Airflow và cấu trúc repo
 start-hadoop.ps1              Bật cụm HDFS
 stop-hadoop.ps1               Tắt cụm HDFS, giữ nguyên dữ liệu
 run-step2.ps1                 Chạy chuẩn hóa từ PowerShell
@@ -97,6 +101,8 @@ start-kafka.ps1 / stop-kafka.ps1 Bật/tắt Kafka, giữ nguyên dữ liệu
 prepare-step6.ps1              Tạo catalog và topic của phiên replay mới
 run-step6.ps1                  Consumer Structured Streaming có checkpoint
 replay-matches.ps1             Phát lại catalog qua Kafka, mặc định 5 trận/giây
+setup-step7.ps1                Cài Airflow trong venv WSL riêng theo constraints
+start-airflow.ps1 / stop-airflow.ps1 Bật/tắt Airflow local, giữ lịch sử DAG
 ```
 
 ## Chạy trên máy hiện có
@@ -164,6 +170,12 @@ Streaming: [hướng dẫn bước 6](docs/STEP6_KAFKA_STREAMING.md). Mở web v
 thì prepare một run ID mới. Broker, HDFS và consumer chỉ cần khi cập nhật luồng;
 website vẫn đọc kết quả local sau khi các tiến trình đó dừng.
 
+Airflow: [hướng dẫn bước 7](docs/STEP7_AIRFLOW.md). Chạy `setup-step7.ps1` một
+lần, `start-airflow.ps1`, mở [http://localhost:8080](http://localhost:8080) rồi
+trigger `dota_batch_pipeline` hoặc `dota_replay_demo`. DAG không tự bật HDFS/Kafka;
+bật các dịch vụ trước khi trigger. Xem [bằng chứng bước 7](evidence/step7/RESULTS.md)
+để phân biệt run thật, fixture và bài kiểm tra cố ý lỗi.
+
 ## Dữ liệu và bằng chứng trên GitHub
 
 - CSV nguồn và Parquet nằm trong WSL/HDFS, không commit vào Git.
@@ -174,6 +186,26 @@ website vẫn đọc kết quả local sau khi các tiến trình đó dừng.
 - Báo cáo lịch sử có thể chứa đường dẫn thư mục trước khi repo được sắp xếp;
   các hướng dẫn vận hành đã được cập nhật theo folder mới.
 
+## Kiểm thử tự động
+
+| Workflow | Nội dung |
+|---|---|
+| [checks.yml](.github/workflows/checks.yml) | Python 3.11, Java 17: fixture Spark, ML, web và streaming/checkpoint |
+| [airflow.yml](.github/workflows/airflow.yml) | Python 3.14, Airflow trong môi trường riêng: runner, cache ảnh offline và parse hai DAG |
+| [repository.yml](.github/workflows/repository.yml) | JSON hợp lệ, file Git không trùng quy tắc ignore/không quá 10 MiB, cú pháp script PowerShell |
+
+Các workflow chạy khi push `main`, khi mở/cập nhật pull request hoặc chạy thủ
+công từ [GitHub Actions](https://github.com/ncdanh0311/Dota2_BigData/actions).
+Mỗi workflow hủy lượt cũ còn chạy trên cùng ref khi có lượt mới. CI dùng fixture,
+không khởi động WSL/HDFS/Kafka hoặc đòi dataset/model thật; báo cáo fixture được
+đính kèm vào run Spark/Airflow, giữ 14 ngày.
+
+`.gitignore` bỏ qua virtualenv, cache, log/PID, checkpoint, database/tài khoản
+Airflow local, dữ liệu HDFS/Kafka local, model nhị phân và gói cài tải về.
+Mã DAG, workflow, `configs/`, `data/reference/` và evidence nhỏ vẫn được version.
+`scripts/check_repository.py --include-untracked` kiểm tra thêm các file chuẩn bị
+commit mà không cần Spark hoặc Airflow.
+
 ## Lộ trình tiếp theo
 
 Đã chuyển cách tiếp cận từ tài liệu Premier League sang
@@ -182,7 +214,7 @@ ngưỡng mẫu, bốn bảng Gold, version và kiểm chứng. Bước 3 đã t
 quả thật nằm trong báo cáo Gold liên kết ở trên.
 
 1. Kiểm thử toàn hệ thống, quay demo và hoàn thiện báo cáo môn học.
-2. Airflow nếu cần cho môn học.
+2. Đóng gói hướng dẫn demo và chuẩn bị phần giải thích kiến trúc, retry và giới hạn.
 
 Dữ liệu trải nhiều patch và chỉ đến tháng 3/2026. Không dùng các biến trong
 trận cho mô hình dự đoán trước trận; nguồn hiện không có patch/start_time.

@@ -1,0 +1,309 @@
+{
+  "next_cursor": null,
+  "previous_cursor": null,
+  "task_instances": [
+    {
+      "dag_display_name": "dota_replay_demo",
+      "dag_id": "dota_replay_demo",
+      "dag_run_id": "step7-replay-retry-v1",
+      "dag_version": {
+        "bundle_name": "dags-folder",
+        "bundle_url": null,
+        "bundle_version": null,
+        "created_at": "2026-10-27T10:28:45.161341Z",
+        "dag_display_name": "dota_replay_demo",
+        "dag_id": "dota_replay_demo",
+        "id": "01a17ce7-bfe9-7fc8-bff1-9442650ce13a",
+        "version_number": 1
+      },
+      "duration": 2.7,
+      "end_date": "2026-10-27T10:39:09.499558Z",
+      "executor": null,
+      "executor_config": "{}",
+      "hostname": "DANH-PC.localdomain",
+      "id": "01a17cf1-389d-73db-8ff5-3c3ea231556f",
+      "logical_date": null,
+      "map_index": -1,
+      "max_tries": 1,
+      "note": null,
+      "operator": "_PythonDecoratedOperator",
+      "operator_name": "@task",
+      "pid": 20965,
+      "pool": "default_pool",
+      "pool_slots": 1,
+      "priority_weight": 5,
+      "queue": "default",
+      "queued_when": "2026-10-27T10:39:06.788341Z",
+      "rendered_fields": {
+        "op_args": [
+          "preflight",
+          "replay",
+          {}
+        ],
+        "op_kwargs": {},
+        "templates_dict": null
+      },
+      "rendered_map_index": null,
+      "run_after": "2026-10-27T10:39:05.806130Z",
+      "scheduled_when": "2026-10-27T10:39:06.780262Z",
+      "start_date": "2026-10-27T10:39:06.800416Z",
+      "state": "success",
+      "task_display_name": "preflight",
+      "task_id": "preflight",
+      "trigger": null,
+      "triggerer_job": null,
+      "try_number": 1,
+      "unixname": "danh"
+    },
+    {
+      "dag_display_name": "dota_replay_demo",
+      "dag_id": "dota_replay_demo",
+      "dag_run_id": "step7-replay-retry-v1",
+      "dag_version": {
+        "bundle_name": "dags-folder",
+        "bundle_url": null,
+        "bundle_version": null,
+        "created_at": "2026-10-27T10:28:45.161341Z",
+        "dag_display_name": "dota_replay_demo",
+        "dag_id": "dota_replay_demo",
+        "id": "01a17ce7-bfe9-7fc8-bff1-9442650ce13a",
+        "version_number": 1
+      },
+      "duration": 35.261,
+      "end_date": "2026-10-27T10:39:45.365548Z",
+      "executor": null,
+      "executor_config": "{}",
+      "hostname": "DANH-PC.localdomain",
+      "id": "01a17cf1-389e-77d5-8ea4-76c357305680",
+      "logical_date": null,
+      "map_index": -1,
+      "max_tries": 1,
+      "note": null,
+      "operator": "_PythonDecoratedOperator",
+      "operator_name": "@task",
+      "pid": 21022,
+      "pool": "dota_spark",
+      "pool_slots": 1,
+      "priority_weight": 4,
+      "queue": "default",
+      "queued_when": "2026-10-27T10:39:10.096322Z",
+      "rendered_fields": {
+        "op_args": [
+          "prepare_replay",
+          "replay",
+          {
+            "preflight": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-preflight-t1-bc2fc894/receipt.json",
+              "sha256": "8ff11c2e92514c76144e95df600206e0dbcf6953bf4f52fd8ef1137c3b35902a"
+            }
+          }
+        ],
+        "op_kwargs": {},
+        "templates_dict": null
+      },
+      "rendered_map_index": null,
+      "run_after": "2026-10-27T10:39:05.806130Z",
+      "scheduled_when": "2026-10-27T10:39:10.085075Z",
+      "start_date": "2026-10-27T10:39:10.105401Z",
+      "state": "success",
+      "task_display_name": "prepare_replay",
+      "task_id": "prepare_replay",
+      "trigger": null,
+      "triggerer_job": null,
+      "try_number": 1,
+      "unixname": "danh"
+    },
+    {
+      "dag_display_name": "dota_replay_demo",
+      "dag_id": "dota_replay_demo",
+      "dag_run_id": "step7-replay-retry-v1",
+      "dag_version": {
+        "bundle_name": "dags-folder",
+        "bundle_url": null,
+        "bundle_version": null,
+        "created_at": "2026-10-27T10:28:45.161341Z",
+        "dag_display_name": "dota_replay_demo",
+        "dag_id": "dota_replay_demo",
+        "id": "01a17ce7-bfe9-7fc8-bff1-9442650ce13a",
+        "version_number": 1
+      },
+      "duration": 89.941,
+      "end_date": "2026-10-27T10:48:41.747183Z",
+      "executor": null,
+      "executor_config": "{}",
+      "hostname": "DANH-PC.localdomain",
+      "id": "01a17cf1-38a0-7b47-adc8-7b2f600294c2",
+      "logical_date": null,
+      "map_index": -1,
+      "max_tries": 1,
+      "note": null,
+      "operator": "_PythonDecoratedOperator",
+      "operator_name": "@task",
+      "pid": 22249,
+      "pool": "dota_spark",
+      "pool_slots": 1,
+      "priority_weight": 2,
+      "queue": "default",
+      "queued_when": "2026-10-27T10:47:11.795490Z",
+      "rendered_fields": {
+        "op_args": [
+          "consume_available_now",
+          "replay",
+          {
+            "prepare_replay": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-prepare_replay-t1-484e955a/receipt.json",
+              "sha256": "1c84174f7e0de6c1d1f09c45c47b22ca2f4c12a06ca54ce5bfba077555b7e212"
+            },
+            "produce_events": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-produce_events-t2-e7fa9cee/receipt.json",
+              "sha256": "57f960f280ce705377f1d9d5094abbf15ab4699589de26b82faf000d678d1a86"
+            }
+          }
+        ],
+        "op_kwargs": {},
+        "templates_dict": null
+      },
+      "rendered_map_index": null,
+      "run_after": "2026-10-27T10:39:05.806130Z",
+      "scheduled_when": "2026-10-27T10:47:11.786410Z",
+      "start_date": "2026-10-27T10:47:11.806247Z",
+      "state": "success",
+      "task_display_name": "consume_available_now",
+      "task_id": "consume_available_now",
+      "trigger": null,
+      "triggerer_job": null,
+      "try_number": 1,
+      "unixname": "danh"
+    },
+    {
+      "dag_display_name": "dota_replay_demo",
+      "dag_id": "dota_replay_demo",
+      "dag_run_id": "step7-replay-retry-v1",
+      "dag_version": {
+        "bundle_name": "dags-folder",
+        "bundle_url": null,
+        "bundle_version": null,
+        "created_at": "2026-10-27T10:28:45.161341Z",
+        "dag_display_name": "dota_replay_demo",
+        "dag_id": "dota_replay_demo",
+        "id": "01a17ce7-bfe9-7fc8-bff1-9442650ce13a",
+        "version_number": 1
+      },
+      "duration": 0.857,
+      "end_date": "2026-10-27T10:48:43.276111Z",
+      "executor": null,
+      "executor_config": "{}",
+      "hostname": "DANH-PC.localdomain",
+      "id": "01a17cf1-38a1-73ce-8bbb-a158ecae0faf",
+      "logical_date": null,
+      "map_index": -1,
+      "max_tries": 0,
+      "note": null,
+      "operator": "_PythonDecoratedOperator",
+      "operator_name": "@task",
+      "pid": 23988,
+      "pool": "default_pool",
+      "pool_slots": 1,
+      "priority_weight": 1,
+      "queue": "default",
+      "queued_when": "2026-10-27T10:48:42.396487Z",
+      "rendered_fields": {
+        "op_args": [
+          "verify_and_report",
+          "replay",
+          {
+            "consume_available_now": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-consume_available_now-t1-165f34b2/receipt.json",
+              "sha256": "ead18d926aeea44dcc90bd2ac090c228b064393189f92a2b187afbdf665e3d92"
+            },
+            "preflight": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-preflight-t1-bc2fc894/receipt.json",
+              "sha256": "8ff11c2e92514c76144e95df600206e0dbcf6953bf4f52fd8ef1137c3b35902a"
+            },
+            "prepare_replay": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-prepare_replay-t1-484e955a/receipt.json",
+              "sha256": "1c84174f7e0de6c1d1f09c45c47b22ca2f4c12a06ca54ce5bfba077555b7e212"
+            },
+            "produce_events": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-produce_events-t2-e7fa9cee/receipt.json",
+              "sha256": "57f960f280ce705377f1d9d5094abbf15ab4699589de26b82faf000d678d1a86"
+            }
+          }
+        ],
+        "op_kwargs": {},
+        "templates_dict": null
+      },
+      "rendered_map_index": null,
+      "run_after": "2026-10-27T10:39:05.806130Z",
+      "scheduled_when": "2026-10-27T10:48:42.363491Z",
+      "start_date": "2026-10-27T10:48:42.418555Z",
+      "state": "success",
+      "task_display_name": "verify_and_report",
+      "task_id": "verify_and_report",
+      "trigger": null,
+      "triggerer_job": null,
+      "try_number": 1,
+      "unixname": "danh"
+    },
+    {
+      "dag_display_name": "dota_replay_demo",
+      "dag_id": "dota_replay_demo",
+      "dag_run_id": "step7-replay-retry-v1",
+      "dag_version": {
+        "bundle_name": "dags-folder",
+        "bundle_url": null,
+        "bundle_version": null,
+        "created_at": "2026-10-27T10:28:45.161341Z",
+        "dag_display_name": "dota_replay_demo",
+        "dag_id": "dota_replay_demo",
+        "id": "01a17ce7-bfe9-7fc8-bff1-9442650ce13a",
+        "version_number": 1
+      },
+      "duration": 206.954,
+      "end_date": "2026-10-27T10:47:11.061531Z",
+      "executor": null,
+      "executor_config": "{}",
+      "hostname": "DANH-PC.localdomain",
+      "id": "01a17cf5-0190-7799-863e-28a2c17a00a1",
+      "logical_date": null,
+      "map_index": -1,
+      "max_tries": 1,
+      "note": null,
+      "operator": "_PythonDecoratedOperator",
+      "operator_name": "@task",
+      "pid": 22169,
+      "pool": "default_pool",
+      "pool_slots": 1,
+      "priority_weight": 3,
+      "queue": "default",
+      "queued_when": "2026-10-27T10:43:44.096806Z",
+      "rendered_fields": {
+        "op_args": [
+          "produce_events",
+          "replay",
+          {
+            "prepare_replay": {
+              "path": "/mnt/d/BigDataTH_Project/Dota2_BigData/artifacts/airflow/dota_replay_demo/af-9c66c89caca10990/attempts/af-9c66c89caca10990-prepare_replay-t1-484e955a/receipt.json",
+              "sha256": "1c84174f7e0de6c1d1f09c45c47b22ca2f4c12a06ca54ce5bfba077555b7e212"
+            }
+          }
+        ],
+        "op_kwargs": {},
+        "templates_dict": null
+      },
+      "rendered_map_index": null,
+      "run_after": "2026-10-27T10:39:05.806130Z",
+      "scheduled_when": "2026-10-27T10:43:44.085153Z",
+      "start_date": "2026-10-27T10:43:44.107657Z",
+      "state": "success",
+      "task_display_name": "produce_events",
+      "task_id": "produce_events",
+      "trigger": null,
+      "triggerer_job": null,
+      "try_number": 2,
+      "unixname": "danh"
+    }
+  ],
+  "total_entries": 5,
+  "total_entries_limit": null
+}

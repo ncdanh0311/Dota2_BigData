@@ -1,0 +1,99 @@
+{
+  "airflow_imported": false,
+  "health": {
+    "gold_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec",
+    "model_run_id": "af-0f492d72a8741ec5-train_lr-t1-90851e0d",
+    "snapshot_id": "af-0f492d72a8741ec5-export_snapshot-t1-c4980743",
+    "status": "ready"
+  },
+  "heroes": 127,
+  "live_http_checks": {
+    "checks": [
+      "health",
+      "dashboard",
+      "streaming",
+      "three predictions vs bundle"
+    ],
+    "hdfs_kafka_ports_closed": [
+      9000,
+      9092
+    ],
+    "status": "PASS",
+    "url": "http://127.0.0.1:8001"
+  },
+  "local_image_urls": 1,
+  "prediction_parity": [
+    {
+      "dire_heroes": [
+        11,
+        86,
+        123,
+        128,
+        136
+      ],
+      "p_dire": 0.5027794277953532,
+      "p_radiant": 0.49722057220464677,
+      "predicted_side": "dire",
+      "prediction": 0,
+      "radiant_heroes": [
+        7,
+        38,
+        48,
+        85,
+        106
+      ],
+      "run_id": "af-0f492d72a8741ec5-train_lr-t1-90851e0d"
+    },
+    {
+      "dire_heroes": [
+        11,
+        86,
+        123,
+        128,
+        136
+      ],
+      "p_dire": 0.5027794277953532,
+      "p_radiant": 0.49722057220464677,
+      "predicted_side": "dire",
+      "prediction": 0,
+      "radiant_heroes": [
+        7,
+        38,
+        48,
+        85,
+        106
+      ],
+      "run_id": "af-0f492d72a8741ec5-train_lr-t1-90851e0d"
+    },
+    {
+      "dire_heroes": [
+        7,
+        38,
+        48,
+        85,
+        106
+      ],
+      "p_dire": 0.47890609940994955,
+      "p_radiant": 0.5210939005900505,
+      "predicted_side": "radiant",
+      "prediction": 1,
+      "radiant_heroes": [
+        11,
+        86,
+        123,
+        128,
+        136
+      ],
+      "run_id": "af-0f492d72a8741ec5-train_lr-t1-90851e0d"
+    }
+  ],
+  "replay_run_id": "af-9c66c89caca10990-prepare_replay-t1-484e955a",
+  "source": "real Airflow output, in-process ASGI requests; sockets denied",
+  "spark_imported": false,
+  "status": "PASS",
+  "streaming_counts": {
+    "duplicate_records": 1000,
+    "total_records": 2000,
+    "unique_matches": 1000
+  }
+}

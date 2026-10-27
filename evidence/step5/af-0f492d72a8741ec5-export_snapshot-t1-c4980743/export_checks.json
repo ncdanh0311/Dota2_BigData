@@ -1,0 +1,36 @@
+{
+  "snapshot_id": "af-0f492d72a8741ec5-export_snapshot-t1-c4980743",
+  "gold_run_id": "af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec",
+  "model_run_id": "af-0f492d72a8741ec5-train_lr-t1-90851e0d",
+  "gold_uri": "hdfs://localhost:9000/dota/analytics/draft_stats_v1/af-0f492d72a8741ec5-analyze_gold-t1-d42ea7ec",
+  "model_uri": "hdfs://localhost:9000/dota/models/draft_lr_v1/af-0f492d72a8741ec5-train_lr-t1-90851e0d",
+  "input_fingerprint_sha256": "690f587012d228d79ec29d095378d54b8f7d69123e477bca4a933bcd3c7dff5f",
+  "row_counts": {
+    "match_overview": 1,
+    "hero_stats": 127,
+    "hero_side_stats": 254,
+    "hero_pair_stats": 7996
+  },
+  "gold_readback_verified": true,
+  "json_readback_verified": true,
+  "metadata": {
+    "revision": "5c0242df9057848fa2036ca3fafe9f2bd4508163",
+    "url": "https://raw.githubusercontent.com/odota/dotaconstants/5c0242df9057848fa2036ca3fafe9f2bd4508163/build/heroes.json",
+    "sha256": "520a3ae33260593f54d5d749a92022d7d5af0ed60d8bebec8e81ff7eb12104ad",
+    "cached_images": 0,
+    "placeholder_images": 127,
+    "asset_source_snapshot": "web-demo-v1",
+    "asset_source_manifest_sha256": "19ea514639a116944b2712b8ed182f1caf8d6e2b361f4ce4d4b72e1a13be1445"
+  },
+  "created_at_utc": "2026-10-27T10:36:28.306795+00:00",
+  "elapsed_seconds": 51.06,
+  "checksums": {
+    "dashboard.json": "0b27ed0133ebaf6a27e98dcd139123fcd6f9cc092e8c06d700baf053a8dbfcb6",
+    "hero_metadata.json": "520a3ae33260593f54d5d749a92022d7d5af0ed60d8bebec8e81ff7eb12104ad",
+    "heroes.json": "a16b9d47234496576f82bff6144fa073a15809fed25514935406de06c89550b4",
+    "images/placeholder.svg": "512e6bdc90779a1271ed8d59a8f9415f53b5679ac1f822eb7fc10801eabaaa0a",
+    "model_bundle.json": "9431e4b35d0ca68504d4a517c92835d6a7e701123398861091440d485c49b35d",
+    "model_metrics.json": "743ad630d8085a2aaa82300900cbf8172e684387c4b76c37a07776223d28c572"
+  },
+  "status": "PASS"
+}

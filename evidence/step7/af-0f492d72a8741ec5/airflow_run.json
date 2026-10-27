@@ -1,0 +1,35 @@
+{
+  "bundle_version": null,
+  "conf": {},
+  "dag_display_name": "dota_batch_pipeline",
+  "dag_id": "dota_batch_pipeline",
+  "dag_run_id": "step7-batch-real-v1",
+  "dag_versions": [
+    {
+      "bundle_name": "dags-folder",
+      "bundle_url": null,
+      "bundle_version": null,
+      "created_at": "2026-10-27T10:28:44.933903Z",
+      "dag_display_name": "dota_batch_pipeline",
+      "dag_id": "dota_batch_pipeline",
+      "id": "01a17ce7-bf05-74ff-8930-2700b99f9453",
+      "version_number": 1
+    }
+  ],
+  "data_interval_end": null,
+  "data_interval_start": null,
+  "duration": 303.668542,
+  "end_date": "2026-10-27T10:36:30.528418Z",
+  "last_scheduling_decision": "2026-10-27T10:36:30.526809Z",
+  "logical_date": null,
+  "note": null,
+  "partition_date": null,
+  "partition_key": null,
+  "queued_at": "2026-10-27T10:31:25.428938Z",
+  "run_after": "2026-10-27T10:31:25.424304Z",
+  "run_type": "manual",
+  "start_date": "2026-10-27T10:31:26.859876Z",
+  "state": "success",
+  "triggered_by": "rest_api",
+  "triggering_user_name": "admin"
+}

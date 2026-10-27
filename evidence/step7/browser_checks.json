@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "source": "real browser UI, localhost Airflow and web snapshot",
+  "batch_run": "step7-batch-real-v1",
+  "batch_tasks_success": 6,
+  "replay_run": "step7-replay-retry-v1",
+  "replay_tasks_success": 5,
+  "producer_attempts": 2,
+  "producer_first_attempt_error_seen": "DEMO after ACKs",
+  "history_retained_after_restart": true,
+  "web_model_run": "af-0f492d72a8741ec5-train_lr-t1-90851e0d",
+  "demo_first": {
+    "radiant_percent": 49.72,
+    "dire_percent": 50.28,
+    "predicted_side": "dire"
+  },
+  "demo_swapped": {
+    "radiant_percent": 52.11,
+    "dire_percent": 47.89,
+    "predicted_side": "radiant"
+  },
+  "old_prediction_cleared_on_swap": true,
+  "replay_web_after_hdfs_kafka_stop": {
+    "total_records": 2000,
+    "unique_matches": 1000,
+    "duplicate_records": 1000
+  },
+  "screenshots": [
+    "af-0f492d72a8741ec5/batch-graph.png",
+    "af-0f492d72a8741ec5/batch-grid.png",
+    "af-0f492d72a8741ec5/web-stats.png",
+    "af-0f492d72a8741ec5/web-prediction.png",
+    "af-9c66c89caca10990/replay-graph.png",
+    "af-9c66c89caca10990/replay-grid.png",
+    "af-9c66c89caca10990/producer-retry-log.png",
+    "af-9c66c89caca10990/producer-first-attempt.png",
+    "af-9c66c89caca10990/web-replay.png",
+    "af-0011ebefc67099b1/expected-preflight-failure.png"
+  ]
+}

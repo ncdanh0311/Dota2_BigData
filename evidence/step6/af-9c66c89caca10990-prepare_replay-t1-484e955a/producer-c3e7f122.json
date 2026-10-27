@@ -1,0 +1,1 @@
+{"elapsed_seconds":203.62,"finished_at_utc":"2026-10-27T10:47:10.965619+00:00","offsets":{"0":{"first":499,"last":997,"records":499},"1":{"first":501,"last":1001,"records":501}},"rate":5.0,"run_id":"af-9c66c89caca10990-prepare_replay-t1-484e955a","sent":1000,"started_at_utc":"2026-10-27T10:43:47.343884+00:00","status":"PASS"}
