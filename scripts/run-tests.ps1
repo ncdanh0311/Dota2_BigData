@@ -8,7 +8,7 @@ try {
     $runtime = Get-DotaRuntime
     $repoRoot = Split-Path $PSScriptRoot -Parent
     foreach ($testName in @('test_prepare_match_drafts.py', 'test_draft_stats.py',
-                            'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py')) {
+                            'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py', 'test_streaming.py')) {
       $testPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot "tests\$testName") -Runtime $runtime
       & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec env `
         "JAVA_HOME=$($runtime.java_home)" `
@@ -30,6 +30,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Cannot install pinned web test dependencies.' }
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython $apiTest
     if ($LASTEXITCODE -ne 0) { throw 'Web API tests failed.' }
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython "$linuxRepo/tests/test_streaming_api.py"
+    if ($LASTEXITCODE -ne 0) { throw 'Streaming API tests failed.' }
     if (Get-Command node -ErrorAction SilentlyContinue) {
       & node (Join-Path $repoRoot 'tests\test_web_logic.mjs')
       if ($LASTEXITCODE -ne 0) { throw 'Web display rule tests failed.' }

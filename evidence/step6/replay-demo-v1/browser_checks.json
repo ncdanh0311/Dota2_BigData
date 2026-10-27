@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "source": "real Kafka replay via localhost website",
+  "observed_unique_matches": [
+    198,
+    391,
+    1000
+  ],
+  "final": {
+    "records": 2000,
+    "unique_matches": 1000,
+    "duplicates": 1000,
+    "quarantine": 0
+  },
+  "checks": [
+    "automatic polling updates",
+    "Rubick filter: 457 picks, 234 wins, 223 losses",
+    "eligible win-rate ranking: Riki, 117 picks, 73 wins",
+    "historical Gold still 90530 matches",
+    "draft demo still Radiant 49.72%, Dire 50.28%",
+    "replay remains readable with Kafka/HDFS stopped",
+    "desktop and mobile navigation",
+    "run ID visible on mobile",
+    "no horizontal overflow at 390px"
+  ],
+  "viewports": [
+    [
+      1440,
+      1000
+    ],
+    [
+      390,
+      844
+    ]
+  ]
+}

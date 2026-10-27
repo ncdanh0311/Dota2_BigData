@@ -1,0 +1,1 @@
+{"elapsed_seconds":204.4,"finished_at_utc":"2026-10-27T09:18:54.189060+00:00","offsets":{"0":{"first":0,"last":514,"records":515},"1":{"first":0,"last":484,"records":485}},"rate":5.0,"run_id":"replay-demo-v1","sent":1000,"started_at_utc":"2026-10-27T09:15:29.793921+00:00","status":"PASS"}

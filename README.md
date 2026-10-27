@@ -4,8 +4,8 @@
 dự đoán xác suất thắng của hai đội Radiant/Dire trước trận.
 
 **Đã hoàn thành:** nạp HDFS, chuẩn hóa đội hình, phân tích Spark SQL, mô hình
-Logistic Regression và website DotaLens chọn 10 hero để dự đoán.
-Kafka và Airflow thuộc lộ trình tiếp theo.
+Logistic Regression, website DotaLens và Kafka replay + Spark Structured Streaming.
+Airflow chưa triển khai.
 
 ## Kết quả đã kiểm chứng
 
@@ -22,6 +22,7 @@ Kafka và Airflow thuộc lộ trình tiếp theo.
 | Gold bước 3 | 127 hero, 254 dòng hero theo bên, 7.996 cặp cùng đội |
 | ML bước 4 | Test accuracy 54,49% (baseline 51,23%); ROC-AUC 0,5589 |
 | Website bước 5 | Snapshot Gold/model đã kiểm chứng; API + dashboard và chọn 10 hero |
+| Streaming bước 6 | Replay 2.000 records, 1.000 trận duy nhất, 1.000 trùng; không cộng vào Gold |
 
 Xem [kết quả HDFS](evidence/hdfs/RESULTS.md) và
 [báo cáo chất lượng dữ liệu](evidence/step2/report.md).
@@ -51,6 +52,12 @@ flowchart LR
   B --> W
   W --> API[FastAPI: dashboard và dự đoán]
   API --> UI[Website DotaLens]
+  P --> C[Catalog replay bất biến]
+  C --> K[Python producer → Kafka]
+  K --> SS[Spark Structured Streaming]
+  SS --> SA[HDFS batch archive + thống kê replay]
+  SA --> SJ[JSON local thay nguyên tử]
+  SJ --> API
     E --> A[HDFS /dota/analytics/data_quality]
 ```
 
@@ -65,6 +72,7 @@ configs/hdfs-wsl.json          Cấu hình đường dẫn và user WSL
 analytics/                    Spark SQL tạo bảng Gold và báo cáo đội hình
 ml/                           Chia tập, mã hóa hero, Spark ML và portable inference
 web/                          Export snapshot, API FastAPI và giao diện không cần build
+streaming/                    Kafka replay, kiểm tra sự kiện, archive batch và Spark SQL
 data/reference/                Manifest nguồn và schema, không chứa CSV lớn
 docs/                         Hướng dẫn HDFS, chuẩn hóa và cách tổ chức dự án
 evidence/hdfs/                Bằng chứng lưu trữ, checksum và chịu lỗi tiến trình
@@ -84,6 +92,11 @@ run-step4.ps1                 Huấn luyện và kiểm chứng Logistic Regress
 predict-draft.ps1             Dự đoán bằng JSON, không khởi động Spark
 prepare-step5.ps1             Chuẩn bị snapshot website từ các run hoàn tất
 start-web.ps1                 Chạy website local từ snapshot, dừng bằng Ctrl+C
+setup-step6.ps1               Cài Kafka riêng và kiểm tra connector, SHA-512
+start-kafka.ps1 / stop-kafka.ps1 Bật/tắt Kafka, giữ nguyên dữ liệu
+prepare-step6.ps1              Tạo catalog và topic của phiên replay mới
+run-step6.ps1                  Consumer Structured Streaming có checkpoint
+replay-matches.ps1             Phát lại catalog qua Kafka, mặc định 5 trận/giây
 ```
 
 ## Chạy trên máy hiện có
@@ -146,6 +159,10 @@ Website: [hướng dẫn bước 5](docs/STEP5_WEBSITE.md), mở tại
 [http://localhost:8000](http://localhost:8000). Snapshot `web-demo-v1` có 127 tên
 hero; ảnh Steam tải lỗi ở môi trường kiểm tra nên dùng ảnh thay thế local.
 Website chạy độc lập sau chuẩn bị dữ liệu; máy clone mới cần tái tạo artifact.
+Streaming: [hướng dẫn bước 6](docs/STEP6_KAFKA_STREAMING.md). Mở web với
+`-ReplayRunId replay-demo-v1` để xem tab mô phỏng đã kiểm chứng; muốn phiên mới
+thì prepare một run ID mới. Broker, HDFS và consumer chỉ cần khi cập nhật luồng;
+website vẫn đọc kết quả local sau khi các tiến trình đó dừng.
 
 ## Dữ liệu và bằng chứng trên GitHub
 
@@ -164,7 +181,7 @@ Website chạy độc lập sau chuẩn bị dữ liệu; máy clone mới cần
 ngưỡng mẫu, bốn bảng Gold, version và kiểm chứng. Bước 3 đã triển khai; kết
 quả thật nằm trong báo cáo Gold liên kết ở trên.
 
-1. Kafka replay + Structured Streaming để mô phỏng trận mới và cập nhật thống kê.
+1. Kiểm thử toàn hệ thống, quay demo và hoàn thiện báo cáo môn học.
 2. Airflow nếu cần cho môn học.
 
 Dữ liệu trải nhiều patch và chỉ đến tháng 3/2026. Không dùng các biến trong

@@ -1,0 +1,37 @@
+{
+  "Status": "PASS",
+  "KafkaAndHdfsStopped": true,
+  "WebStatus": "complete",
+  "ReplayMatches": 1000,
+  "ReplayRecords": 2000,
+  "HistoricalMatches": 90530,
+  "Prediction": {
+    "run_id": "step4-20261027-v1",
+    "radiant_heroes": [
+      7,
+      38,
+      48,
+      85,
+      106
+    ],
+    "dire_heroes": [
+      11,
+      86,
+      123,
+      128,
+      136
+    ],
+    "p_radiant": 0.49722057220464677,
+    "p_dire": 0.5027794277953532,
+    "prediction": 0,
+    "predicted_side": "dire"
+  },
+  "NewGithubCiRun": false,
+  "GitCommitCreated": false,
+  "GitPushPerformed": false,
+  "PortsConfirmedStopped": {
+    "9000": true,
+    "9092": true
+  },
+  "WebSnapshotReadableAfterShutdown": true
+}

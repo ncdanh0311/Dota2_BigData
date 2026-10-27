@@ -1,0 +1,60 @@
+{
+  "processes": [
+    {
+      "pid": 477,
+      "kind": [
+        "NameNode"
+      ],
+      "rss_mib": 262.0
+    },
+    {
+      "pid": 563,
+      "kind": [
+        "DataNode"
+      ],
+      "rss_mib": 216.5
+    },
+    {
+      "pid": 664,
+      "kind": [
+        "DataNode"
+      ],
+      "rss_mib": 218.9
+    },
+    {
+      "pid": 788,
+      "kind": [
+        "DataNode"
+      ],
+      "rss_mib": 212.6
+    },
+    {
+      "pid": 1862,
+      "kind": [
+        "web.serve"
+      ],
+      "rss_mib": 62.2
+    },
+    {
+      "pid": 2795,
+      "kind": [
+        "kafka.Kafka"
+      ],
+      "rss_mib": 395.8
+    },
+    {
+      "pid": 4979,
+      "kind": [
+        "org.apache.spark.deploy.SparkSubmit"
+      ],
+      "rss_mib": 1381.2
+    }
+  ],
+  "memory_mib": {
+    "MemTotal": 5774.2,
+    "MemAvailable": 2456.7,
+    "SwapTotal": 2048.0,
+    "SwapFree": 2048.0
+  },
+  "method": "RSS from /proc/status; the audit process itself is excluded"
+}

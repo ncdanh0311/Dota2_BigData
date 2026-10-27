@@ -1,0 +1,251 @@
+[
+  {
+    "id": "106272cc-7675-4c73-9590-b0b1ee630b37",
+    "runId": "31dac00d-a61d-4fc2-bf5a-b2c67ca37730",
+    "name": null,
+    "timestamp": "2026-10-27T09:23:11.229Z",
+    "batchId": 9,
+    "batchDuration": 19956,
+    "durationMs": {
+      "addBatch": 19161,
+      "commitOffsets": 26,
+      "getBatch": 3,
+      "latestOffset": 579,
+      "queryPlanning": 68,
+      "triggerExecution": 19951,
+      "walCommit": 95
+    },
+    "eventTime": {},
+    "stateOperators": [],
+    "sources": [
+      {
+        "description": "KafkaV2[Subscribe[dota.matches.replay.replay-demo-v1]]",
+        "startOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 515, \"1\": 485}}",
+        "endOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 772, \"1\": 727}}",
+        "latestOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "numInputRows": 499,
+        "inputRowsPerSecond": 0.0,
+        "processedRowsPerSecond": 25.0,
+        "metrics": {
+          "avgOffsetsBehindLatest": "250.5",
+          "maxOffsetsBehindLatest": "258",
+          "minOffsetsBehindLatest": "243"
+        }
+      }
+    ],
+    "sink": {
+      "description": "ForeachBatchSink",
+      "numOutputRows": -1,
+      "metrics": {}
+    },
+    "numInputRows": 499,
+    "inputRowsPerSecond": 0.0,
+    "processedRowsPerSecond": 25.0,
+    "observedMetrics": {}
+  },
+  {
+    "id": "106272cc-7675-4c73-9590-b0b1ee630b37",
+    "runId": "31dac00d-a61d-4fc2-bf5a-b2c67ca37730",
+    "name": null,
+    "timestamp": "2026-10-27T09:23:31.213Z",
+    "batchId": 10,
+    "batchDuration": 10519,
+    "durationMs": {
+      "addBatch": 10445,
+      "commitOffsets": 26,
+      "getBatch": 1,
+      "latestOffset": 10,
+      "queryPlanning": 7,
+      "triggerExecution": 10519,
+      "walCommit": 26
+    },
+    "eventTime": {},
+    "stateOperators": [],
+    "sources": [
+      {
+        "description": "KafkaV2[Subscribe[dota.matches.replay.replay-demo-v1]]",
+        "startOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 772, \"1\": 727}}",
+        "endOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1029, \"1\": 969}}",
+        "latestOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "numInputRows": 499,
+        "inputRowsPerSecond": 25.0,
+        "processedRowsPerSecond": 47.4,
+        "metrics": {
+          "avgOffsetsBehindLatest": "1.0",
+          "maxOffsetsBehindLatest": "1",
+          "minOffsetsBehindLatest": "1"
+        }
+      }
+    ],
+    "sink": {
+      "description": "ForeachBatchSink",
+      "numOutputRows": -1,
+      "metrics": {}
+    },
+    "numInputRows": 499,
+    "inputRowsPerSecond": 25.0,
+    "processedRowsPerSecond": 47.4,
+    "observedMetrics": {}
+  },
+  {
+    "id": "106272cc-7675-4c73-9590-b0b1ee630b37",
+    "runId": "31dac00d-a61d-4fc2-bf5a-b2c67ca37730",
+    "name": null,
+    "timestamp": "2026-10-27T09:23:41.734Z",
+    "batchId": 11,
+    "batchDuration": 9344,
+    "durationMs": {
+      "addBatch": 9277,
+      "commitOffsets": 24,
+      "getBatch": 0,
+      "latestOffset": 9,
+      "queryPlanning": 5,
+      "triggerExecution": 9344,
+      "walCommit": 26
+    },
+    "eventTime": {},
+    "stateOperators": [],
+    "sources": [
+      {
+        "description": "KafkaV2[Subscribe[dota.matches.replay.replay-demo-v1]]",
+        "startOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1029, \"1\": 969}}",
+        "endOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "latestOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "numInputRows": 2,
+        "inputRowsPerSecond": 0.2,
+        "processedRowsPerSecond": 0.2,
+        "metrics": {
+          "avgOffsetsBehindLatest": "0.0",
+          "maxOffsetsBehindLatest": "0",
+          "minOffsetsBehindLatest": "0"
+        }
+      }
+    ],
+    "sink": {
+      "description": "ForeachBatchSink",
+      "numOutputRows": -1,
+      "metrics": {}
+    },
+    "numInputRows": 2,
+    "inputRowsPerSecond": 0.2,
+    "processedRowsPerSecond": 0.2,
+    "observedMetrics": {}
+  },
+  {
+    "id": "106272cc-7675-4c73-9590-b0b1ee630b37",
+    "runId": "31dac00d-a61d-4fc2-bf5a-b2c67ca37730",
+    "name": null,
+    "timestamp": "2026-10-27T09:24:10.000Z",
+    "batchId": 12,
+    "batchDuration": 11,
+    "durationMs": {
+      "latestOffset": 10,
+      "triggerExecution": 11
+    },
+    "eventTime": {},
+    "stateOperators": [],
+    "sources": [
+      {
+        "description": "KafkaV2[Subscribe[dota.matches.replay.replay-demo-v1]]",
+        "startOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "endOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "latestOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "numInputRows": 0,
+        "inputRowsPerSecond": 0.0,
+        "processedRowsPerSecond": 0.0,
+        "metrics": {
+          "avgOffsetsBehindLatest": "0.0",
+          "maxOffsetsBehindLatest": "0",
+          "minOffsetsBehindLatest": "0"
+        }
+      }
+    ],
+    "sink": {
+      "description": "ForeachBatchSink",
+      "numOutputRows": -1,
+      "metrics": {}
+    },
+    "numInputRows": 0,
+    "inputRowsPerSecond": 0.0,
+    "processedRowsPerSecond": 0.0,
+    "observedMetrics": {}
+  },
+  {
+    "id": "106272cc-7675-4c73-9590-b0b1ee630b37",
+    "runId": "31dac00d-a61d-4fc2-bf5a-b2c67ca37730",
+    "name": null,
+    "timestamp": "2026-10-27T09:24:30.000Z",
+    "batchId": 12,
+    "batchDuration": 8,
+    "durationMs": {
+      "latestOffset": 8,
+      "triggerExecution": 8
+    },
+    "eventTime": {},
+    "stateOperators": [],
+    "sources": [
+      {
+        "description": "KafkaV2[Subscribe[dota.matches.replay.replay-demo-v1]]",
+        "startOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "endOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "latestOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "numInputRows": 0,
+        "inputRowsPerSecond": 0.0,
+        "processedRowsPerSecond": 0.0,
+        "metrics": {
+          "avgOffsetsBehindLatest": "0.0",
+          "maxOffsetsBehindLatest": "0",
+          "minOffsetsBehindLatest": "0"
+        }
+      }
+    ],
+    "sink": {
+      "description": "ForeachBatchSink",
+      "numOutputRows": -1,
+      "metrics": {}
+    },
+    "numInputRows": 0,
+    "inputRowsPerSecond": 0.0,
+    "processedRowsPerSecond": 0.0,
+    "observedMetrics": {}
+  },
+  {
+    "id": "106272cc-7675-4c73-9590-b0b1ee630b37",
+    "runId": "31dac00d-a61d-4fc2-bf5a-b2c67ca37730",
+    "name": null,
+    "timestamp": "2026-10-27T09:24:40.000Z",
+    "batchId": 12,
+    "batchDuration": 8,
+    "durationMs": {
+      "latestOffset": 7,
+      "triggerExecution": 8
+    },
+    "eventTime": {},
+    "stateOperators": [],
+    "sources": [
+      {
+        "description": "KafkaV2[Subscribe[dota.matches.replay.replay-demo-v1]]",
+        "startOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "endOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "latestOffset": "{\"dota.matches.replay.replay-demo-v1\": {\"0\": 1030, \"1\": 970}}",
+        "numInputRows": 0,
+        "inputRowsPerSecond": 0.0,
+        "processedRowsPerSecond": 0.0,
+        "metrics": {
+          "avgOffsetsBehindLatest": "0.0",
+          "maxOffsetsBehindLatest": "0",
+          "minOffsetsBehindLatest": "0"
+        }
+      }
+    ],
+    "sink": {
+      "description": "ForeachBatchSink",
+      "numOutputRows": -1,
+      "metrics": {}
+    },
+    "numInputRows": 0,
+    "inputRowsPerSecond": 0.0,
+    "processedRowsPerSecond": 0.0,
+    "observedMetrics": {}
+  }
+]

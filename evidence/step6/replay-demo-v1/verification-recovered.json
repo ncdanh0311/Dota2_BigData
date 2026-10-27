@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "source": "real Kafka replay, independent Python reference",
+  "verified_at_utc": "2026-10-27T09:21:23.349659+00:00",
+  "run_id": "replay-demo-v1",
+  "unique_matches": 1000,
+  "total_records": 1000,
+  "duplicate_records": 0,
+  "quarantined_records": 0,
+  "radiant_wins": 454,
+  "dire_wins": 546,
+  "hero_picks": 10000,
+  "hero_wins": 5000,
+  "hero_rows": 123,
+  "batch_id": 8,
+  "latest_offsets": {
+    "dota.matches.replay.replay-demo-v1:0": [
+      457,
+      514
+    ],
+    "dota.matches.replay.replay-demo-v1:1": [
+      433,
+      484
+    ]
+  },
+  "catalog_sha256": "335e4c8a9c6b1b2ed672147c221ef1e79ef0ae11f5e8ee4d3170f9821c8842a7"
+}

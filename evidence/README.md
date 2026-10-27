@@ -19,6 +19,9 @@
 - `step5/web-demo-v1/`: export Gold/model thật, trạng thái ảnh, runtime không
   cần HDFS/mạng và kiểm chứng browser desktop/mobile. Bản demo dùng 127 ảnh
   thay thế local do CDN Steam lỗi kết nối; bốn PNG ghi đúng trạng thái đó.
+- `step6/rule_tests.json`, `api_tests.json`: fixture streaming/checkpoint và API.
+- `step6/replay-demo-v1/`: replay Kafka thật, dừng/khôi phục, phát lại chống trùng,
+  đối chiếu catalog độc lập, progress/RAM và ảnh giao diện.
 
 Các báo cáo lịch sử được giữ nguyên nội dung. Đường dẫn cũ trong báo cáo là
 đường dẫn tại thời điểm chạy, không phải cấu hình runtime hiện tại.
