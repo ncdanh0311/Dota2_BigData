@@ -1,0 +1,10 @@
+{
+  "version": "4.1.2",
+  "download_base": "https://dlcdn.apache.org/kafka",
+  "root": "/home/danh/dota-kafka",
+  "bootstrap_servers": "127.0.0.1:9092",
+  "controller_port": 9093,
+  "partitions": 2,
+  "retention_hours": 168,
+  "connector": "org.apache.spark:spark-sql-kafka-0-10_2.13:4.2.0"
+}
