@@ -32,6 +32,18 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Web API tests failed.' }
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython "$linuxRepo/tests/test_streaming_api.py"
     if ($LASTEXITCODE -ne 0) { throw 'Streaming API tests failed.' }
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python "$linuxRepo/tests/test_orchestration.py"
+    if ($LASTEXITCODE -ne 0) { throw 'Orchestration runner tests failed.' }
+    $airflowConfig=Get-Content (Join-Path $repoRoot 'configs\airflow-wsl.json') -Raw | ConvertFrom-Json
+    $airflowPython="$($airflowConfig.root)/venv/bin/python"
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec test -x $airflowPython
+    if ($LASTEXITCODE -eq 0) {
+      & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec env `
+        "AIRFLOW_HOME=$($airflowConfig.root)/runtime" AIRFLOW__CORE__LOAD_EXAMPLES=False `
+        $airflowPython "$linuxRepo/tests/test_airflow_dags.py"
+      if ($LASTEXITCODE -ne 0) { throw 'Airflow SDK DAG tests failed.' }
+    }
+    else { Write-Host 'Airflow DAG parse checks skipped: run setup-step7.ps1 first. CI runs these in a separate environment.' }
     if (Get-Command node -ErrorAction SilentlyContinue) {
       & node (Join-Path $repoRoot 'tests\test_web_logic.mjs')
       if ($LASTEXITCODE -ne 0) { throw 'Web display rule tests failed.' }

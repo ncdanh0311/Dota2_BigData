@@ -1,4 +1,4 @@
-name: Spark rule checks
+name: Spark and Airflow rule checks
 
 on:
   push:
@@ -10,6 +10,37 @@ permissions:
   contents: read
 
 jobs:
+  airflow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      AIRFLOW_HOME: ${{ runner.temp }}/dota-airflow-ci
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'False'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+      - name: Install isolated Airflow test dependencies
+        run: |
+          python -m pip install pip==26.2.2
+          python -m pip install -r requirements-airflow.txt --constraint https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.14.txt
+          python -m pip check
+      - name: Verify runner, offline assets and Airflow DAG parsing
+        run: |
+          rm -f evidence/step7/runner_tests.json evidence/step7/dag_tests.json
+          python tests/test_orchestration.py
+          python tests/test_airflow_dags.py
+      - name: Upload orchestration fixture evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: airflow-rule-checks
+          path: |
+            evidence/step7/runner_tests.json
+            evidence/step7/dag_tests.json
+          if-no-files-found: warn
   rules:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -28,7 +59,7 @@ jobs:
       - name: Install Spark and web test dependencies
         run: python -m pip install -r requirements.txt -r requirements-web-test.txt
       - name: Check Python syntax
-        run: python -m compileall -q pipeline analytics ml web streaming scripts tests
+        run: python -m compileall -q pipeline analytics ml web streaming orchestration scripts tests
       - name: Check web API and portable serving using local fixtures
         run: |
           rm -f evidence/step5/api_tests.json evidence/step5/display_tests.json evidence/step6/api_tests.json evidence/step6/rule_tests.json
