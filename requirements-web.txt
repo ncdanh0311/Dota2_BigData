@@ -1,0 +1,3 @@
+# Web serving is independent of Spark/NumPy.
+fastapi==0.142.2
+uvicorn==0.54.0
