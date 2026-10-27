@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "fixture_matches": 200,
+  "splits": {
+    "train": {
+      "0": 70,
+      "1": 70
+    },
+    "validation": {
+      "0": 16,
+      "1": 18
+    },
+    "test": {
+      "0": 14,
+      "1": 12
+    }
+  },
+  "scenarios": [
+    "SHA-256 split parity",
+    "row/partition invariance",
+    "split disjointness",
+    "train-only mapping",
+    "holdout unknown hero rejected",
+    "signed vectors",
+    "hero order invariance",
+    "team swap negates features",
+    "invalid input rejected"
+  ]
+}

@@ -3,9 +3,9 @@
 Đồ án cá nhân môn Thực hành Big Data: xây dựng nền tảng phân tích đội hình và
 dự đoán xác suất thắng của hai đội Radiant/Dire trước trận.
 
-**Đã hoàn thành:** nạp dữ liệu HDFS, chuẩn hóa đội hình và phân tích hero/cặp
-hero bằng Spark SQL. Mô hình ML, website, Kafka và Airflow thuộc lộ trình
-tiếp theo; repo hiện chưa triển khai các chức năng đó.
+**Đã hoàn thành:** nạp HDFS, chuẩn hóa đội hình, phân tích Spark SQL và mô hình
+Logistic Regression kèm lệnh dự đoán 10 hero. Website, Kafka và Airflow thuộc
+lộ trình tiếp theo; repo hiện chưa triển khai các chức năng đó.
 
 ## Kết quả đã kiểm chứng
 
@@ -20,11 +20,15 @@ tiếp theo; repo hiện chưa triển khai các chức năng đó.
 | Lỗi phát hiện ở bước 2 | 0 dòng trùng, 0 snapshot lỗi, 0 trận mâu thuẫn |
 | Thời gian xử lý bước 2 | Khoảng 114 giây trên môi trường WSL đã ghi nhận |
 | Gold bước 3 | 127 hero, 254 dòng hero theo bên, 7.996 cặp cùng đội |
+| ML bước 4 | Test accuracy 54,49% (baseline 51,23%); ROC-AUC 0,5589 |
 
 Xem [kết quả HDFS](evidence/hdfs/RESULTS.md) và
 [báo cáo chất lượng dữ liệu](evidence/step2/report.md).
 [Báo cáo phân tích Gold](evidence/step3/step3-20261026-v2/report.md) có các
 bảng top 20 và so sánh năm hero được chọn nhiều nhất.
+[Báo cáo ML](evidence/step4/step4-20261027-v1/report.md) chứa ba cấu hình
+validation, baseline và test metrics. F1 lớp Radiant thấp hơn baseline;
+không khẳng định mô hình tốt hơn trên mọi metric.
 Đây là kết quả chạy thật trên WSL; GitHub Actions chỉ chạy kiểm thử quy tắc
 bằng dữ liệu nhỏ, không tái tạo toàn bộ cụm HDFS hoặc xử lý CSV 223 MB.
 
@@ -39,6 +43,9 @@ flowchart LR
     P --> S[Spark SQL: hero, bên và cặp cùng đội]
     S --> G[Gold Parquet có version và kiểm chứng]
     G --> E[Báo cáo JSON và Markdown]
+    P --> M[Spark ML: train/validation/test theo hash]
+    M --> B[Native model và JSON bundle đã đối chiếu]
+    B --> D[CLI chọn 10 hero và dự đoán]
     E --> A[HDFS /dota/analytics/data_quality]
 ```
 
@@ -51,11 +58,13 @@ và kết quả nhất quán rồi mới gom thành một dòng mỗi trận. B�
 ```text
 configs/hdfs-wsl.json          Cấu hình đường dẫn và user WSL
 analytics/                    Spark SQL tạo bảng Gold và báo cáo đội hình
+ml/                           Chia tập, mã hóa hero, Spark ML và portable inference
 data/reference/                Manifest nguồn và schema, không chứa CSV lớn
 docs/                         Hướng dẫn HDFS, chuẩn hóa và cách tổ chức dự án
 evidence/hdfs/                Bằng chứng lưu trữ, checksum và chịu lỗi tiến trình
 evidence/step2/               Báo cáo chuẩn hóa, mẫu trận và kết quả kiểm thử
 evidence/step3/               Thống kê Gold, fixture tests và kiểm chứng
+evidence/step4/               Metric, split audit, parity và ví dụ dự đoán
 pipeline/                     Spark job chuẩn hóa dữ liệu
 scripts/                      Quản lý HDFS, bridge WSL và lệnh kiểm thử
 tests/                        Fixture và kiểm thử quy tắc chuẩn hóa
@@ -64,6 +73,8 @@ start-hadoop.ps1              Bật cụm HDFS
 stop-hadoop.ps1               Tắt cụm HDFS, giữ nguyên dữ liệu
 run-step2.ps1                 Chạy chuẩn hóa từ PowerShell
 run-step3.ps1                 Chạy phân tích Spark SQL từ Silver
+run-step4.ps1                 Huấn luyện và kiểm chứng Logistic Regression
+predict-draft.ps1             Dự đoán bằng JSON, không khởi động Spark
 ```
 
 ## Chạy trên máy hiện có
@@ -92,6 +103,13 @@ không di chuyển block hoặc metadata trong `/home/danh/dota-hdfs`.
 # Phân tích Silver v1, tự tạo run ID mới (ngưỡng hero/cặp mặc định 100).
 .\run-step3.ps1
 
+# Huấn luyện từ Silver v1; lưu model theo run ID mới.
+.\run-step4.ps1
+
+# Model đã train trên máy hiện tại; dùng Python + bundle local, không cần Spark.
+.\predict-draft.ps1 -RunId step4-20261027-v1 `
+  -Radiant "7,38,48,85,106" -Dire "11,86,123,128,136"
+
 # Kiểm thử bằng fixture nhỏ, không ghi bảng HDFS.
 .\scripts\run-tests.ps1
 
@@ -110,6 +128,8 @@ Chi tiết: [chuẩn hóa bằng Spark](docs/STEP2_DATA_PREPARATION.md).
 Phân tích: [hướng dẫn bước 3](docs/STEP3_DRAFT_ANALYTICS.md). Chỉ tiêu thụ run
 Gold có `_COMPLETED`; các run `_INVALIDATED` hoặc chưa hoàn tất không dùng
 cho dashboard.
+ML: [hướng dẫn bước 4](docs/STEP4_DRAFT_PREDICTION.md). Bundle nằm trong
+`artifacts/models/` local và HDFS, không được commit cùng mã nguồn.
 
 ## Dữ liệu và bằng chứng trên GitHub
 
@@ -128,9 +148,8 @@ cho dashboard.
 ngưỡng mẫu, bốn bảng Gold, version và kiểm chứng. Bước 3 đã triển khai; kết
 quả thật nằm trong báo cáo Gold liên kết ở trên.
 
-1. ML: mã hóa đội hình, baseline và Logistic Regression.
-2. Website tương tác chọn 10 hero và đọc thống kê Gold.
-3. Kafka replay + Structured Streaming, rồi Airflow nếu cần cho môn học.
+1. Website tương tác chọn 10 hero, dự đoán bằng bundle và đọc thống kê Gold.
+2. Kafka replay + Structured Streaming, rồi Airflow nếu cần cho môn học.
 
 Dữ liệu trải nhiều patch và chỉ đến tháng 3/2026. Không dùng các biến trong
 trận cho mô hình dự đoán trước trận; nguồn hiện không có patch/start_time.

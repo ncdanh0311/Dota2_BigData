@@ -11,6 +11,10 @@
 - `step3/step3-20261026-v2/`: báo cáo Gold đã đọc lại và có marker hoàn tất trên HDFS.
 - `step3/invalidated_runs.json`: ghi chú run đầu bị rút lại vì thiếu inventory;
   dữ liệu chẩn đoán local nằm trong `artifacts/` được Git bỏ qua.
+- `step4/*_tests.json`: kiểm thử feature, training và portable inference bằng fixture.
+- `step4/step4-20261027-v1/`: kết quả Logistic Regression trên dataset thật, ba
+  cấu hình validation, baseline, test, parity và mười ví dụ dự đoán.
+- `step4/end_to_end_checks.json`, `overwrite_guard.json`: hash/marker và chống ghi đè run.
 
 Các báo cáo lịch sử được giữ nguyên nội dung. Đường dẫn cũ trong báo cáo là
 đường dẫn tại thời điểm chạy, không phải cấu hình runtime hiện tại.

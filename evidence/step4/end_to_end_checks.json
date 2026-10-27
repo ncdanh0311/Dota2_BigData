@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "run_id": "step4-20261027-v1",
+  "completed_marker": true,
+  "logic_hashes_match": true,
+  "hdfs_local_bundle_match": true,
+  "hdfs_local_manifest_match": true,
+  "model_bundle_sha256": "e04c0637ce05cab26479a370aa2f198dc767b14fa1da5c13364858da9500bff2",
+  "portable_parity": {
+    "status": "PASS",
+    "checked_rows": 13764,
+    "max_probability_error": 2.220446049250313e-16,
+    "probability_tolerance": 1e-09,
+    "predicted_labels_match": true
+  }
+}
