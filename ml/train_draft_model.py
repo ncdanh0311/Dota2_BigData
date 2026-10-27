@@ -22,6 +22,8 @@ from analytics.draft_stats import (assert_same_table, copy_json, fs_for, git_met
 from ml.features import (FEATURE_VERSION, SPLIT_RULE, assign_splits, encode_features,
                          fit_vocabulary, validate_features, validate_input, validate_splits)
 from ml.training import FIXED_PARAMS, baseline_scored, evaluate, scored, train_candidates
+from ml.export import make_bundle, verify_portable
+from ml.predict_draft import load_bundle
 
 DEFAULT_INPUT = 'hdfs://localhost:9000/dota/processed/match_drafts_v1/'
 DEFAULT_ROOT = 'hdfs://localhost:9000/dota/models/draft_lr_v1'
@@ -73,6 +75,9 @@ def execute(spark, args):
     evidence = PROJECT/'evidence/step4'/args.run_id
     if evidence.exists():
         raise FileExistsError(f'Local evidence already exists: {evidence}')
+    local_model = PROJECT/'artifacts/models'/args.run_id
+    if local_model.exists():
+        raise FileExistsError(f'Local model already exists: {local_model}')
     source = spark.read.parquet(args.input).persist(StorageLevel.MEMORY_AND_DISK)
     assigned = encoded = None
     try:
@@ -107,6 +112,14 @@ def execute(spark, args):
                 model.write().save(run_uri+'/spark_model')
                 reloaded = LogisticRegressionModel.load(run_uri+'/spark_model')
                 assert_same_table(test_predictions, scored(reloaded, data['test']), ['match_id'])
+                bundle = make_bundle(reloaded, vocabulary, args.run_id)
+                local_model.mkdir(parents=True)
+                bundle_path = local_model/'model_bundle.json'
+                bundle_path.write_text(json.dumps(bundle, sort_keys=True, indent=2), encoding='utf-8')
+                loaded_bundle = load_bundle(bundle_path)
+                portable_check = verify_portable(test_predictions, data['test'], loaded_bundle)
+                bundle_hash = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
+                copy_json(spark, bundle_path, run_uri+'/model_bundle.json')
                 test_predictions.coalesce(1).write.mode('errorifexists').option('compression', 'snappy').parquet(run_uri+'/test_predictions')
                 assert_same_table(test_predictions, spark.read.parquet(run_uri+'/test_predictions'), ['match_id'])
                 examples = data['test'].select('match_id', 'radiant_heroes', 'dire_heroes').join(
@@ -130,6 +143,8 @@ def execute(spark, args):
                         'unknown_holdout_heroes': 0, 'fixed_parameters': FIXED_PARAMS,
                         'selected_reg_param': selected['reg_param'],
                         'native_model_readback_verified': True, 'prediction_parquet_readback_verified': True,
+                        'portable_parity': portable_check, 'model_bundle_sha256': bundle_hash,
+                        'local_bundle_path': str(bundle_path),
                         'elapsed_seconds': round(time.perf_counter()-started, 2),
                         'limitations': ['Hash holdout, not temporal or patch validation.',
                                         'Draft-only observational data; player skill, team identity and meta absent.']}
@@ -139,7 +154,9 @@ def execute(spark, args):
                 (evidence/name).write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
                 copy_json(spark, evidence/name, run_uri+'/'+name)
             (evidence/'report.md').write_text(report_markdown(manifest, metrics, candidates), encoding='utf-8')
+            (evidence/'portable_parity.json').write_text(json.dumps(portable_check, indent=2), encoding='utf-8')
             copy_json(spark, evidence/'report.md', run_uri+'/report.md')
+            copy_json(spark, evidence/'portable_parity.json', run_uri+'/portable_parity.json')
             if not fs.rename(spark._jvm.org.apache.hadoop.fs.Path(run_uri+'/_RUNNING'),
                              spark._jvm.org.apache.hadoop.fs.Path(run_uri+'/_COMPLETED')):
                 raise RuntimeError('Cannot publish completion marker.')
