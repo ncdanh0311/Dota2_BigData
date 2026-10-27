@@ -1,0 +1,9 @@
+{
+  "version": "3.3.2",
+  "root": "/home/danh/dota-airflow",
+  "host": "127.0.0.1",
+  "port": 8080,
+  "parallelism": 1,
+  "spark_pool": "dota_spark",
+  "constraints_url": "https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.14.txt"
+}

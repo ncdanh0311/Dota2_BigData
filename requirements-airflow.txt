@@ -1,0 +1,2 @@
+# Install in its own Linux venv using the matching official constraints file.
+apache-airflow==3.3.2
