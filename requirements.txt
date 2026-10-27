@@ -1,2 +1,2 @@
 # Existing WSL environment already provides this version.
-pyspark==4.2.0
+pyspark[ml]==4.2.0
