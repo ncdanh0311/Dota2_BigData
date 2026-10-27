@@ -51,6 +51,18 @@ class APITests(unittest.TestCase):
         for url in ['/model_bundle.json', '/artifacts/web/snapshot/model_bundle.json', '/hero-images/../model_bundle.json']:
             self.assertEqual(self.client.get(url).status_code, 404)
 
+    def test_local_ui_assets(self):
+        # The UI is optional before its own commit, then must serve all imports locally.
+        from web.app import STATIC
+        if not STATIC.is_dir():
+            self.skipTest('UI belongs to the next implementation milestone.')
+        for url in ['/', '/static/style.css', '/static/app.js', '/static/logic.js']:
+            self.assertEqual(self.client.get(url).status_code, 200)
+        html = self.client.get('/').text
+        import re
+        urls = re.findall(r'(?:src|href)="([^"]+)"', html)
+        self.assertFalse(any(url.startswith(('http://', 'https://')) for url in urls))
+
     def test_threshold_and_integrity(self):
         modified = bundle()
         modified['coefficients'] = [0.0]*10

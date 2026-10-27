@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "source": "synthetic JavaScript fixtures",
+  "checks": [
+    "eligible sample filter",
+    "deterministic ranking ties",
+    "immutable source rows",
+    "pagination",
+    "ten unique draft heroes"
+  ]
+}

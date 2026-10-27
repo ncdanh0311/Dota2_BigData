@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1015"><title>DotaLens · Phân tích đội hình</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2356dec2'/%3E%3Cpath d='M8 8h7l9 16h-7z' fill='%230b1015'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css"><script type="module" src="/static/app.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="#stats" aria-label="DotaLens trang chủ"><span class="brand-mark">◈</span>Dota<span>Lens</span><small>ĐỘI HÌNH & DỮ LIỆU</small></a>
+    <nav aria-label="Điều hướng chính"><button class="nav-tab active" data-tab="stats">Thống kê</button><button class="nav-tab" data-tab="draft">Dự đoán đội hình <span>↗</span></button></nav>
+    <span class="live-badge"><i></i> SNAPSHOT LOCAL</span>
+  </header>
+  <main>
+    <div id="loading" role="status" class="loading">Đang đọc snapshot đã kiểm chứng…</div>
+    <div id="fatal" class="notice error" role="alert" hidden></div>
+    <section id="stats-page" hidden aria-label="Thống kê đội hình">
+      <div class="page-heading"><div><p class="eyebrow">SPARK SQL / PHÂN TÍCH LỊCH SỬ</p><h1>Mỗi đội hình, một góc nhìn.</h1><p>Khám phá lượt chọn và kết quả của các hero qua dữ liệu trận đấu.</p></div><span class="outline-badge" id="stats-run"></span></div>
+      <div class="kpi-grid" id="kpis"></div>
+      <div class="overview-grid">
+        <article class="panel"><div class="panel-heading"><div><p class="eyebrow">LƯỢT CHỌN</p><h2>10 hero xuất hiện nhiều nhất</h2></div><span class="muted">Số trận</span></div><div id="pick-chart" class="bar-chart"></div></article>
+        <article class="panel distribution"><p class="eyebrow">KẾT QUẢ TRẬN ĐẤU</p><h2>Hai phía chiến trường</h2><div id="side-distribution"></div><div class="insight"><span>ⓘ</span><p>Đây là thống kê quan sát trên dữ liệu lịch sử. Tỷ lệ thắng của hero hoặc cặp hero không phải xác suất thắng của một đội hình mới.</p></div><a href="#draft" class="text-link">Thử chọn đội hình và dự đoán <span>→</span></a></article>
+      </div>
+      <article class="panel section-panel"><div class="panel-heading"><div><p class="eyebrow">HERO EXPLORER</p><h2>Thống kê từng hero</h2></div><span class="muted" id="hero-threshold"></span></div>
+        <div class="filters"><input id="hero-search" type="search" placeholder="Tìm tên hoặc ID hero…" aria-label="Tìm hero trong thống kê"><label>Sắp xếp <select id="hero-sort"><option value="picks">Lượt chọn</option><option value="win_rate">Tỷ lệ thắng</option></select></label><label class="checkbox"><input id="hero-insufficient" type="checkbox">Hiện mẫu chưa đủ</label></div>
+        <div class="table-scroll"><table><thead><tr><th>Hero</th><th>Lượt chọn</th><th>Thắng / Thua</th><th>Pick rate</th><th>Win rate</th><th>Mẫu</th></tr></thead><tbody id="hero-rows"></tbody></table></div><div id="hero-pagination" class="pagination"></div>
+      </article>
+      <article class="panel section-panel"><div class="panel-heading"><div><p class="eyebrow">RADIANT VS DIRE</p><h2>Cùng hero, khác chiến tuyến</h2></div><select id="side-hero" aria-label="Hero để so sánh hai bên"></select></div><div id="side-comparison" class="side-comparison"></div><p class="muted footnote" id="side-sample-note"></p></article>
+      <article class="panel section-panel"><div class="panel-heading"><div><p class="eyebrow">CẶP HERO CÙNG ĐỘI</p><h2>Những bộ đôi trong dữ liệu</h2></div><span class="muted" id="pair-threshold"></span></div>
+        <div class="filters"><input id="pair-search" type="search" placeholder="Tìm tên hoặc ID trong cặp…" aria-label="Tìm cặp hero"><select id="pair-hero" aria-label="Lọc cặp theo hero"><option value="">Tất cả hero</option></select><label>Sắp xếp <select id="pair-sort"><option value="pair_win_rate">Tỷ lệ thắng</option><option value="pair_matches">Số trận</option></select></label><label class="checkbox"><input id="pair-insufficient" type="checkbox">Hiện mẫu chưa đủ</label></div>
+        <div class="table-scroll"><table><thead><tr><th>Cặp hero</th><th>Số trận</th><th>Thắng / Thua</th><th>Pick rate</th><th>Win rate</th><th>Mẫu</th></tr></thead><tbody id="pair-rows"></tbody></table></div><div id="pair-pagination" class="pagination"></div>
+      </article>
+    </section>
+    <section id="draft-page" hidden aria-label="Dự đoán đội hình">
+      <div class="page-heading"><div><p class="eyebrow">SPARK ML / LOGISTIC REGRESSION</p><h1>Chọn đội hình. Đọc thế trận.</h1><p>10 hero, hai chiến tuyến. Khám phá dự đoán trước trận từ mô hình.</p></div><span class="outline-badge">SIGNED HERO · V1</span></div>
+      <div class="draft-toolbar"><span id="draft-progress">Đã chọn 0 / 10 hero</span><div><button id="demo-button" class="button subtle">Nạp đội hình demo</button><button id="swap-button" class="button subtle">⇄ Đổi hai đội</button><button id="clear-button" class="button subtle">Xóa tất cả</button></div></div>
+      <div class="teams-grid"><article class="team-panel radiant"><div class="team-heading"><span class="team-symbol">◈</span><div><p>CHIẾN TUYẾN ÁNH SÁNG</p><h2>Radiant</h2></div><span class="team-count" id="radiant-count">0 / 5</span></div><div id="radiant-slots" class="draft-slots"></div></article><article class="team-panel dire"><div class="team-heading"><span class="team-symbol">◆</span><div><p>CHIẾN TUYẾN BÓNG TỐI</p><h2>Dire</h2></div><span class="team-count" id="dire-count">0 / 5</span></div><div id="dire-slots" class="draft-slots"></div></article></div>
+      <div class="prediction-action"><p id="draft-instruction">Chọn một ô đội hình, sau đó chọn hero bên dưới.</p><button id="predict-button" class="button primary" disabled>Dự đoán kết quả <span>→</span></button></div>
+      <div id="prediction-error" class="notice error" role="alert" hidden></div><div id="prediction-result" aria-live="polite" hidden></div>
+      <article class="panel hero-library"><div class="panel-heading"><div><p class="eyebrow">HERO POOL</p><h2>Chọn người ra trận</h2></div><input id="draft-search" type="search" placeholder="Tìm tên hoặc ID hero…" aria-label="Tìm hero để chọn"></div><div class="library-meta"><span id="library-count"></span><span>Hero đã chọn được khóa ở cả hai đội</span></div><div id="hero-library" class="hero-grid"></div></article>
+      <details class="panel metrics-panel"><summary>Mô hình đã được đánh giá như thế nào? <span>＋</span></summary><div id="model-metrics"></div></details>
+    </section>
+    <footer id="footer" hidden><div><span class="brand mini">◈ DotaLens</span><p>Đồ án cá nhân · Thực hành Big Data</p></div><p>Dữ liệu lịch sử, chưa đại diện meta hiện tại.<br><span id="provenance"></span></p></footer>
+  </main>
+</body>
+</html>
