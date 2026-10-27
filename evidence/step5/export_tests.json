@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "source": "local synthetic fixture",
+  "checks": [
+    "Gold keyed JSON parity",
+    "source completion/invalidation",
+    "fingerprint/checksum rejection",
+    "no overwrite",
+    "asset retry/fallback",
+    "snapshot integrity"
+  ]
+}
