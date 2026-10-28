@@ -11,7 +11,7 @@ permissions:
 
 concurrency:
   group: dota-integration-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 defaults:
   run:
@@ -32,7 +32,9 @@ jobs:
         uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-integration
+      - name: Chuẩn bị Spark, Hadoop ba DataNode và Airflow
+        uses: ./.github/actions/prepare-integration
+        timeout-minutes: 20
       - name: Tải CSV Zenodo đầy đủ, kiểm tra SHA-256 và nạp HDFS
         timeout-minutes: 15
         run: |
@@ -96,7 +98,9 @@ jobs:
         uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/prepare-integration
+      - name: Chuẩn bị runtime và dùng lại gói Hadoop đã cache
+        uses: ./.github/actions/prepare-integration
+        timeout-minutes: 20
       - name: Nhận Silver của đúng lượt batch phía trước
         uses: actions/download-artifact@v8.0.2
         with:

@@ -18,6 +18,11 @@ runs:
       with:
         distribution: temurin
         java-version: '17'
+    - name: Cache gói Hadoop; luôn kiểm tra lại SHA-512 trước khi dùng
+      uses: actions/cache@v6.1.0
+      with:
+        path: ~/.cache/dota-ci/hadoop-3.5.0.tar.gz
+        key: hadoop-3.5.0-sha512-04ab94496cc00c8b-v1
     - name: Cài Spark, web, Kafka client và trình duyệt kiểm chứng
       shell: bash
       run: |
@@ -35,8 +40,10 @@ runs:
         set -o pipefail
         python scripts/hdfs_cluster_manager.py setup 2>&1 | tee artifacts/integration/logs/02-hdfs-config.log
         python scripts/hdfs_cluster_manager.py start 2>&1 | tee artifacts/integration/logs/03-hdfs-start.log
+        echo '::notice title=Runtime::HDFS ready with three DataNodes'
     - name: Cài và khởi động Airflow scheduler thật
       shell: bash
       run: |
         set -o pipefail
         python -m ci.prepare_runtime airflow 2>&1 | tee artifacts/integration/logs/04-airflow-install.log
+        echo '::notice title=Runtime::Airflow scheduler ready'

@@ -70,7 +70,7 @@ hơn baseline. Chạy được hệ thống không đồng nghĩa dự đoán m�
 | Log/artifact cả khi lỗi | Bổ sung tee log, upload `if: always()`. |
 | Run ID/attempt, retention | Tên artifact chứa run ID/attempt, giữ 14 ngày. |
 | Job Summary | Tiếng Việt, bảng số liệu Silver/Gold/model và trạng thái task; phân biệt `github_integration`, fixture và bản lưu cũ. Missing/corrupt report không được coi là PASS. |
-| Không hủy pipeline dữ liệu khi push mới | Pipeline tích hợp đặt `cancel-in-progress: false`; fixture CI độc lập vẫn có thể hủy bản cũ. |
+| Không hủy pipeline dữ liệu khi push mới | Dota CI dùng runner tạm biệt lập nên cho phép bản mới hủy lượt cũ cùng nhánh để tránh kẹt tải runtime; các DAG/dữ liệu WSL vẫn được giữ nguyên. |
 | Bỏ toàn bộ evidence | Đã áp dụng theo yêu cầu mới: evidence local bị Git bỏ qua; báo cáo/ảnh tải qua Actions Artifacts. |
 
 Giữ source DAG/workflow/config và `data/reference/` trong Git. Bổ sung ignore

@@ -8,6 +8,8 @@ chạy lại pipeline lớn. Pull request chạy các bộ fixture để phản 
 ## Job batch
 
 1. Cài Spark 4.2.0, Java 17 và Hadoop 3.5.0; kiểm tra SHA-512 của Hadoop.
+   Gói Hadoop tải từ CDN Apache, có archive fallback và cache; cache vẫn phải
+   khớp SHA-512 trước khi giải nén. Chuẩn bị runtime giới hạn 20 phút.
 2. Dựng NameNode và ba DataNode; replication 2, block 64 MiB trên cùng runner.
 3. Cài Airflow 3.3.2 trong venv riêng, theo constraints Python 3.11 chính thức.
 4. Tải toàn bộ CSV Zenodo, đối chiếu kích thước và SHA-256 trong manifest nguồn.
@@ -62,6 +64,8 @@ job chưa đạt. Thiếu báo cáo nghiệm thu không được hiển thị nh
 Runtime và database chỉ ở runner tạm, không upload mật khẩu/DB Airflow hoặc
 Kafka storage. Log thu thập được che giá trị mật khẩu tự sinh. Dịch vụ được
 dừng ở bước `always()` và máy runner được GitHub thu hồi sau job.
+Push mới có thể hủy lượt CI cũ cùng nhánh để tránh giữ máy tạm đang kẹt;
+cơ chế này không áp dụng cho DAG/dữ liệu WSL đang vận hành local.
 
 ## Cấu hình và các bộ kiểm thử
 
@@ -87,3 +91,12 @@ Dota dùng một workflow hai job để truyền Silver đã kiểm chứng, ch�
 native Linux theo code quản lý có sẵn. Repo tham khảo dùng Docker Compose và
 mô phỏng ba ngày; Dota dùng catalog trận và kiểm thử retry/chống trùng. Không
 thêm PostgreSQL hay chia ngày giả khi dataset không có start_time.
+
+## Dùng lại website từ gói tải về
+
+Giải nén `bao-cao-phan-tich-*`; thư mục `website/` chứa snapshot hoàn chỉnh.
+Đọc `website/manifest.json` để lấy `snapshot_id`, rồi chép nguyên thư mục đó
+thành `artifacts/web/<snapshot_id>/` của repo local. Sau khi cài dependency web
+theo hướng dẫn bước 5, chạy `commands/start-web.ps1 -SnapshotId <snapshot_id>`.
+Server kiểm tra marker và checksum khi mở. Không cần HDFS/Spark/Kafka để xem
+thống kê và dự đoán từ snapshot này; tab replay cần thêm trạng thái replay.

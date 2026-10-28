@@ -12,12 +12,16 @@ PROJECT = Path(__file__).resolve().parents[1]
 HADOOP_SHA512 = '04ab94496cc00c8b7a28d03f6308eff8d2a4e7f37a9da5e8e086e4d6fc990e7a94d661908f6a6136039536efb362614b8aecdef185b5fb8ed588f0b152c7aa16'
 
 
-def fetch(url, target):
+def fetch(url, target, fallback=None):
     target = Path(target)
     target.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(['curl', '--fail', '--location', '--retry', '3', '--retry-all-errors',
-                    '--connect-timeout', '20', '--max-time', '600', '--output', str(target), url], check=True)
-    return target
+    for source in [url]+([fallback] if fallback else []):
+        result = subprocess.run(['curl', '--fail', '--location', '--retry', '1', '--retry-all-errors',
+            '--connect-timeout', '20', '--max-time', '600', '--speed-limit', '1024', '--speed-time', '45',
+            '--output', str(target), source])
+        if result.returncode == 0:
+            return target
+    raise RuntimeError('Official download failed after bounded retries and mirror fallback.')
 
 
 def digest(path, algorithm='sha256'):
@@ -54,12 +58,16 @@ def bootstrap():
             env.write(f'DOTA_{name.upper()}_CONFIG={path}\n')
         env.write(f'DOTA_STREAMING_PYTHON={sys.executable}\n')
         env.write(f'DOTA_CI_ROOT={root}\nPYTHONPATH={PROJECT}\n')
-    archive = fetch('https://archive.apache.org/dist/hadoop/common/hadoop-3.5.0/hadoop-3.5.0.tar.gz', root/'hadoop.tar.gz')
+    archive = Path.home()/'.cache/dota-ci/hadoop-3.5.0.tar.gz'
+    if not archive.exists():
+        print('::notice title=Runtime::Downloading Hadoop from the official Apache CDN', flush=True)
+        fetch('https://dlcdn.apache.org/hadoop/common/hadoop-3.5.0/hadoop-3.5.0.tar.gz', archive,
+              'https://archive.apache.org/dist/hadoop/common/hadoop-3.5.0/hadoop-3.5.0.tar.gz')
     if digest(archive, 'sha512') != HADOOP_SHA512:
         raise ValueError('Official Hadoop SHA-512 mismatch.')
     with tarfile.open(archive) as bundle:
         bundle.extractall(root, filter='data')
-    archive.unlink()
+    print('::notice title=Runtime::Hadoop SHA-512 verified and extracted', flush=True)
     print('Verified Hadoop installed; configs isolated under RUNNER_TEMP. WSL configs unchanged.')
 
 

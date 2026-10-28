@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from ci.prepare_runtime import configure, bootstrap
+from ci.prepare_runtime import configure, bootstrap, fetch
 from ci.publish_results import summary, index_artifacts, verify_artifact, redact, collect
 from orchestration.runtime_config import load_config
 
@@ -18,6 +18,16 @@ class IntegrationReportingTests(unittest.TestCase):
         with patch.dict(os.environ, {'GITHUB_ACTIONS': 'false'}):
             with self.assertRaisesRegex(RuntimeError, 'disposable'):
                 bootstrap()
+
+    def test_official_mirror_fallback_is_bounded(self):
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as directory, patch('ci.prepare_runtime.subprocess.run',
+                side_effect=[SimpleNamespace(returncode=28), SimpleNamespace(returncode=0)]) as command:
+            target=Path(directory)/'download'
+            self.assertEqual(fetch('https://dlcdn.apache.org/file', target,
+                                   'https://archive.apache.org/file'), target)
+            self.assertEqual(command.call_count, 2)
+            self.assertEqual(command.call_args.args[0][-1], 'https://archive.apache.org/file')
 
     def test_explicit_runtime_isolated_from_wsl_default(self):
         with tempfile.TemporaryDirectory() as directory:
