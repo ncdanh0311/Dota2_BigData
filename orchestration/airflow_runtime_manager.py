@@ -126,13 +126,28 @@ def stop():
     if active:
         raise RuntimeError('Airflow has active tasks; wait for the DAG or stop it before shutdown.')
     os.killpg(pid,signal.SIGINT)
-    for _ in range(60):
-        if not Path(f'/proc/{pid}').exists():
+    for _ in range(120):
+        if not process_group_running(pid):
             (ROOT/'airflow.pid').unlink(missing_ok=True)
             print('Airflow stopped; database and history retained.')
             return
         time.sleep(.5)
     raise RuntimeError('Airflow shutdown is not complete; no unrelated process was signaled.')
+
+
+def process_group_running(group_id, proc=Path('/proc')):
+    """A zombie PID is already stopped; also wait for live children in our session."""
+    if group_id <= 0:
+        raise ValueError('Expected a positive owned process-group ID.')
+    for stat in proc.glob('[0-9]*/stat'):
+        try:
+            # The comm field can contain spaces/parentheses; fields after it start state, ppid, pgrp.
+            fields=stat.read_text().rsplit(')',1)[1].split()
+            if int(fields[2])==group_id and fields[0] not in {'Z','X'}:
+                return True
+        except (OSError,ValueError,IndexError):
+            continue  # Process exited between enumeration and reading /proc.
+    return False
 
 
 def main():

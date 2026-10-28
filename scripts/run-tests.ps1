@@ -16,6 +16,9 @@ try {
     $integrationTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_integration_reporting.py') -Runtime $runtime
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $integrationTest
     if ($LASTEXITCODE -ne 0) { throw 'Integration report checks failed.' }
+    $cleanupTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_airflow_cleanup.py') -Runtime $runtime
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $cleanupTest
+    if ($LASTEXITCODE -ne 0) { throw 'Airflow process cleanup checks failed.' }
     foreach ($testName in @('test_prepare_match_drafts.py', 'test_draft_stats.py',
                             'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py', 'test_streaming_checkpoint_recovery.py')) {
       $testPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot "tests\$testName") -Runtime $runtime
