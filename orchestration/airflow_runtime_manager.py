@@ -115,7 +115,9 @@ def start():
     raise RuntimeError('Airflow readiness timeout; logs retained, no reset performed.')
 
 
-def stop():
+def stop(ci_cleanup=False):
+    if ci_cleanup:
+        validate_ci_cleanup()
     pid=owned_pid()
     if not pid:
         print('Airflow is stopped.')
@@ -126,12 +128,13 @@ def stop():
     if active:
         raise RuntimeError('Airflow has active tasks; wait for the DAG or stop it before shutdown.')
     os.killpg(pid,signal.SIGINT)
-    for _ in range(120):
-        if not process_group_running(pid):
-            (ROOT/'airflow.pid').unlink(missing_ok=True)
-            print('Airflow stopped; database and history retained.')
-            return
-        time.sleep(.5)
+    stopped=wait_for_group(pid,10 if ci_cleanup else 60)
+    if not stopped and ci_cleanup:
+        stopped=finish_owned_ci_group(pid)
+    if stopped:
+        (ROOT/'airflow.pid').unlink(missing_ok=True)
+        print('Airflow stopped; database and history retained.')
+        return
     raise RuntimeError('Airflow shutdown is not complete; no unrelated process was signaled.')
 
 
@@ -150,17 +153,47 @@ def process_group_running(group_id, proc=Path('/proc')):
     return False
 
 
+def validate_ci_cleanup():
+    temporary=os.environ.get('RUNNER_TEMP')
+    if (os.environ.get('GITHUB_ACTIONS')!='true' or not temporary or
+            not ROOT.resolve().is_relative_to(Path(temporary).resolve())):
+        raise RuntimeError('Forced cleanup is limited to this disposable GitHub runner runtime.')
+
+
+def wait_for_group(pid,timeout):
+    deadline=time.monotonic()+timeout
+    while time.monotonic()<deadline:
+        if not process_group_running(pid):
+            return True
+        time.sleep(.1)
+    return not process_group_running(pid)
+
+
+def finish_owned_ci_group(pid):
+    # Caller verified ownership before SIGINT; descendants keep that session's pgrp.
+    for sig,timeout in [(signal.SIGTERM,15),(signal.SIGKILL,5)]:
+        try:
+            os.killpg(pid,sig)
+        except ProcessLookupError:
+            return True
+        print(f'::notice title=Runtime cleanup::Sent {sig.name} to owned CI Airflow group {pid}',flush=True)
+        if wait_for_group(pid,timeout):
+            return True
+    return False
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action',choices=['setup','start','stop','check'])
     parser.add_argument('--constraints')
+    parser.add_argument('--ci-cleanup',action='store_true',help='Allow bounded termination of the owned ephemeral CI group only')
     args=parser.parse_args()
     if args.action=='setup':
         setup(args.constraints)
     elif args.action=='start':
         start()
     elif args.action=='stop':
-        stop()
+        stop(ci_cleanup=args.ci_cleanup)
     else:
         cli('version')
         cli('db','check')

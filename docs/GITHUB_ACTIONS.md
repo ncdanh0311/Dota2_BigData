@@ -64,6 +64,10 @@ job chưa đạt. Thiếu báo cáo nghiệm thu không được hiển thị nh
 Runtime và database chỉ ở runner tạm, không upload mật khẩu/DB Airflow hoặc
 Kafka storage. Log thu thập được che giá trị mật khẩu tự sinh. Dịch vụ được
 dừng ở bước `always()` và máy runner được GitHub thu hồi sau job.
+Riêng cleanup CI có thể gửi SIGTERM/SIGKILL sau thời gian chờ cho nhóm Airflow
+đã xác minh quyền sở hữu; chỉ bật khi runtime nằm trong `RUNNER_TEMP` và
+`GITHUB_ACTIONS=true`. Mỗi lần gửi signal được ghi notice. Lệnh stop WSL giữ
+chế độ không cưỡng bức.
 Push mới có thể hủy lượt CI cũ cùng nhánh để tránh giữ máy tạm đang kẹt;
 cơ chế này không áp dụng cho DAG/dữ liệu WSL đang vận hành local.
 

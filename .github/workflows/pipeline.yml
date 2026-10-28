@@ -85,7 +85,7 @@ jobs:
       - name: Dọn dịch vụ trên runner
         if: always()
         run: |
-          python orchestration/airflow_runtime_manager.py stop || true
+          python orchestration/airflow_runtime_manager.py stop --ci-cleanup || true
           python scripts/hdfs_cluster_manager.py stop || true
 
   kafka:
@@ -156,6 +156,6 @@ jobs:
       - name: Dọn dịch vụ trên runner
         if: always()
         run: |
-          python orchestration/airflow_runtime_manager.py stop || true
+          python orchestration/airflow_runtime_manager.py stop --ci-cleanup || true
           python streaming/kafka_broker_manager.py stop || true
           python scripts/hdfs_cluster_manager.py stop || true

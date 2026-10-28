@@ -7,9 +7,10 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from orchestration.airflow_runtime_manager import process_group_running
+from orchestration.airflow_runtime_manager import process_group_running, finish_owned_ci_group, validate_ci_cleanup
 
 
 class CleanupTests(unittest.TestCase):
@@ -44,6 +45,28 @@ class CleanupTests(unittest.TestCase):
     def test_invalid_group_is_rejected(self):
         with self.assertRaises(ValueError):
             process_group_running(0)
+
+    def test_force_is_rejected_outside_disposable_ci_root(self):
+        with patch.dict(os.environ,{'GITHUB_ACTIONS':'false'}):
+            with self.assertRaises(RuntimeError):
+                validate_ci_cleanup()
+        with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ,
+                {'GITHUB_ACTIONS':'true','RUNNER_TEMP':directory}):
+            with self.assertRaises(RuntimeError):
+                validate_ci_cleanup()
+
+    def test_owned_ci_worker_ignoring_interrupt_is_terminated(self):
+        code="import signal,time; signal.signal(signal.SIGINT,signal.SIG_IGN); print('ready',flush=True); time.sleep(30)"
+        worker=subprocess.Popen([sys.executable,'-c',code],start_new_session=True,stdout=subprocess.PIPE,text=True)
+        try:
+            self.assertEqual(worker.stdout.readline().strip(),'ready')
+            self.assertTrue(finish_owned_ci_group(worker.pid))
+            self.assertFalse(process_group_running(worker.pid))
+        finally:
+            if process_group_running(worker.pid):
+                os.killpg(worker.pid,signal.SIGKILL)
+            worker.wait(timeout=10)
+            worker.stdout.close()
 
 
 if __name__=='__main__':
