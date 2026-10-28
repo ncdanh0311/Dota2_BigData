@@ -97,7 +97,7 @@ def owned_pid():
 
 def start():
     if not (ROOT/'data/meta.properties').exists():
-        raise ValueError('Run install-kafka.ps1 first; start never formats Kafka.')
+        raise ValueError('Run commands/install-kafka.ps1 first; start never formats Kafka.')
     if owned_pid():
         print('Kafka already running.')
         return

@@ -356,7 +356,7 @@ def execute(spark, args):
         matches = spark.read.parquet(args.input).persist(StorageLevel.MEMORY_AND_DISK)
         n = validate_input(matches)
     except Exception as error:
-        raise RuntimeError('Cannot read/validate Silver; start HDFS with start-hadoop.ps1 '
+        raise RuntimeError('Cannot read/validate Silver; start HDFS with commands/start-hadoop.ps1 '
                            f'and check --input. {error}') from error
     print(f'Input validated: {n:,} unique matches.', flush=True)
     inventory = input_inventory(spark, args.input)

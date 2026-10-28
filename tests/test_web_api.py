@@ -86,7 +86,7 @@ if __name__ == '__main__':
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(APITests)
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     evidence = Path(__file__).resolve().parents[1]/'evidence/step5'
-    evidence.mkdir(exist_ok=True)
+    evidence.mkdir(parents=True, exist_ok=True)
     write_json(evidence/'api_tests.json', {'status': 'PASS' if result.wasSuccessful() else 'FAIL',
         'source': 'synthetic local fixtures', 'tests': result.testsRun, 'spark_imported': 'pyspark' in sys.modules})
     sys.exit(not result.wasSuccessful())

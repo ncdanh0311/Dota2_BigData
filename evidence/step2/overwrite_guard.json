@@ -1,5 +1,0 @@
-{
-  "status": "PASS",
-  "process_exit_code": 1,
-  "reason": "Existing HDFS output rejected before writing"
-}

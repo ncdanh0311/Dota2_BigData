@@ -51,7 +51,7 @@ def setup(constraints):
     subprocess.run([str(VENV/'bin/python'),'-m','pip','install','pip==26.2.2'],check=True)
     data=Path(constraints).read_bytes()
     (ROOT/'constraints-3.14.txt').write_bytes(data)
-    subprocess.run([str(VENV/'bin/python'),'-m','pip','install','-r',str(PROJECT/'requirements-airflow.txt'),
+    subprocess.run([str(VENV/'bin/python'),'-m','pip','install','-r',str(PROJECT/'requirements/airflow.txt'),
         '--constraint',str(ROOT/'constraints-3.14.txt')],check=True)
     subprocess.run([str(VENV/'bin/python'),'-m','pip','check'],check=True)
     cli('db','migrate')
@@ -84,7 +84,7 @@ def owned_pid():
 
 def start():
     if not (RUNTIME/'airflow.db').exists():
-        raise ValueError('Run install-airflow.ps1 first.')
+        raise ValueError('Run commands/install-airflow.ps1 first.')
     ROOT.chmod(0o700)
     RUNTIME.chmod(0o700)
     if owned_pid():

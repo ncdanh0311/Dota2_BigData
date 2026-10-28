@@ -94,7 +94,7 @@ def main():
                 pass
             else:
                 raise AssertionError('Corrupt checksum accepted')
-        (PROJECT/'evidence/step6').mkdir(exist_ok=True)
+        (PROJECT/'evidence/step6').mkdir(parents=True,exist_ok=True)
         write_json(PROJECT/'evidence/step6/rule_tests.json',{'status':'PASS','source':'synthetic file-stream with real checkpoint',
             'checks':['strict events/catalog/UTC','order-insensitive heroes','quarantine','hand-calculated totals',
                       'failure after archive commit','checkpoint restart','same batch retry','atomic snapshot recovery/checksum']})

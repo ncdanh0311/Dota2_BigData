@@ -88,7 +88,7 @@ def main():
             (snapshot/'dashboard.json').write_text('{}')
             rejected(lambda: load_snapshot(snapshot))
         evidence = Path(__file__).resolve().parents[1]/'evidence/step5'
-        evidence.mkdir(exist_ok=True)
+        evidence.mkdir(parents=True, exist_ok=True)
         write_json(evidence/'export_tests.json', {'status': 'PASS', 'source': 'local synthetic fixture',
             'checks': ['Gold keyed JSON parity', 'source completion/invalidation', 'fingerprint/checksum rejection',
                        'no overwrite', 'asset retry/fallback', 'snapshot integrity', 'failed run has no completion marker']})

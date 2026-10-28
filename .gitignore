@@ -66,6 +66,5 @@ simple_auth_manager_passwords.json*
 *.swo
 *~
 
-# Keep compact evidence reports; omit diagnostic dumps.
-evidence/hdfs/format.txt
-evidence/hdfs/namenode_jmx.json
+# Generated reports/screenshots stay local and are published as Actions artifacts.
+/evidence/

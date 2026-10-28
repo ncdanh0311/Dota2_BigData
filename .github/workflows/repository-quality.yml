@@ -22,17 +22,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
       - name: Prepare fresh CI reports and logs
         run: |
           mkdir -p artifacts/ci/repository
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.11'
       - name: Validate JSON and tracked file policy
         run: python scripts/check_repository.py 2>&1 | tee artifacts/ci/repository/source-checks.log
       - name: Check summary failure reporting
-        run: python tests/test_ci_summary.py 2>&1 | tee artifacts/ci/repository/summary-tests.log
+        run: |
+          python tests/test_ci_summary.py 2>&1 | tee artifacts/ci/repository/summary-tests.log
+          python tests/test_evidence_packaging.py 2>&1 | tee artifacts/ci/repository/evidence-packaging-tests.log
       - name: Parse PowerShell scripts without launching WSL or services
         shell: pwsh
         run: |
@@ -51,11 +55,14 @@ jobs:
       - name: Summarize CI scope and fresh results
         if: always()
         run: python scripts/write_ci_summary.py --suite repository --job-status "${{ job.status }}"
-      - name: Upload repository check logs
+      - name: Package repository check evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        run: python scripts/package_evidence.py --kind ci_fixture --suite repository --logs artifacts/ci/repository --output artifacts/evidence-bundles/repository --job-status "${{ job.status }}"
+      - name: Downloadable repository check evidence
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
         with:
-          name: repository-check-logs-${{ github.run_id }}-${{ github.run_attempt }}
-          path: artifacts/ci/repository
-          if-no-files-found: warn
+          name: bang-chung-ci-repository-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/evidence-bundles/repository
+          if-no-files-found: error
           retention-days: 14

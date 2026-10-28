@@ -38,7 +38,7 @@ def build_summary(suite,job_status,root=PROJECT):
         text+=[f'| `{name}` | {status} |' for name,status in rows]
         text+=['','Download fixture reports and test logs under this run’s Artifacts. Retention: 14 days.','']
     else:
-        text+=['Checks: JSON, tracked-file policy and PowerShell syntax. Real-data evidence remains under `evidence/`.','']
+        text+=['Checks: JSON, tracked-file policy and PowerShell syntax. Recorded project evidence is downloadable from the separate publication workflow; local `evidence/` is ignored by Git.','']
     return '\n'.join(text),job_status=='success' and not complete
 
 

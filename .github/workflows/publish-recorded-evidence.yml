@@ -1,0 +1,62 @@
+name: Publish recorded project evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-recorded-evidence.yml'
+      - 'scripts/package_evidence.py'
+  workflow_dispatch:
+    inputs:
+      evidence_ref:
+        description: 'Git revision containing the previously recorded evidence directory'
+        required: true
+        default: '243d474f0df1d5e7ada1a832850676fd0b5bee8c'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recorded-evidence-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish:
+    name: Package previously recorded reports and screenshots
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      EVIDENCE_REF: ${{ inputs.evidence_ref || '243d474f0df1d5e7ada1a832850676fd0b5bee8c' }}
+    steps:
+      - name: Checkout current packaging code
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.11'
+      - name: Read the recorded evidence from its original revision
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ env.EVIDENCE_REF }}
+          path: artifacts/evidence-source
+          sparse-checkout: evidence
+          persist-credentials: false
+      - name: Package recorded evidence with checksums and origin
+        run: |
+          source_sha="$(git -C artifacts/evidence-source rev-parse HEAD)"
+          python scripts/package_evidence.py --kind recorded_project \
+            --source artifacts/evidence-source/evidence --source-revision "$source_sha" \
+            --output artifacts/evidence-bundles/recorded-project
+      - name: Download reports and screenshots from Artifacts
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: bang-chung-do-an-da-ghi-nhan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/evidence-bundles/recorded-project
+          if-no-files-found: error
+          retention-days: 14

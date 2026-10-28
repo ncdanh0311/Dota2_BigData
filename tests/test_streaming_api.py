@@ -53,7 +53,7 @@ class ReplayAPITests(unittest.TestCase):
 
 if __name__=='__main__':
     result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ReplayAPITests))
-    (PROJECT/'evidence/step6').mkdir(exist_ok=True)
+    (PROJECT/'evidence/step6').mkdir(parents=True,exist_ok=True)
     write_json(PROJECT/'evidence/step6/api_tests.json',{'status':'PASS' if result.wasSuccessful() else 'FAIL',
         'source':'synthetic local snapshot','checks':['not configured','waiting','ready','stale','checksum error with last-good fallback',
         'complete','Gold/prediction unchanged','no Spark import']})

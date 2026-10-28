@@ -10,6 +10,9 @@ try {
     $summaryTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_ci_summary.py') -Runtime $runtime
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $summaryTest
     if ($LASTEXITCODE -ne 0) { throw 'CI summary checks failed.' }
+    $packageTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_evidence_packaging.py') -Runtime $runtime
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $packageTest
+    if ($LASTEXITCODE -ne 0) { throw 'Evidence packaging checks failed.' }
     foreach ($testName in @('test_prepare_match_drafts.py', 'test_draft_stats.py',
                             'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py', 'test_streaming_checkpoint_recovery.py')) {
       $testPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot "tests\$testName") -Runtime $runtime
@@ -29,7 +32,7 @@ try {
       & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python -m venv "$linuxRepo/.venv-web"
       if ($LASTEXITCODE -ne 0) { throw 'Cannot create web test environment.' }
     }
-    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython -m pip install -r "$linuxRepo/requirements-web-test.txt"
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython -m pip install -r "$linuxRepo/requirements/web-test.txt"
     if ($LASTEXITCODE -ne 0) { throw 'Cannot install pinned web test dependencies.' }
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython $apiTest
     if ($LASTEXITCODE -ne 0) { throw 'Web API tests failed.' }
@@ -46,7 +49,7 @@ try {
         $airflowPython "$linuxRepo/tests/test_airflow_dags.py"
       if ($LASTEXITCODE -ne 0) { throw 'Airflow SDK DAG tests failed.' }
     }
-    else { Write-Host 'Airflow DAG parse checks skipped: run install-airflow.ps1 first. CI runs these in a separate environment.' }
+    else { Write-Host 'Airflow DAG parse checks skipped: run commands/install-airflow.ps1 first. CI runs these in a separate environment.' }
     if (Get-Command node -ErrorAction SilentlyContinue) {
       & node (Join-Path $repoRoot 'tests\test_web_logic.mjs')
       if ($LASTEXITCODE -ne 0) { throw 'Web display rule tests failed.' }
