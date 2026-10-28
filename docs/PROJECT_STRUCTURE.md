@@ -7,7 +7,7 @@ trình và tìm bằng chứng, không thay tên chức năng của lệnh chạ
 | Thư mục | Nội dung và điểm vào |
 |---|---|
 | `commands/` | 17 lệnh PowerShell vận hành; tự xác định repo root khi gọi |
-| `requirements/` | 5 bộ dependency: Spark, web, web-test, streaming, Airflow |
+| `requirements/` | Dependency Spark, web, web-test, streaming, Airflow và trình duyệt CI |
 | `pipeline/` | `prepare_match_drafts.py`: CSV snapshot → Silver một trận một dòng |
 | `analytics/` | `draft_stats.py`: Silver → Gold thống kê hero, bên và cặp |
 | `ml/` | `train_draft_model.py`, `predict_draft.py`: train LR và inference độc lập |
@@ -22,6 +22,7 @@ trình và tìm bằng chứng, không thay tên chức năng của lệnh chạ
 | `evidence/` | Báo cáo/ảnh local, Git bỏ qua toàn bộ; công bố bằng Actions Artifacts |
 | `artifacts/` | Snapshot, bundle, log/cache và output local; Git bỏ qua |
 | `.github/workflows/` | CI Spark/web, Airflow, chất lượng repo và xuất evidence |
+| `ci/` | Dựng runtime tạm, trigger DAG thật, Summary tiếng Việt, ảnh và Artifacts |
 
 ## Dữ liệu và runtime
 
@@ -42,6 +43,7 @@ Manifest nguồn vẫn đọc từ `data/reference/source_manifest.json`. Thư m
 
 | Workflow | Thực hiện |
 |---|---|
+| `pipeline.yml` | CSV đầy đủ → HDFS 3 DataNode → Airflow/Spark/ML/web; Kafka nhận Silver rồi thử retry |
 | `spark-web-tests.yml` | Spark/ML fixture, API, JavaScript, export snapshot và streaming recovery |
 | `airflow-dag-tests.yml` | Runner receipt/retry/timeout, cache offline và parse DAG bằng SDK pin |
 | `repository-quality.yml` | JSON, quy tắc file Git, giới hạn file, PowerShell syntax và test summary |
@@ -49,6 +51,8 @@ Manifest nguồn vẫn đọc từ `data/reference/source_manifest.json`. Thư m
 
 CI dọn báo cáo fixture cũ trước khi chạy, tee log với bash pipefail, viết Job
 Summary và upload artifact 14 ngày. Missing/unreadable report không được coi là
-PASS. CI không dựng HDFS/Kafka hoặc xử lý toàn bộ 90.530 trận. Báo cáo/ảnh đã
-ghi nhận được xuất bằng workflow riêng; xem [cách tải evidence](EVIDENCE_DOWNLOADS.md).
+PASS. Ba bộ fixture không dựng HDFS/Kafka. `pipeline.yml` dựng runtime native
+riêng trên runner, xử lý CSV đầy đủ và xuất Silver/Gold/báo cáo; xem
+[cách chạy tích hợp](GITHUB_ACTIONS.md). Báo cáo/ảnh WSL đã ghi nhận được xuất
+thủ công bằng workflow bản lưu; xem [cách tải evidence](EVIDENCE_DOWNLOADS.md).
 So sánh với Chicago nằm trong [báo cáo đối chiếu](PROPOSAL_COMPLETION_REVIEW.md).

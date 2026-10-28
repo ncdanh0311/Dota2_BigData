@@ -37,6 +37,7 @@ tests/             Fixture và kiểm thử tự động
 data/reference/    Schema/manifest nguồn, không chứa dataset lớn
 docs/              Hướng dẫn vận hành và đối chiếu đề xuất
 .github/workflows/ Kiểm thử CI và xuất gói bằng chứng tải về
+ci/                Chạy pipeline tích hợp trên GitHub và xuất Summary/Artifacts
 ```
 
 `evidence/` và `artifacts/` chỉ sinh ở local/CI và được Git bỏ qua. Dataset,
@@ -89,6 +90,10 @@ inference qua hai topic riêng chưa được triển khai. Chi tiết nằm tro
 Mở [GitHub Actions](https://github.com/ncdanh0311/Dota2_BigData/actions), chọn
 lượt chạy và tải ZIP tại **Artifacts**, giống cách xem bằng chứng ở repo tham khảo.
 
+- [`pipeline.yml`](https://github.com/ncdanh0311/Dota2_BigData/actions/workflows/pipeline.yml):
+  CSV đầy đủ → HDFS ba DataNode → Airflow → Silver/Gold/ML/website, rồi Kafka
+  retry/Structured Streaming. Summary tiếng Việt có bảng số liệu và task;
+  tải riêng `bang-chung-*`, `bao-cao-*`, `silver-parquet-*`, `checkpoint-kafka-*`.
 - `bang-chung-ci-*`: báo cáo/log fixture do lượt CI vừa chạy sinh ra.
 - `bang-chung-do-an-da-ghi-nhan-*`: báo cáo/ảnh đã ghi nhận trước đây, đóng gói
   từ revision gốc và ghi rõ nguồn; không phải CI chạy lại toàn bộ dữ liệu.
@@ -97,18 +102,25 @@ Xem [cách tải và phân biệt các gói](docs/EVIDENCE_DOWNLOADS.md). Mỗi 
 manifest, nguồn/revision và SHA-256; giữ 14 ngày. Evidence local hiện có được giữ
 nguyên khi bỏ theo dõi Git.
 
+Xem [luồng chạy và cách đọc Actions](docs/GITHUB_ACTIONS.md). Kết quả tích hợp
+được tạo trên runner; workflow bản lưu WSL chỉ chạy thủ công và ghi rõ nguồn cũ.
+
 ## Kiểm thử và dependency
 
 | Workflow | Nội dung |
 |---|---|
+| `pipeline.yml` | Pipeline tích hợp đầy đủ; batch trước, Kafka nhận Silver cùng run sau |
 | `spark-web-tests.yml` | Fixture Spark/ML/web/streaming |
 | `airflow-dag-tests.yml` | Runner và parse DAG trong môi trường Airflow riêng |
 | `repository-quality.yml` | JSON, file Git, PowerShell và đóng gói evidence |
 | `publish-recorded-evidence.yml` | Xuất lại bản lưu báo cáo/ảnh để tải từ Actions |
 
-Ba CI kiểm thử chạy khi push main/PR hoặc thủ công; không cần WSL/HDFS/Kafka.
+Ba CI fixture chạy khi push main/PR hoặc thủ công; không cần WSL/HDFS/Kafka.
+Pipeline tích hợp tự dựng các dịch vụ trên runner khi push mã main hoặc chạy
+thủ công; không chạy lại khi chỉ sửa tài liệu.
 Lệnh kiểm thử trên Windows: `.\scripts\run-tests.ps1`.
 
 Dependency nằm trong `requirements/spark.txt`, `web.txt`, `web-test.txt`,
-`streaming.txt`, `airflow.txt`. Ví dụ: `pip install -r requirements/web.txt`.
+`streaming.txt`, `airflow.txt`; `ci.txt` chỉ thêm trình duyệt kiểm chứng trên CI.
+Ví dụ: `pip install -r requirements/web.txt`.
 Airflow dùng venv riêng và constraints chính thức; không trộn vào môi trường Spark.

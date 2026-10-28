@@ -66,11 +66,11 @@ hơn baseline. Chạy được hệ thống không đồng nghĩa dự đoán m�
 
 | Tham khảo | Quyết định cho Dota 2 |
 |---|---|
-| CI dựng Docker HDFS/Kafka/Postgres, chạy Airflow thật | Giữ CI fixture; chưa CI toàn cụm. Không thêm workflow cần hạ tầng chưa có hoặc dùng đường dẫn WSL trên GitHub runner. |
+| CI dựng Docker HDFS/Kafka/Postgres, chạy Airflow thật | Bổ sung `pipeline.yml` chạy HDFS 3 DataNode, Kafka và Airflow thật trên runner bằng runtime native Linux riêng. Tái sử dụng job Dota, không dùng đường dẫn storage WSL. |
 | Log/artifact cả khi lỗi | Bổ sung tee log, upload `if: always()`. |
 | Run ID/attempt, retention | Tên artifact chứa run ID/attempt, giữ 14 ngày. |
-| Job Summary | Bổ sung tóm tắt nêu đúng scope fixture; missing/corrupt report không được coi là PASS. |
-| Không hủy pipeline dữ liệu khi push mới | Giữ cancel-in-progress cho fixture CI độc lập; không áp dụng cho job dữ liệu WSL. |
+| Job Summary | Tiếng Việt, bảng số liệu Silver/Gold/model và trạng thái task; phân biệt `github_integration`, fixture và bản lưu cũ. Missing/corrupt report không được coi là PASS. |
+| Không hủy pipeline dữ liệu khi push mới | Pipeline tích hợp đặt `cancel-in-progress: false`; fixture CI độc lập vẫn có thể hủy bản cũ. |
 | Bỏ toàn bộ evidence | Đã áp dụng theo yêu cầu mới: evidence local bị Git bỏ qua; báo cáo/ảnh tải qua Actions Artifacts. |
 
 Giữ source DAG/workflow/config và `data/reference/` trong Git. Bổ sung ignore
@@ -80,6 +80,8 @@ logs. Không copy ignore đặc thù `f.txt` hoặc bật tất cả người d�
 Chính sách evidence đã đổi theo yêu cầu tiếp theo của người dùng: không còn
 commit báo cáo/ảnh trên main. Workflow bản lưu đọc revision gốc để xuất gói
 download, phân biệt với fixture mới; xem [hướng dẫn tải](EVIDENCE_DOWNLOADS.md).
+Pipeline tích hợp mới công bố riêng Silver, báo cáo và checkpoint được tạo
+trên runner; xem [cách chạy Actions](GITHUB_ACTIONS.md).
 
 ## Nên bổ sung tiếp
 

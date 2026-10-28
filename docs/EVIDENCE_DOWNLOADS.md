@@ -15,6 +15,9 @@ repo mới chỉ lấy mã nguồn/cấu hình/tài liệu; người xem tải b
 
 | Gói | Nguồn và nội dung |
 |---|---|
+| `bang-chung-batch-*`, `bang-chung-kafka-*` | Pipeline vừa chạy trên runner với HDFS/Kafka/Airflow thật: ảnh, log và receipts |
+| `bao-cao-phan-tich-*`, `bao-cao-kafka-*` | Bảng Gold, metrics, snapshot website và thống kê replay |
+| `silver-parquet-*`, `checkpoint-kafka-*` | Silver đã đọc lại; Bronze, catalog và checkpoint sau replay/retry |
 | `bang-chung-ci-spark-web-<run>-<attempt>` | Fixture vừa chạy: normalization, Gold, ML, API/export/display, checkpoint recovery; JSON và log |
 | `bang-chung-ci-airflow-<run>-<attempt>` | Fixture runner và parse DAG vừa chạy; JSON và log |
 | `bang-chung-ci-repository-<run>-<attempt>` | Kiểm tra JSON/file Git/PowerShell và packaging; log |
@@ -22,9 +25,9 @@ repo mới chỉ lấy mã nguồn/cấu hình/tài liệu; người xem tải b
 
 ## Bằng chứng đồ án đã ghi nhận
 
-Mở workflow [Publish recorded project evidence](https://github.com/ncdanh0311/Dota2_BigData/actions/workflows/publish-recorded-evidence.yml).
-Workflow chạy khi công cụ đóng gói được cập nhật, hoặc chọn **Run workflow** để
-xuất lại ZIP. Mặc định lấy thư mục evidence từ revision đã kiểm chứng trước
+Mở workflow [Bản lưu — xuất bằng chứng WSL trước đây](https://github.com/ncdanh0311/Dota2_BigData/actions/workflows/publish-recorded-evidence.yml).
+Chọn **Run workflow** để xuất lại ZIP. Workflow bản lưu chỉ chạy thủ công,
+mặc định lấy thư mục evidence từ revision đã kiểm chứng trước
 khi chuyển sang chính sách ignore:
 
 ```text
@@ -40,7 +43,14 @@ runtime của CI mới. Từng báo cáo vẫn ghi đúng nguồn fixture hoặc
 Code/evidence cũ vẫn truy vết được trong lịch sử Git; ở nhánh main hiện tại,
 evidence không còn được theo dõi. Không rewrite hoặc xóa lịch sử để đạt việc này.
 
-## Bằng chứng CI mới
+## Bằng chứng tích hợp mới
+
+Workflow [pipeline.yml](https://github.com/ncdanh0311/Dota2_BigData/actions/workflows/pipeline.yml)
+chạy lại CSV đầy đủ và DAG thật trên GitHub runner; nguồn `github_integration`.
+Các gói cùng run gồm bằng chứng, báo cáo, Silver và checkpoint Kafka; xem
+[chi tiết luồng chạy và định dạng Summary](GITHUB_ACTIONS.md).
+
+## Bằng chứng fixture mới
 
 Ba workflow kiểm thử tạo lại báo cáo trên runner rồi đóng gói. Báo cáo cũ được
 dọn trước khi test. Nếu test lỗi hoặc thiếu báo cáo, gói ghi
@@ -52,9 +62,11 @@ cho các action Node 20 cũ trong ảnh tham khảo. Không cần Node.js để 
 
 ## Dữ liệu và artifact lớn
 
-Các gói evidence gồm báo cáo/ảnh/log, không gồm CSV 223 MB, Parquet nguồn,
-checkpoint đầy đủ hoặc model native. Chúng vẫn nằm trong HDFS/local artifact.
-Máy clone mới cần chuẩn bị dữ liệu/model theo hướng dẫn nếu muốn chạy website.
+Gói bằng chứng fixture/bản lưu gồm báo cáo/ảnh/log. Pipeline tích hợp có thêm
+Silver/Gold Parquet, checkpoint và snapshot website trong các gói riêng; chúng
+chỉ nằm trong Actions Artifacts, không được commit vào Git. CSV 223 MB và model
+native đầy đủ không đóng vào gói tải về. Khi dùng lại snapshot, kiểm tra
+manifest/checksum; máy clone mới vẫn có thể chuẩn bị dữ liệu theo hướng dẫn.
 
 Những lần chạy WSL mới tiếp tục ghi `evidence/` local. Workflow bản lưu trên chỉ
 công bố bằng chứng có ở revision được chọn; nó không đọc được ổ đĩa WSL của
