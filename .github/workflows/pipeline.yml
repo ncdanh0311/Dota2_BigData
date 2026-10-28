@@ -1,0 +1,155 @@
+name: Dota 2 — HDFS, Spark ML và Kafka qua Airflow
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['docs/**', '**.md']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dota-integration-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  SPARK_LOCAL_IP: 127.0.0.1
+  PYTHONUNBUFFERED: '1'
+  PYTHONIOENCODING: utf-8
+
+jobs:
+  batch:
+    name: CSV → HDFS 3 DataNode → Airflow → Silver → Gold → ML → Web
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Lấy mã nguồn và manifest dữ liệu
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-integration
+      - name: Tải CSV Zenodo đầy đủ, kiểm tra SHA-256 và nạp HDFS
+        timeout-minutes: 15
+        run: |
+          set -o pipefail
+          python -m ci.prepare_runtime source 2>&1 | tee artifacts/integration/logs/05-source-download.log
+          python scripts/hdfs_cluster_manager.py ingest 2>&1 | tee artifacts/integration/logs/06-source-upload.log
+          python scripts/hdfs_cluster_manager.py verify 2>&1 | tee artifacts/integration/logs/07-hdfs-verification.log
+      - name: Thử mất một DataNode và đọc lại dữ liệu
+        run: python scripts/hdfs_cluster_manager.py failure-test 2>&1 | tee artifacts/integration/logs/08-datanode-failure.log
+      - name: Airflow thử preflight lỗi rồi chạy đủ sáu task batch
+        run: python -m ci.run_pipeline batch 2>&1 | tee artifacts/integration/logs/09-batch-orchestration.log
+      - name: Chụp HDFS, website và kiểm chứng dự đoán trên trình duyệt
+        run: python -m ci.capture_evidence --kind batch 2>&1 | tee artifacts/integration/logs/10-browser.log
+      - name: Thu thập log và bằng chứng kể cả khi lỗi
+        if: always()
+        run: |
+          python -m ci.publish_results collect
+          python -m ci.publish_results index --kind batch --job-status '${{ job.status }}'
+      - name: Xuất bằng chứng batch, ảnh và log task
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: bang-chung-batch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/evidence
+          retention-days: 14
+          if-no-files-found: error
+      - name: Xuất bảng Gold, metrics, báo cáo và snapshot website
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: bao-cao-phan-tich-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/reports
+          retention-days: 14
+          if-no-files-found: error
+      - name: Xuất Silver Parquet đã đọc lại để tải và chuyển sang Kafka
+        if: success()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: silver-parquet-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/silver
+          retention-days: 14
+          if-no-files-found: error
+      - name: Ghi Summary tiếng Việt bằng kết quả vừa chạy
+        if: always()
+        run: python -m ci.publish_results summary --kind batch --job-status '${{ job.status }}'
+      - name: Dọn dịch vụ trên runner
+        if: always()
+        run: |
+          python orchestration/airflow_runtime_manager.py stop || true
+          python scripts/hdfs_cluster_manager.py stop || true
+
+  kafka:
+    name: Silver → Kafka → Airflow retry → Streaming → Báo cáo
+    needs: batch
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/prepare-integration
+      - name: Nhận Silver của đúng lượt batch phía trước
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: silver-parquet-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/baseline/silver
+      - name: Nhận báo cáo và website của cùng lượt batch
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: bao-cao-phan-tich-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/baseline/reports
+      - name: Cài và khởi động Kafka KRaft thật
+        run: |
+          set -o pipefail
+          python streaming/kafka_broker_manager.py setup 2>&1 | tee artifacts/integration/logs/05-kafka-install.log
+          python streaming/kafka_broker_manager.py start 2>&1 | tee artifacts/integration/logs/06-kafka-start.log
+      - name: Airflow chạy replay 1.000 trận, thử retry và kiểm chứng 2.000 records
+        run: python -m ci.run_pipeline replay 2>&1 | tee artifacts/integration/logs/07-replay-orchestration.log
+      - name: Chụp website replay và trạng thái task Airflow
+        run: python -m ci.capture_evidence --kind replay 2>&1 | tee artifacts/integration/logs/08-browser.log
+      - name: Thu thập log và lập manifest từng gói
+        if: always()
+        run: |
+          python -m ci.publish_results collect
+          python -m ci.publish_results index --kind replay --job-status '${{ job.status }}'
+      - name: Xuất bằng chứng Kafka, ảnh và log Airflow
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: bang-chung-kafka-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/evidence
+          retention-days: 14
+          if-no-files-found: error
+      - name: Xuất báo cáo thống kê replay
+        if: always()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: bao-cao-kafka-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/reports
+          retention-days: 14
+          if-no-files-found: error
+      - name: Xuất Bronze, checkpoint HDFS và catalog sau retry
+        if: success()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: checkpoint-kafka-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/integration/streaming
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: error
+      - name: Ghi Summary thống kê và kết quả retry
+        if: always()
+        run: python -m ci.publish_results summary --kind replay --job-status '${{ job.status }}'
+      - name: Dọn dịch vụ trên runner
+        if: always()
+        run: |
+          python orchestration/airflow_runtime_manager.py stop || true
+          python streaming/kafka_broker_manager.py stop || true
+          python scripts/hdfs_cluster_manager.py stop || true

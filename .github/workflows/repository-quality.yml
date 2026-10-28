@@ -1,4 +1,4 @@
-name: Repository checks
+name: Kiểm tra mã nguồn và đóng gói bằng chứng
 
 on:
   push:
@@ -19,6 +19,7 @@ defaults:
 
 jobs:
   repository:
+    name: JSON, PowerShell và hợp đồng artifact
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -37,6 +38,7 @@ jobs:
         run: |
           python tests/test_ci_summary.py 2>&1 | tee artifacts/ci/repository/summary-tests.log
           python tests/test_evidence_packaging.py 2>&1 | tee artifacts/ci/repository/evidence-packaging-tests.log
+          python tests/test_integration_reporting.py 2>&1 | tee artifacts/ci/repository/integration-reporting-tests.log
       - name: Parse PowerShell scripts without launching WSL or services
         shell: pwsh
         run: |

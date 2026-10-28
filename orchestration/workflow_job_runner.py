@@ -13,6 +13,7 @@ from urllib.parse import urlsplit
 import uuid
 
 from web.snapshot import PROJECT, load_snapshot, safe_id
+from orchestration.runtime_config import load_config
 
 RAW='hdfs://localhost:9000/dota/raw/zenodo_v3/DB_03_Live_Features_ANALYSIS_v3.csv'
 SILVER='hdfs://localhost:9000/dota/processed/match_drafts_v1/'
@@ -56,7 +57,8 @@ def validate_params(kind,params):
     if split.scheme!='hdfs' or split.netloc!='localhost:9000' or not split.path.startswith(prefix) or '..' in Path(split.path).parts:
         raise ValueError('Input must be a named project HDFS URI.')
     if kind=='batch':
-        safe_id(result['assets_snapshot_id'])
+        if result['assets_snapshot_id']:
+            safe_id(result['assets_snapshot_id'])
     elif (type(result['limit']) is not int or not 1<=result['limit']<=90530 or
           type(result['rate']) not in (int,float) or not 0<result['rate']<=1000 or
           type(result['demo_fail_once']) is not bool):
@@ -69,7 +71,9 @@ def clean_env(runtime):
     env.update(JAVA_HOME=runtime['java_home'],HADOOP_HOME=runtime['hadoop_home'],
         HADOOP_CONF_DIR=runtime['cluster_root']+'/conf/namenode',SPARK_LOCAL_IP='127.0.0.1',
         PYSPARK_PYTHON=runtime['spark_python'],PYSPARK_DRIVER_PYTHON=runtime['spark_python'],
-        PATH=runtime['java_home']+'/bin:/usr/bin:/bin:/usr/local/bin:/home/danh/.local/bin')
+        PATH=os.pathsep.join(dict.fromkeys([runtime['java_home']+'/bin',
+            str(Path(runtime['spark_python']).parent), str(Path(runtime['spark_submit']).parent),
+            runtime['hadoop_home']+'/bin', '/usr/bin', '/bin', '/usr/local/bin'])))
     return env
 
 
@@ -80,7 +84,7 @@ class Runner:
         self.params=validate_params(kind,params)
         self.execution_id=identity(context['dag_id'],context['run_id'])
         self.directory=PROJECT/'artifacts/airflow'/context['dag_id']/self.execution_id
-        self.runtime=read(PROJECT/'configs/hdfs-wsl.json')
+        self.runtime=load_config('hdfs', PROJECT)
         self.env=clean_env(self.runtime)
 
     def command(self,argv,attempt):
@@ -115,7 +119,7 @@ class Runner:
             '--conf','spark.hadoop.ipc.client.connect.max.retries=1',
             '--conf','spark.hadoop.ipc.client.connect.max.retries.on.timeouts=1']
         if kafka:
-            config=read(PROJECT/'configs/kafka-wsl.json')
+            config=load_config('kafka', PROJECT)
             provided='org.apache.hadoop:hadoop-client-runtime,org.apache.hadoop:hadoop-client-api,org.scala-lang:scala-library,org.scala-lang.modules:scala-parallel-collections_2.13,org.slf4j:slf4j-api,org.xerial.snappy:snappy-java,org.lz4:lz4-java,at.yawk.lz4:lz4-java,com.github.luben:zstd-jni'
             argv+=['--conf','spark.jars.ivySettings='+str(PROJECT/'configs/ivy-kafka.xml'),
                    '--exclude-packages',provided,'--packages',config['connector']]
@@ -170,7 +174,7 @@ class Runner:
                     pass
             source=self.params['raw_input' if self.kind=='batch' else 'silver_input']
             self.command([self.runtime['hadoop_home']+'/bin/hdfs','dfs','-test','-e',source],attempt)
-            if self.kind=='batch':
+            if self.kind=='batch' and self.params['assets_snapshot_id']:
                 load_snapshot(PROJECT/'artifacts/web'/self.params['assets_snapshot_id'])
             write(self.directory/'run_plan.json',{'dag_id':self.context['dag_id'],'run_id':self.context['run_id'],
                 'execution_id':self.execution_id,'kind':self.kind,'params':self.params})
@@ -199,9 +203,11 @@ class Runner:
                 raise ValueError('Model lineage failed.')
             return {'run_id':attempt,'manifest_path':str(path),'silver_uri':silver,'fingerprint':manifest['input_fingerprint_sha256']}
         if stage=='export_snapshot':
-            self.spark('web/export_snapshot.py',['--gold-run-id',upstream['analyze_gold']['run_id'],
-                '--model-run-id',upstream['train_lr']['run_id'],'--snapshot-id',attempt,
-                '--hero-assets-from',str(PROJECT/'artifacts/web'/self.params['assets_snapshot_id'])],attempt)
+            args=['--gold-run-id',upstream['analyze_gold']['run_id'],
+                '--model-run-id',upstream['train_lr']['run_id'],'--snapshot-id',attempt]
+            if self.params['assets_snapshot_id']:
+                args+=['--hero-assets-from',str(PROJECT/'artifacts/web'/self.params['assets_snapshot_id'])]
+            self.spark('web/export_snapshot.py',args,attempt)
             snapshot=load_snapshot(PROJECT/'artifacts/web'/attempt)
             if snapshot['manifest']['input_fingerprint_sha256']!=upstream['train_lr']['fingerprint']:
                 raise ValueError('Website snapshot source differs.')
@@ -216,7 +222,7 @@ class Runner:
             replay_id=upstream['prepare_replay']['replay_run_id']
             evidence=PROJECT/'evidence/step6'/replay_id
             before=set(evidence.glob('producer-*.json')) if evidence.exists() else set()
-            self.command([str(PROJECT/'.venv-streaming/bin/python'),str(PROJECT/'streaming/publish_match_events.py'),
+            self.command([os.environ.get('DOTA_STREAMING_PYTHON',str(PROJECT/'.venv-streaming/bin/python')),str(PROJECT/'streaming/publish_match_events.py'),
                 '--run-id',replay_id,'--rate',str(self.params['rate'])],attempt)
             added=set(evidence.glob('producer-*.json'))-before
             if len(added)!=1:

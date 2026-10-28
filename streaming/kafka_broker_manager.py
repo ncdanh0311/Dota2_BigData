@@ -16,9 +16,10 @@ import urllib.request
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from web.snapshot import PROJECT
+from orchestration.runtime_config import load_config
 
-CONFIG = json.loads((PROJECT/'configs/kafka-wsl.json').read_bytes())
-RUNTIME = json.loads((PROJECT/'configs/hdfs-wsl.json').read_bytes())
+CONFIG = load_config('kafka')
+RUNTIME = load_config('hdfs')
 ROOT = Path(CONFIG['root'])
 HOME = ROOT/f'kafka_2.13-{CONFIG["version"]}'
 SERVER_CONFIG = ROOT/'server.properties'

@@ -1,4 +1,4 @@
-name: Spark and web rule checks
+name: Kiểm thử Spark, ML, website và streaming
 
 on:
   push:
@@ -19,6 +19,7 @@ defaults:
 
 jobs:
   rules:
+    name: Fixture — Silver, Gold, mô hình và API
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:

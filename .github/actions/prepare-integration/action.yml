@@ -1,0 +1,42 @@
+name: Chuẩn bị runtime Big Data độc lập
+description: Python/Spark, Java, HDFS ba DataNode và Airflow trong RUNNER_TEMP
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v7.1.0
+      with:
+        python-version: '3.11'
+        cache: pip
+        cache-dependency-path: |
+          requirements/spark.txt
+          requirements/web.txt
+          requirements/web-test.txt
+          requirements/streaming.txt
+          requirements/ci.txt
+          requirements/airflow.txt
+    - uses: actions/setup-java@v6.1.0
+      with:
+        distribution: temurin
+        java-version: '17'
+    - name: Cài Spark, web, Kafka client và trình duyệt kiểm chứng
+      shell: bash
+      run: |
+        mkdir -p artifacts/integration/{logs,reports,screenshots}
+        set -o pipefail
+        python -m pip install -r requirements/spark.txt -r requirements/web-test.txt -r requirements/streaming.txt -r requirements/ci.txt 2>&1 | tee artifacts/integration/logs/00-dependencies.log
+        python -m pip check
+        google-chrome --version
+    - name: Tải Hadoop và kiểm tra SHA-512 chính thức
+      shell: bash
+      run: python -m ci.prepare_runtime bootstrap 2>&1 | tee artifacts/integration/logs/01-hadoop-install.log
+    - name: Dựng HDFS ba DataNode trong runner
+      shell: bash
+      run: |
+        set -o pipefail
+        python scripts/hdfs_cluster_manager.py setup 2>&1 | tee artifacts/integration/logs/02-hdfs-config.log
+        python scripts/hdfs_cluster_manager.py start 2>&1 | tee artifacts/integration/logs/03-hdfs-start.log
+    - name: Cài và khởi động Airflow scheduler thật
+      shell: bash
+      run: |
+        set -o pipefail
+        python -m ci.prepare_runtime airflow 2>&1 | tee artifacts/integration/logs/04-airflow-install.log

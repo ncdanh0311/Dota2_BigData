@@ -1,4 +1,4 @@
-name: Airflow rule checks
+name: Kiểm thử DAG và job runner Airflow
 
 on:
   push:
@@ -19,6 +19,7 @@ defaults:
 
 jobs:
   airflow:
+    name: Fixture — task graph, retry và receipt
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:

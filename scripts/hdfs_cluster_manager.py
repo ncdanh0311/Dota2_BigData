@@ -11,11 +11,14 @@ import re
 import shutil
 import socket
 import subprocess
+import sys
 import time
 import xml.etree.ElementTree as ET
 
 PROJECT = Path(__file__).resolve().parents[1]
-RUNTIME = json.loads((PROJECT / 'configs' / 'hdfs-wsl.json').read_text(encoding='utf-8'))
+sys.path.insert(0, str(PROJECT))
+from orchestration.runtime_config import load_config
+RUNTIME = load_config('hdfs')
 ROOT = Path(RUNTIME['cluster_root'])
 HADOOP = Path(RUNTIME['hadoop_home'])
 JAVA = RUNTIME['java_home']

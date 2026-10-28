@@ -13,6 +13,9 @@ try {
     $packageTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_evidence_packaging.py') -Runtime $runtime
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $packageTest
     if ($LASTEXITCODE -ne 0) { throw 'Evidence packaging checks failed.' }
+    $integrationTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_integration_reporting.py') -Runtime $runtime
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $integrationTest
+    if ($LASTEXITCODE -ne 0) { throw 'Integration report checks failed.' }
     foreach ($testName in @('test_prepare_match_drafts.py', 'test_draft_stats.py',
                             'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py', 'test_streaming_checkpoint_recovery.py')) {
       $testPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot "tests\$testName") -Runtime $runtime

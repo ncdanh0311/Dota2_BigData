@@ -1,11 +1,6 @@
-name: Publish recorded project evidence
+name: Bản lưu — xuất bằng chứng WSL trước đây
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/publish-recorded-evidence.yml'
-      - 'scripts/package_evidence.py'
   workflow_dispatch:
     inputs:
       evidence_ref:

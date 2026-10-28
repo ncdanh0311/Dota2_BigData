@@ -14,8 +14,9 @@ import urllib.request
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from web.snapshot import PROJECT
+from orchestration.runtime_config import load_config
 
-CONFIG=json.loads((PROJECT/'configs/airflow-wsl.json').read_bytes())
+CONFIG=load_config('airflow')
 ROOT=Path(CONFIG['root'])
 VENV=ROOT/'venv'
 RUNTIME=ROOT/'runtime'
@@ -46,13 +47,14 @@ def setup(constraints):
     ROOT.chmod(0o700)
     RUNTIME.chmod(0o700)
     if not (VENV/'bin/python').exists():
-        subprocess.run(['/usr/bin/python3','-m','venv',str(VENV)],check=True)
+        subprocess.run([sys.executable,'-m','venv',str(VENV)],check=True)
     # The Ubuntu venv bundled pip predates Python 3.14 and mis-resolves its wheel constraints.
     subprocess.run([str(VENV/'bin/python'),'-m','pip','install','pip==26.2.2'],check=True)
     data=Path(constraints).read_bytes()
-    (ROOT/'constraints-3.14.txt').write_bytes(data)
+    constraint_path=ROOT/f'constraints-{sys.version_info.major}.{sys.version_info.minor}.txt'
+    constraint_path.write_bytes(data)
     subprocess.run([str(VENV/'bin/python'),'-m','pip','install','-r',str(PROJECT/'requirements/airflow.txt'),
-        '--constraint',str(ROOT/'constraints-3.14.txt')],check=True)
+        '--constraint',str(constraint_path)],check=True)
     subprocess.run([str(VENV/'bin/python'),'-m','pip','check'],check=True)
     cli('db','migrate')
     cli('pools','set',CONFIG['spark_pool'],'1','One Spark job at a time')
