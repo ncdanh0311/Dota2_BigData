@@ -1,7 +1,7 @@
 # Kế hoạch phân tích Dota 2 bằng Spark SQL
 
 **Trạng thái: đã triển khai bước 3.** Xem [hướng dẫn chạy và kiểm chứng](STEP3_DRAFT_ANALYTICS.md)
-và [báo cáo thực tế](../evidence/step3/step3-20261026-v2/report.md).
+và [báo cáo thực tế](EVIDENCE_DOWNLOADS.md).
 Tham khảo phương pháp trong `PREMIER_LEAGUE_ANALYSIS_PLAN.md` do người dùng
 cung cấp: chốt câu hỏi, đơn vị phân tích, công thức, coverage, output contract
 và kiểm chứng trước khi hiển thị trên website.
@@ -149,7 +149,7 @@ vẫn hiển thị `Hero <id>`. Không dùng metadata hiện tại để suy di�
    không so sánh bằng thứ tự vật lý của Parquet.
 7. Xuất báo cáo và ca so sánh năm hero được chọn nhiều nhất, xác định từ dữ
    liệu thật; không chọn trước một hero rồi khẳng định nó mạnh nhất.
-8. Thêm `analyze-hero-statistics.ps1`, tests và tài liệu kết quả khi bắt đầu triển khai bước 3.
+8. Thêm `commands/analyze-hero-statistics.ps1`, tests và tài liệu kết quả khi bắt đầu triển khai bước 3.
 
 Ưu tiên báo cáo bảng trước. Khi làm website, các biểu đồ nên có: tỷ lệ thắng
 hai bên, top 20 lượt chọn, pick rate so với win rate, so sánh hero theo bên và

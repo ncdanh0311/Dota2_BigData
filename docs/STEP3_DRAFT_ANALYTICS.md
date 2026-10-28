@@ -1,17 +1,19 @@
 # Bước 3 — Phân tích đội hình bằng Spark SQL
 
+> Các đường dẫn evidence là output local bị Git bỏ qua. Tải báo cáo/ảnh từ [Actions Artifacts](EVIDENCE_DOWNLOADS.md).
+
 ## Chạy từ PowerShell
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\start-hadoop.ps1
-.\analyze-hero-statistics.ps1
+.\commands\start-hadoop.ps1
+.\commands\analyze-hero-statistics.ps1
 ```
 
 Mỗi lần chạy mặc định tạo run ID UTC kèm hậu tố ngẫu nhiên. Có thể chỉ định:
 
 ```powershell
-.\analyze-hero-statistics.ps1 -RunId demo-analysis-01 -MinHeroMatches 100 -MinPairMatches 100
+.\commands\analyze-hero-statistics.ps1 -RunId demo-analysis-01 -MinHeroMatches 100 -MinPairMatches 100
 ```
 
 Các tham số khác: `-InputPath` và `-OutputRoot`. CLI Python tương ứng nhận
@@ -182,9 +184,9 @@ Snappy cho mỗi bảng. Run `_COMPLETED` nằm tại:
 hdfs://localhost:9000/dota/analytics/draft_stats_v1/step3-20261026-v2/
 ```
 
-Xem [báo cáo top hero/cặp](../evidence/step3/step3-20261026-v2/report.md),
-[quality checks](../evidence/step3/step3-20261026-v2/quality_checks.json) và
-[kiểm thử fixture](../evidence/step3/rule_tests.json).
+Xem [báo cáo top hero/cặp](EVIDENCE_DOWNLOADS.md),
+[quality checks](EVIDENCE_DOWNLOADS.md) và
+[kiểm thử fixture](EVIDENCE_DOWNLOADS.md).
 
 Run đầu `step3-20261026-v1` có số liệu thống kê đúng nhưng inventory rỗng do
 Spark `inputFiles()` trả về rỗng sau cache. Đã bỏ marker hoàn tất, thay bằng

@@ -1,5 +1,7 @@
 # Bước 5 — Website DotaLens
 
+> Các đường dẫn evidence là output local bị Git bỏ qua. Tải báo cáo/ảnh từ [Actions Artifacts](EVIDENCE_DOWNLOADS.md).
+
 Website tiếng Việt chạy local bằng FastAPI + Uvicorn, HTML/CSS/JavaScript thuần.
 Hai màn hình: thống kê Gold và chọn 10 hero để dự đoán bằng bundle bước 4.
 Không build frontend; chạy website không cần Node.js, Spark, Java hoặc HDFS.
@@ -11,7 +13,7 @@ Snapshot `web-demo-v1` đã được xuất và kiểm chứng từ dữ liệu 
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\start-web.ps1 -SnapshotId web-demo-v1
+.\commands\start-web.ps1 -SnapshotId web-demo-v1
 ```
 
 Mở [http://localhost:8000](http://localhost:8000). Script chạy foreground;
@@ -19,7 +21,7 @@ Mở [http://localhost:8000](http://localhost:8000). Script chạy foreground;
 Server chỉ bind `127.0.0.1` trong WSL, không triển khai Internet.
 HDFS đã được dừng sau phép thử độc lập; bật lại khi cần chạy Spark job.
 
-Lần đầu, script tạo `.venv-web` và cài `requirements-web.txt` nếu chưa có venv.
+Lần đầu, script tạo `.venv-web` và cài `requirements/web.txt` nếu chưa có venv.
 Giai đoạn cài dependency cần Internet; khi đã chuẩn bị xong thì không cần.
 Các bản đã kiểm chứng: FastAPI 0.142.2, Uvicorn 0.54.0, HTTPX 0.28.1 cho tests.
 
@@ -30,10 +32,10 @@ Clone repo trên máy khác cần dựng HDFS/dữ liệu bước 1–4 rồi ch
 ## Chuẩn bị snapshot mới
 
 ```powershell
-.\start-hadoop.ps1
-.\export-web-snapshot.ps1 -GoldRunId step3-20261026-v2 `
+.\commands\start-hadoop.ps1
+.\commands\export-web-snapshot.ps1 -GoldRunId step3-20261026-v2 `
   -ModelRunId step4-20261027-v1 -SnapshotId web-demo-v2
-.\start-web.ps1 -SnapshotId web-demo-v2
+.\commands\start-web.ps1 -SnapshotId web-demo-v2
 ```
 
 Không truyền `SnapshotId` thì exporter tự tạo ID từ UTC và hậu tố ngẫu nhiên.
@@ -134,10 +136,10 @@ Unit test JavaScript kiểm tra thứ tự khi bằng chỉ số, lọc mẫu, p
 không dùng để build hoặc chạy website. Script bỏ qua check này nếu máy không có Node.
 
 CI chạy fixtures và lưu JSON kiểm thử; không tải CDN hoặc kết nối HDFS.
-Kiểm chứng thực tế lưu trong [evidence bước 5](../evidence/step5/web-demo-v1/):
+Kiểm chứng thực tế lưu trong [evidence bước 5](EVIDENCE_DOWNLOADS.md):
 export, runtime, ảnh theo hero, thao tác trình duyệt desktop/mobile và bốn PNG.
 Trong phép thử runtime, cổng HDFS 9000 được xác nhận đã tắt và mọi kết nối socket
 bị chặn trong tiến trình kiểm thử. Cấu hình mạng của Windows/WSL không bị thay đổi.
 
-![Thống kê desktop](../evidence/step5/web-demo-v1/dashboard-desktop.png)
-![Dự đoán desktop](../evidence/step5/web-demo-v1/draft-desktop.png)
+[Tải ảnh thống kê desktop](EVIDENCE_DOWNLOADS.md) ·
+[Tải ảnh dự đoán desktop](EVIDENCE_DOWNLOADS.md)

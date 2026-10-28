@@ -1,5 +1,7 @@
 # Bước 6 — Kafka replay và Spark Structured Streaming
 
+> Các đường dẫn evidence là output local bị Git bỏ qua. Tải báo cáo/ảnh từ [Actions Artifacts](EVIDENCE_DOWNLOADS.md).
+
 Đã triển khai và nghiệm thu local ngày 27/10/2026. Workflow kiểm thử fixture
 được tích hợp vào GitHub Actions; kết quả replay thật được lưu riêng trong evidence.
 
@@ -34,17 +36,17 @@ Không tuyên bố đây là triển khai tối ưu cho luồng không giới h�
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\install-kafka.ps1
-.\start-hadoop.ps1
-.\start-kafka.ps1
+.\commands\install-kafka.ps1
+.\commands\start-hadoop.ps1
+.\commands\start-kafka.ps1
 
 # Chọn run ID mới; replay-demo-v1 đã có trên máy hiện tại.
-.\prepare-match-replay.ps1 -RunId replay-demo-v2 -Limit 1000
+.\commands\prepare-match-replay.ps1 -RunId replay-demo-v2 -Limit 1000
 ```
 
 Setup tải archive Kafka chính thức qua Windows từ `dlcdn.apache.org`, kiểm SHA-512
 trong WSL trước giải nén, cài producer và kiểm tra connector. Nếu đường tải Apache
-chậm, có thể dùng `install-kafka.ps1 -ParallelDownload`: tải range có giới hạn song song,
+chậm, có thể dùng `commands/install-kafka.ps1 -ParallelDownload`: tải range có giới hạn song song,
 ghép theo đúng thứ tự rồi vẫn kiểm toàn bộ SHA-512. Cache nằm trong `artifacts/cache`.
 Lượt setup lặp lại đã kiểm chứng giữ cluster ID/storage; start không tự format.
 
@@ -60,17 +62,17 @@ Mở ba PowerShell tại thư mục repo:
 
 ```powershell
 # Terminal 1: consumer liên tục, Ctrl+C để dừng.
-.\consume-match-events.ps1 -RunId replay-demo-v2
+.\commands\consume-match-events.ps1 -RunId replay-demo-v2
 ```
 
 ```powershell
 # Terminal 2: mặc định 5 trận/giây, 1.000 trận khoảng vài phút.
-.\replay-matches.ps1 -RunId replay-demo-v2 -Rate 5
+.\commands\replay-matches.ps1 -RunId replay-demo-v2 -Rate 5
 ```
 
 ```powershell
 # Terminal 3: website; -ReplayRunId là tùy chọn bổ sung của bước 6.
-.\start-web.ps1 -SnapshotId web-demo-v1 -ReplayRunId replay-demo-v2
+.\commands\start-web.ps1 -SnapshotId web-demo-v1 -ReplayRunId replay-demo-v2
 ```
 
 Mở [http://localhost:8000/#replay](http://localhost:8000/#replay).
@@ -87,8 +89,8 @@ hiện có rồi tự dừng. Nếu producer vẫn đang gửi, dùng consumer l
 Dừng consumer trước bằng Ctrl+C; sau đó:
 
 ```powershell
-.\stop-kafka.ps1
-.\stop-hadoop.ps1
+.\commands\stop-kafka.ps1
+.\commands\stop-hadoop.ps1
 ```
 
 Để tiếp tục: bật lại HDFS/Kafka, chạy consumer với **cùng RunId**, giữ checkpoint.

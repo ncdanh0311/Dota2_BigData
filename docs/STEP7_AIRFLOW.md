@@ -1,5 +1,7 @@
 # Bước 7 — Điều phối bằng Apache Airflow
 
+> Các đường dẫn evidence là output local bị Git bỏ qua. Tải báo cáo/ảnh từ [Actions Artifacts](EVIDENCE_DOWNLOADS.md).
+
 Airflow điều phối các job bước 2–6 đã có. Hai DAG chạy thủ công, không tự chạy
 theo lịch. Mỗi lần chạy giữ riêng lineage, log, đầu ra và báo cáo. Dữ liệu replay
 vẫn là dữ liệu lịch sử được phát lại, không phải trận Dota 2 trực tiếp.
@@ -28,8 +30,8 @@ Từ PowerShell:
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\install-airflow.ps1
-.\start-airflow.ps1
+.\commands\install-airflow.ps1
+.\commands\start-airflow.ps1
 ```
 
 Mở `http://localhost:8080`. Tài khoản là `admin`; lấy mật khẩu từ file riêng
@@ -42,7 +44,7 @@ wsl -d Ubuntu -u danh -- cat /home/danh/dota-airflow/runtime/simple_auth_manager
 Khi không còn task chạy:
 
 ```powershell
-.\stop-airflow.ps1
+.\commands\stop-airflow.ps1
 ```
 
 Start không reset database hoặc lịch sử; stop chỉ gửi tín hiệu tới process group
@@ -57,7 +59,7 @@ preflight → normalize_silver → analyze_gold → train_lr → export_snapshot
      └──────── mọi kết quả bắt buộc ───────────→ verify_and_report
 ```
 
-1. Bật HDFS bằng `.\start-hadoop.ps1`.
+1. Bật HDFS bằng `.\commands\start-hadoop.ps1`.
 2. Trong UI, mở `dota_batch_pipeline`, bỏ pause nếu cần và chọn Trigger.
 3. Giữ mặc định `raw_input` là CSV Zenodo v3 và `assets_snapshot_id=web-demo-v1`.
 4. Xem từng task, log và kết quả. Chỉ run có `verify_and_report` thành công mới
@@ -81,8 +83,8 @@ preflight → prepare_replay → produce_events → consume_available_now
 ```
 
 ```powershell
-.\start-hadoop.ps1
-.\start-kafka.ps1
+.\commands\start-hadoop.ps1
+.\commands\start-kafka.ps1
 ```
 
 Trigger `dota_replay_demo` với:

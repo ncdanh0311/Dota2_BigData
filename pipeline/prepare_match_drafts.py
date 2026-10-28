@@ -146,7 +146,7 @@ def read_header(spark, uri):
         finally:
             reader.close()
     except Exception as error:
-        raise RuntimeError('Cannot read input on HDFS. Start HDFS with start-hadoop.ps1 '
+        raise RuntimeError('Cannot read input on HDFS. Start HDFS with commands/start-hadoop.ps1 '
                            f'and check the input path. Details: {error}') from error
 
 

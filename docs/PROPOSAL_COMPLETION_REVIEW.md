@@ -12,11 +12,11 @@ tài liệu đề xuất là bằng chứng chức năng đã chạy.
 
 | Mục đề xuất | Hiện trạng | Bằng chứng |
 |---|---|---|
-| Chọn 5 hero mỗi bên | Đã có, chặn hero trùng/sai kiểu/ngoài mapping; sửa đội hình xóa dự đoán cũ | [browser](../evidence/step7/browser_checks.json), `web/app.py` |
-| Dự đoán xác suất | Logistic Regression, signed hero vector, bundle/CLI/API đối chiếu Spark | [metrics](../evidence/step4/step4-20261027-v1/metrics.json), `ml/predict_draft.py` |
-| Dashboard hero/win rate | Tổng trận, hai bên, hero, cặp cùng đội và ngưỡng mẫu | [Gold](../evidence/step3/step3-20261026-v2/report.md) |
-| Kafka + Spark Streaming | Phát lại trận lịch sử có kết quả, cập nhật thống kê replay riêng | [replay thật](../evidence/step6/replay-demo-v1/), `streaming/consume_match_events.py` |
-| Airflow điều phối | Hai DAG manual, phụ thuộc/retry/timeout, receipt và finalizer | [nghiệm thu](../evidence/step7/RESULTS.md), `orchestration/dags/` |
+| Chọn 5 hero mỗi bên | Đã có, chặn hero trùng/sai kiểu/ngoài mapping; sửa đội hình xóa dự đoán cũ | [browser](EVIDENCE_DOWNLOADS.md), `web/app.py` |
+| Dự đoán xác suất | Logistic Regression, signed hero vector, bundle/CLI/API đối chiếu Spark | [metrics](EVIDENCE_DOWNLOADS.md), `ml/predict_draft.py` |
+| Dashboard hero/win rate | Tổng trận, hai bên, hero, cặp cùng đội và ngưỡng mẫu | [Gold](EVIDENCE_DOWNLOADS.md) |
+| Kafka + Spark Streaming | Phát lại trận lịch sử có kết quả, cập nhật thống kê replay riêng | [replay thật](EVIDENCE_DOWNLOADS.md), `streaming/consume_match_events.py` |
+| Airflow điều phối | Hai DAG manual, phụ thuộc/retry/timeout, receipt và finalizer | [nghiệm thu](EVIDENCE_DOWNLOADS.md), `orchestration/dags/` |
 
 Kafka là historical replay, không phải nguồn live từ OpenDota/Steam; không cộng
 lại replay vào Gold. Chạy Airflow thủ công là lựa chọn demo đã thống nhất, không
@@ -71,11 +71,15 @@ hơn baseline. Chạy được hệ thống không đồng nghĩa dự đoán m�
 | Run ID/attempt, retention | Tên artifact chứa run ID/attempt, giữ 14 ngày. |
 | Job Summary | Bổ sung tóm tắt nêu đúng scope fixture; missing/corrupt report không được coi là PASS. |
 | Không hủy pipeline dữ liệu khi push mới | Giữ cancel-in-progress cho fixture CI độc lập; không áp dụng cho job dữ liệu WSL. |
-| Bỏ toàn bộ evidence | Không sao chép: Dota giữ báo cáo/ảnh nhỏ để nộp môn học; bỏ runtime, log, checkpoint và artifact lớn. |
+| Bỏ toàn bộ evidence | Đã áp dụng theo yêu cầu mới: evidence local bị Git bỏ qua; báo cáo/ảnh tải qua Actions Artifacts. |
 
 Giữ source DAG/workflow/config và `data/reference/` trong Git. Bổ sung ignore
 runtime `.airflow` lồng thư mục, mật khẩu generated, cache notebook và Spark event
 logs. Không copy ignore đặc thù `f.txt` hoặc bật tất cả người dùng thành admin.
+
+Chính sách evidence đã đổi theo yêu cầu tiếp theo của người dùng: không còn
+commit báo cáo/ảnh trên main. Workflow bản lưu đọc revision gốc để xuất gói
+download, phân biệt với fixture mới; xem [hướng dẫn tải](EVIDENCE_DOWNLOADS.md).
 
 ## Nên bổ sung tiếp
 

@@ -2,18 +2,30 @@
 
 Từ 28/10/2026, tên lệnh mô tả hành động thay cho số bước. Script dùng dấu gạch ngang; module Python dùng dấu gạch dưới.
 
-Các file rõ chức năng như `start-hadoop.ps1`, `predict-draft.ps1`, `start-web.ps1` giữ tên. Không đổi run ID, đường dẫn HDFS, model, checkpoint hoặc evidence lịch sử.
+Các lệnh vận hành được gom vào `commands/`; dependency vào `requirements/` để
+root gọn. Gọi từ repo bằng `.\commands\ten-lenh.ps1`; các lệnh tự tìm repo root,
+không cần chuyển working directory vào thư mục commands.
+
+| File dependency cũ | Vị trí mới |
+|---|---|
+| `requirements.txt` | `requirements/spark.txt` |
+| `requirements-airflow.txt` | `requirements/airflow.txt` |
+| `requirements-streaming.txt` | `requirements/streaming.txt` |
+| `requirements-web.txt` | `requirements/web.txt` |
+| `requirements-web-test.txt` | `requirements/web-test.txt` |
+
+Các file rõ chức năng như `commands/start-hadoop.ps1`, `commands/predict-draft.ps1`, `commands/start-web.ps1` giữ tên. Không đổi run ID, đường dẫn HDFS, model, checkpoint hoặc evidence lịch sử.
 
 | Tên cũ | Tên mới | Công việc |
 |---|---|---|
-| `run-step2.ps1` | [`prepare-match-drafts.ps1`](../prepare-match-drafts.ps1) | Chuẩn hóa CSV HDFS thành một dòng đội hình mỗi trận |
-| `run-step3.ps1` | [`analyze-hero-statistics.ps1`](../analyze-hero-statistics.ps1) | Tổng hợp thống kê hero, bên và cặp hero bằng Spark SQL |
-| `run-step4.ps1` | [`train-draft-model.ps1`](../train-draft-model.ps1) | Huấn luyện và đánh giá mô hình dự đoán đội hình |
-| `prepare-step5.ps1` | [`export-web-snapshot.ps1`](../export-web-snapshot.ps1) | Xuất Gold/model và ảnh local để website đọc |
-| `setup-step6.ps1` | [`install-kafka.ps1`](../install-kafka.ps1) | Cài Kafka riêng và kiểm tra connector |
-| `prepare-step6.ps1` | [`prepare-match-replay.ps1`](../prepare-match-replay.ps1) | Tạo catalog và topic cho phiên phát lại trận |
-| `run-step6.ps1` | [`consume-match-events.ps1`](../consume-match-events.ps1) | Chạy Spark Structured Streaming đọc Kafka |
-| `setup-step7.ps1` | [`install-airflow.ps1`](../install-airflow.ps1) | Cài Airflow và tạo database/pool riêng |
+| `run-step2.ps1` | [`commands/prepare-match-drafts.ps1`](../commands/prepare-match-drafts.ps1) | Chuẩn hóa CSV HDFS thành một dòng đội hình mỗi trận |
+| `run-step3.ps1` | [`commands/analyze-hero-statistics.ps1`](../commands/analyze-hero-statistics.ps1) | Tổng hợp thống kê hero, bên và cặp hero bằng Spark SQL |
+| `run-step4.ps1` | [`commands/train-draft-model.ps1`](../commands/train-draft-model.ps1) | Huấn luyện và đánh giá mô hình dự đoán đội hình |
+| `prepare-step5.ps1` | [`commands/export-web-snapshot.ps1`](../commands/export-web-snapshot.ps1) | Xuất Gold/model và ảnh local để website đọc |
+| `setup-step6.ps1` | [`commands/install-kafka.ps1`](../commands/install-kafka.ps1) | Cài Kafka riêng và kiểm tra connector |
+| `prepare-step6.ps1` | [`commands/prepare-match-replay.ps1`](../commands/prepare-match-replay.ps1) | Tạo catalog và topic cho phiên phát lại trận |
+| `run-step6.ps1` | [`commands/consume-match-events.ps1`](../commands/consume-match-events.ps1) | Chạy Spark Structured Streaming đọc Kafka |
+| `setup-step7.ps1` | [`commands/install-airflow.ps1`](../commands/install-airflow.ps1) | Cài Airflow và tạo database/pool riêng |
 | `scripts/hdfs_lab.py` | [`scripts/hdfs_cluster_manager.py`](../scripts/hdfs_cluster_manager.py) | Quản lý cụm HDFS và nạp/kiểm chứng dữ liệu |
 | `scripts/wsl-common.ps1` | [`scripts/wsl-runtime-bridge.ps1`](../scripts/wsl-runtime-bridge.ps1) | Đọc cấu hình và chuyển đường dẫn Windows sang WSL |
 | `scripts/streaming-common.ps1` | [`scripts/kafka-job-bridge.ps1`](../scripts/kafka-job-bridge.ps1) | Chạy job Python/Spark Kafka qua WSL |
@@ -43,18 +55,18 @@ Các lệnh cũ trong evidence là lệnh tại thời điểm nghiệm thu; dù
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\start-hadoop.ps1
+.\commands\start-hadoop.ps1
 $runTag = 'demo-' + [Guid]::NewGuid().ToString('N').Substring(0,8)
 $silver = "hdfs://localhost:9000/dota/processed/match_drafts_$runTag"
-.\prepare-match-drafts.ps1 -OutputPath $silver
-.\analyze-hero-statistics.ps1 -InputPath $silver -RunId "gold-$runTag"
-.\train-draft-model.ps1 -InputPath $silver -RunId "lr-$runTag"
-.\export-web-snapshot.ps1 -GoldRunId "gold-$runTag" -ModelRunId "lr-$runTag" `
+.\commands\prepare-match-drafts.ps1 -OutputPath $silver
+.\commands\analyze-hero-statistics.ps1 -InputPath $silver -RunId "gold-$runTag"
+.\commands\train-draft-model.ps1 -InputPath $silver -RunId "lr-$runTag"
+.\commands\export-web-snapshot.ps1 -GoldRunId "gold-$runTag" -ModelRunId "lr-$runTag" `
   -SnapshotId "web-$runTag" -HeroAssetsSnapshotId web-demo-v1
-.\start-web.ps1 -SnapshotId "web-$runTag"
+.\commands\start-web.ps1 -SnapshotId "web-$runTag"
 ```
 
-Kafka: `install-kafka.ps1` → `start-kafka.ps1` → `prepare-match-replay.ps1` → `consume-match-events.ps1` và `replay-matches.ps1` ở hai terminal. Airflow: `install-airflow.ps1` → `start-airflow.ps1`.
+Kafka: `commands/install-kafka.ps1` → `commands/start-kafka.ps1` → `commands/prepare-match-replay.ps1` → `commands/consume-match-events.ps1` và `commands/replay-matches.ps1` ở hai terminal. Airflow: `commands/install-airflow.ps1` → `commands/start-airflow.ps1`.
 
 Ví dụ tạo run/output mới để không ghi đè v1. Raw CSV cần đã được nạp vào HDFS.
 `-HeroAssetsSnapshotId web-demo-v1` dùng cache có sẵn trên máy hiện tại; máy mới

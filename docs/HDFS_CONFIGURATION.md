@@ -64,8 +64,8 @@ Hai file ở thư mục gốc dự án gọi Ubuntu WSL bằng user `danh` và t
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\start-hadoop.ps1
-.\stop-hadoop.ps1
+.\commands\start-hadoop.ps1
+.\commands\stop-hadoop.ps1
 ```
 
 Nếu PowerShell chặn thực thi script, có thể chạy riêng từng lệnh bằng:

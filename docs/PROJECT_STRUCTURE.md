@@ -6,6 +6,8 @@ trình và tìm bằng chứng, không thay tên chức năng của lệnh chạ
 
 | Thư mục | Nội dung và điểm vào |
 |---|---|
+| `commands/` | 17 lệnh PowerShell vận hành; tự xác định repo root khi gọi |
+| `requirements/` | 5 bộ dependency: Spark, web, web-test, streaming, Airflow |
 | `pipeline/` | `prepare_match_drafts.py`: CSV snapshot → Silver một trận một dòng |
 | `analytics/` | `draft_stats.py`: Silver → Gold thống kê hero, bên và cặp |
 | `ml/` | `train_draft_model.py`, `predict_draft.py`: train LR và inference độc lập |
@@ -17,9 +19,9 @@ trình và tìm bằng chứng, không thay tên chức năng của lệnh chạ
 | `configs/` | Runtime WSL/HDFS/Kafka/Airflow và Spark connector |
 | `data/reference/` | Manifest/schema nguồn; không chứa dataset CSV lớn |
 | `tests/` | Fixture tính tay, API, model save/load và checkpoint recovery |
-| `evidence/` | Báo cáo/ảnh nhỏ, phân biệt fixture với run thật |
+| `evidence/` | Báo cáo/ảnh local, Git bỏ qua toàn bộ; công bố bằng Actions Artifacts |
 | `artifacts/` | Snapshot, bundle, log/cache và output local; Git bỏ qua |
-| `.github/workflows/` | CI Spark/web, Airflow và chất lượng repo tách biệt |
+| `.github/workflows/` | CI Spark/web, Airflow, chất lượng repo và xuất evidence |
 
 ## Dữ liệu và runtime
 
@@ -33,7 +35,8 @@ chạy; dùng bảng tên file để tìm lệnh hiện tại. Không cần nạ
 
 Evidence ở thư mục cha `D:\BigDataTH_Project\evidence` từng được copy và đối
 chiếu SHA-256 vào repo, giữ làm dự phòng. Các run mới ghi vào evidence trong repo.
-Manifest nguồn vẫn đọc từ `data/reference/source_manifest.json`.
+Manifest nguồn vẫn đọc từ `data/reference/source_manifest.json`. Thư mục local
+được giữ nguyên, nhưng các file evidence không còn được theo dõi trên main.
 
 ## CI hiện tại
 
@@ -42,9 +45,10 @@ Manifest nguồn vẫn đọc từ `data/reference/source_manifest.json`.
 | `spark-web-tests.yml` | Spark/ML fixture, API, JavaScript, export snapshot và streaming recovery |
 | `airflow-dag-tests.yml` | Runner receipt/retry/timeout, cache offline và parse DAG bằng SDK pin |
 | `repository-quality.yml` | JSON, quy tắc file Git, giới hạn file, PowerShell syntax và test summary |
+| `publish-recorded-evidence.yml` | Đóng gói báo cáo/ảnh từ revision đã ghi nhận, ghi rõ nguồn lưu trữ |
 
 CI dọn báo cáo fixture cũ trước khi chạy, tee log với bash pipefail, viết Job
 Summary và upload artifact 14 ngày. Missing/unreadable report không được coi là
-PASS. CI không dựng HDFS/Kafka hoặc xử lý toàn bộ 90.530 trận; bằng chứng WSL thật
-nằm riêng trong evidence. Chi tiết so sánh với Chicago và lý do giữ evidence
-nhỏ trong Git ở [báo cáo đối chiếu](PROPOSAL_COMPLETION_REVIEW.md).
+PASS. CI không dựng HDFS/Kafka hoặc xử lý toàn bộ 90.530 trận. Báo cáo/ảnh đã
+ghi nhận được xuất bằng workflow riêng; xem [cách tải evidence](EVIDENCE_DOWNLOADS.md).
+So sánh với Chicago nằm trong [báo cáo đối chiếu](PROPOSAL_COMPLETION_REVIEW.md).

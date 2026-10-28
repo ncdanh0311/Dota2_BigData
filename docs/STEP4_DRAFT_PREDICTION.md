@@ -1,17 +1,19 @@
 # Bước 4 — Dự đoán kết quả từ đội hình bằng Spark ML
 
+> Các đường dẫn evidence là output local bị Git bỏ qua. Tải báo cáo/ảnh từ [Actions Artifacts](EVIDENCE_DOWNLOADS.md).
+
 ## Chạy huấn luyện
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\start-hadoop.ps1
-.\train-draft-model.ps1
+.\commands\start-hadoop.ps1
+.\commands\train-draft-model.ps1
 ```
 
 Mặc định tạo run ID UTC ngẫu nhiên. Có thể đặt rõ:
 
 ```powershell
-.\train-draft-model.ps1 -RunId demo-ml-01 -Seed 42
+.\commands\train-draft-model.ps1 -RunId demo-ml-01 -Seed 42
 ```
 
 Tham số: `-InputPath`, `-OutputRoot`, `-RunId`, `-Seed`; CLI Python tương ứng
@@ -100,7 +102,7 @@ mười ví dụ dự đoán nằm trong `evidence/step4/<run_id>/`.
 ## Dự đoán không cần Spark/HDFS
 
 ```powershell
-.\predict-draft.ps1 -RunId <run-id> `
+.\commands\predict-draft.ps1 -RunId <run-id> `
   -Radiant "7,38,48,85,106" `
   -Dire "11,86,123,128,136"
 ```
@@ -170,14 +172,14 @@ run và từ chối hero ngoài mapping; HDFS/local bundle và manifest có cùn
 Demo thực tế:
 
 ```powershell
-.\predict-draft.ps1 -RunId step4-20261027-v1 `
+.\commands\predict-draft.ps1 -RunId step4-20261027-v1 `
   -Radiant "7,38,48,85,106" -Dire "11,86,123,128,136"
 ```
 
 Ví dụ trả về Radiant khoảng 49,72%, Dire khoảng 50,28%; đây là một dự đoán
 riêng, không đại diện cho accuracy của mô hình.
 
-Xem [báo cáo đầy đủ](../evidence/step4/step4-20261027-v1/report.md),
-[metric JSON](../evidence/step4/step4-20261027-v1/metrics.json),
-[parity trên test](../evidence/step4/step4-20261027-v1/portable_parity.json) và
-[kiểm chứng end-to-end](../evidence/step4/end_to_end_checks.json).
+Xem [báo cáo đầy đủ](EVIDENCE_DOWNLOADS.md),
+[metric JSON](EVIDENCE_DOWNLOADS.md),
+[parity trên test](EVIDENCE_DOWNLOADS.md) và
+[kiểm chứng end-to-end](EVIDENCE_DOWNLOADS.md).

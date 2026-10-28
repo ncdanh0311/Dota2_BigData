@@ -1,5 +1,7 @@
 # Bước 2 — Chuẩn hóa đội hình Dota 2 bằng PySpark
 
+> Các đường dẫn evidence là output local bị Git bỏ qua. Tải báo cáo/ảnh từ [Actions Artifacts](EVIDENCE_DOWNLOADS.md).
+
 ## Mục tiêu
 
 Đọc snapshot Zenodo v3 từ HDFS và tạo một bản ghi cho mỗi trận hợp lệ.
@@ -24,8 +26,8 @@ CSV gốc không thay đổi. Chưa chia train/test, chưa huấn luyện mô h�
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\start-hadoop.ps1
-.\prepare-match-drafts.ps1
+.\commands\start-hadoop.ps1
+.\commands\prepare-match-drafts.ps1
 ```
 
 Nếu execution policy chặn, chạy riêng phiên lệnh với:
@@ -37,7 +39,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\BigDataTH_Project\Dot
 Chạy lại với output mới:
 
 ```powershell
-.\prepare-match-drafts.ps1 -OutputPath hdfs://localhost:9000/dota/processed/match_drafts_v2
+.\commands\prepare-match-drafts.ps1 -OutputPath hdfs://localhost:9000/dota/processed/match_drafts_v2
 ```
 
 Script cũng nhận `-InputPath` (một CSV HDFS, cùng header Zenodo v3).
