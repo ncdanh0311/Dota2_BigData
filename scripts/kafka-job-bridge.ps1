@@ -1,5 +1,5 @@
 # Shared process bridge for the isolated Kafka replay lab.
-. (Join-Path $PSScriptRoot 'wsl-common.ps1')
+. (Join-Path $PSScriptRoot 'wsl-runtime-bridge.ps1')
 function Invoke-DotaStreamingPython {
     param([string]$Job, [string[]]$JobArgs = @(), [switch]$Producer)
     $runtime = Get-DotaRuntime
@@ -7,7 +7,7 @@ function Invoke-DotaStreamingPython {
     $linuxJob = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repo $Job) -Runtime $runtime
     $python = $runtime.spark_python
     if ($Producer) {
-        $linuxProducer = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repo 'streaming\producer.py') -Runtime $runtime
+        $linuxProducer = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repo 'streaming\publish_match_events.py') -Runtime $runtime
         $linuxRepo = $linuxProducer.Substring(0, $linuxProducer.LastIndexOf('/streaming/'))
         $python = "$linuxRepo/.venv-streaming/bin/python"
     }

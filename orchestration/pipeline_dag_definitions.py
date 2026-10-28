@@ -7,7 +7,7 @@ from airflow.sdk.exceptions import AirflowFailException
 
 @task(retries=1,retry_delay=timedelta(seconds=30))
 def execute_stage(stage,kind,upstream):
-    from orchestration.runner import Runner
+    from orchestration.workflow_job_runner import Runner
     context=get_current_context()
     metadata={'dag_id':context['dag'].dag_id,'run_id':context['dag_run'].run_id,
               'try_number':context['ti'].try_number}
@@ -20,7 +20,7 @@ def execute_stage(stage,kind,upstream):
 
 
 def build_batch():
-    from orchestration.runner import RAW
+    from orchestration.workflow_job_runner import RAW
     @dag(dag_id='dota_batch_pipeline',schedule=None,catchup=False,max_active_runs=1,max_active_tasks=1,
          start_date=pendulum.datetime(2026,10,1,tz='Asia/Ho_Chi_Minh'),dagrun_timeout=timedelta(minutes=60),
          tags=['dota','batch'],params={'raw_input':Param(RAW,type='string'),
@@ -36,7 +36,7 @@ def build_batch():
 
 
 def build_replay():
-    from orchestration.runner import SILVER
+    from orchestration.workflow_job_runner import SILVER
     @dag(dag_id='dota_replay_demo',schedule=None,catchup=False,max_active_runs=1,max_active_tasks=1,
          start_date=pendulum.datetime(2026,10,1,tz='Asia/Ho_Chi_Minh'),dagrun_timeout=timedelta(minutes=30),
          tags=['dota','kafka','replay'],params={'silver_input':Param(SILVER,type='string'),

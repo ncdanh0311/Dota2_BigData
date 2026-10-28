@@ -7,7 +7,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $scriptPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'ml\predict_draft.py') -Runtime $runtime
     $bundlePath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot "artifacts\models\$RunId\model_bundle.json") -Runtime $runtime

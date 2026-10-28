@@ -9,10 +9,10 @@ import time
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from pyspark.sql import SparkSession
 from analytics.draft_stats import validate_input
-from streaming.common import PROJECT, canonical, draft, exclusive, load_catalog, local_run
-from streaming.kafka_lab import CONFIG
-from streaming.prepare import topic_identity
-from streaming.sink import ReplaySink, Store
+from streaming.replay_event_contract import PROJECT, canonical, draft, exclusive, load_catalog, local_run
+from streaming.kafka_broker_manager import CONFIG
+from streaming.prepare_replay_catalog import topic_identity
+from streaming.replay_batch_processor import ReplaySink, Store
 
 
 def main():

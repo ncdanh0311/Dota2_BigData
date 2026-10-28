@@ -9,7 +9,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
     $null = Get-Command wsl.exe -ErrorAction Stop
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $pipelinePath = Join-Path $PSScriptRoot 'pipeline\prepare_match_drafts.py'
     if (-not (Test-Path -LiteralPath $pipelinePath -PathType Leaf)) {

@@ -5,6 +5,7 @@ __pycache__/
 .env.*
 !.env.example
 .pytest_cache/
+.ipynb_checkpoints/
 .mypy_cache/
 .ruff_cache/
 .cache/
@@ -43,16 +44,17 @@ metastore_db/
 derby.log
 
 # Local services and runtime state; keep configs/ and orchestration/dags/ versioned.
-/.airflow/
+.airflow/
 /airflow-runtime/
 /airflow.cfg
 /airflow.db*
-/standalone_admin_password.txt
-/simple_auth_manager_passwords.json*
+standalone_admin_password.txt
+simple_auth_manager_passwords.json*
 /logs/
 /pids/
 /checkpoints/
 /spark-checkpoints/
+/spark-events/
 /hadoop-data/
 /kafka-data/
 /kafka-logs/

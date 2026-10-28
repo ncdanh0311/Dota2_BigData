@@ -7,9 +7,9 @@ $ErrorActionPreference = 'Stop'
 
 try {
     $null = Get-Command wsl.exe -ErrorAction Stop
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
-    $managerPath = Join-Path $PSScriptRoot 'scripts\hdfs_lab.py'
+    $managerPath = Join-Path $PSScriptRoot 'scripts\hdfs_cluster_manager.py'
     if (-not (Test-Path -LiteralPath $managerPath -PathType Leaf)) {
         throw "HDFS manager not found: $managerPath"
     }

@@ -9,7 +9,7 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from fastapi.testclient import TestClient
-from streaming.common import atomic_publish, envelope
+from streaming.replay_event_contract import atomic_publish, envelope
 from web.app import create_app
 from web.snapshot import PROJECT, write_json
 from web_fixtures import make_snapshot

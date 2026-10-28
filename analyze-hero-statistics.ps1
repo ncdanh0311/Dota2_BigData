@@ -11,7 +11,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $jobPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'analytics\draft_stats.py') -Runtime $runtime
     $pipelineArgs = @('--input', $InputPath, '--output-root', $OutputRoot,

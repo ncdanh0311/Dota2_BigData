@@ -84,7 +84,7 @@ def owned_pid():
 
 def start():
     if not (RUNTIME/'airflow.db').exists():
-        raise ValueError('Run setup-step7.ps1 first.')
+        raise ValueError('Run install-airflow.ps1 first.')
     ROOT.chmod(0o700)
     RUNTIME.chmod(0o700)
     if owned_pid():

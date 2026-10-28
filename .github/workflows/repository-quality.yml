@@ -13,17 +13,26 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   repository:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - name: Prepare fresh CI reports and logs
+        run: |
+          mkdir -p artifacts/ci/repository
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Validate JSON and tracked file policy
-        run: python scripts/check_repository.py
+        run: python scripts/check_repository.py 2>&1 | tee artifacts/ci/repository/source-checks.log
+      - name: Check summary failure reporting
+        run: python tests/test_ci_summary.py 2>&1 | tee artifacts/ci/repository/summary-tests.log
       - name: Parse PowerShell scripts without launching WSL or services
         shell: pwsh
         run: |
@@ -39,3 +48,14 @@ jobs:
           }
           if ($allErrors.Count) { $allErrors | Format-List; throw 'PowerShell syntax check failed.' }
           Write-Host "PowerShell syntax PASS: $($paths.Count) scripts"
+      - name: Summarize CI scope and fresh results
+        if: always()
+        run: python scripts/write_ci_summary.py --suite repository --job-status "${{ job.status }}"
+      - name: Upload repository check logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-check-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/ci/repository
+          if-no-files-found: warn
+          retention-days: 14

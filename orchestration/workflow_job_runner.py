@@ -207,16 +207,16 @@ class Runner:
                 raise ValueError('Website snapshot source differs.')
             return {'snapshot_id':attempt,'path':str(PROJECT/'artifacts/web'/attempt)}
         if stage=='prepare_replay':
-            self.spark('streaming/prepare.py',['--input',self.params['silver_input'],'--run-id',attempt,
+            self.spark('streaming/prepare_replay_catalog.py',['--input',self.params['silver_input'],'--run-id',attempt,
                 '--limit',str(self.params['limit'])],attempt)
-            from streaming.common import load_catalog
+            from streaming.replay_event_contract import load_catalog
             manifest,catalog=load_catalog(attempt)
             return {'replay_run_id':attempt,'catalog_sha256':manifest['catalog_sha256'],'rows':len(catalog)}
         if stage=='produce_events':
             replay_id=upstream['prepare_replay']['replay_run_id']
             evidence=PROJECT/'evidence/step6'/replay_id
             before=set(evidence.glob('producer-*.json')) if evidence.exists() else set()
-            self.command([str(PROJECT/'.venv-streaming/bin/python'),str(PROJECT/'streaming/producer.py'),
+            self.command([str(PROJECT/'.venv-streaming/bin/python'),str(PROJECT/'streaming/publish_match_events.py'),
                 '--run-id',replay_id,'--rate',str(self.params['rate'])],attempt)
             added=set(evidence.glob('producer-*.json'))-before
             if len(added)!=1:
@@ -228,7 +228,7 @@ class Runner:
             return {'replay_run_id':replay_id,'producer_report':str(path),'acked':report['sent']}
         if stage=='consume_available_now':
             replay_id=upstream['prepare_replay']['replay_run_id']
-            self.spark('streaming/consumer.py',['--run-id',replay_id,'--available-now'],attempt,kafka=True)
+            self.spark('streaming/consume_match_events.py',['--run-id',replay_id,'--available-now'],attempt,kafka=True)
             return {'replay_run_id':replay_id,'snapshot_path':str(PROJECT/'artifacts/streaming'/replay_id/'latest.json')}
         if stage=='verify_and_report':
             required=(['preflight','normalize_silver','analyze_gold','train_lr','export_snapshot'] if self.kind=='batch' else
@@ -246,9 +246,9 @@ class Runner:
                     'fingerprint':manifest['input_fingerprint_sha256'],'source_chain':upstream}
             else:
                 replay_id=upstream['prepare_replay']['replay_run_id']
-                self.command([self.runtime['spark_python'],str(PROJECT/'scripts/verify-step6.py'),
+                self.command([self.runtime['spark_python'],str(PROJECT/'scripts/verify_replay_statistics.py'),
                     '--run-id',replay_id,'--label',self.execution_id],attempt)
-                from streaming.common import unpack
+                from streaming.replay_event_contract import unpack
                 snapshot=unpack(Path(upstream['consume_available_now']['snapshot_path']).read_bytes())
                 summary={k:snapshot[k] for k in ['run_id','unique_matches','total_records','duplicate_records','quarantined_records']}
                 summary['source_chain']=upstream

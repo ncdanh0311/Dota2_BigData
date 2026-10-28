@@ -9,8 +9,8 @@ import uuid
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from kafka import KafkaProducer
-from streaming.common import PROJECT, canonical, event_for, exclusive, load_catalog, local_run, now
-from streaming.kafka_lab import CONFIG
+from streaming.replay_event_contract import PROJECT, canonical, event_for, exclusive, load_catalog, local_run, now
+from streaming.kafka_broker_manager import CONFIG
 
 
 def main():

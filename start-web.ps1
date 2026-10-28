@@ -7,7 +7,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $servePath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'web\serve.py') -Runtime $runtime
     $linuxRepo = $servePath.Substring(0, $servePath.LastIndexOf('/web/'))

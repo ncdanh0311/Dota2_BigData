@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from orchestration.runner import Runner, identity, attempt_id, validate_params, write
+from orchestration.workflow_job_runner import Runner, identity, attempt_id, validate_params, write
 from web.hero_assets import reuse_heroes
 from web.snapshot import PROJECT, write_json
 from web_fixtures import make_snapshot
@@ -22,7 +22,7 @@ class RunnerTests(unittest.TestCase):
         self.root=Path(self.temp.name)
         write(self.root/'configs/hdfs-wsl.json',{'java_home':'/java','hadoop_home':'/hadoop',
               'cluster_root':'/cluster','spark_python':sys.executable,'spark_submit':'/spark-submit'})
-        self.project=patch('orchestration.runner.PROJECT',self.root)
+        self.project=patch('orchestration.workflow_job_runner.PROJECT',self.root)
         self.project.start()
         self.context={'dag_id':'fixture_dag','run_id':'manual__fixture','try_number':1}
 

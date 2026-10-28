@@ -1,7 +1,7 @@
 """Read-only streaming view: no Spark, Kafka or HDFS imports/network calls."""
 from datetime import datetime, timezone
 from pathlib import Path
-from streaming.common import unpack
+from streaming.replay_event_contract import unpack
 
 
 class StreamingView:

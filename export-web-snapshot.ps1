@@ -8,7 +8,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $job = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'web\export_snapshot.py') -Runtime $runtime
     $jobArgs = @('--gold-run-id', $GoldRunId, '--model-run-id', $ModelRunId)

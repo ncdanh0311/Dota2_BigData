@@ -16,6 +16,9 @@ def main():
     if args.include_untracked:
         command+=['--others','--exclude-standard']
     paths=sorted(set(subprocess.check_output(command,cwd=PROJECT).split(b'\0'))-{b''})
+    # Local renames have old paths in the index until staged; CI checks the index.
+    if args.include_untracked:
+        paths=[raw for raw in paths if (PROJECT/raw.decode('utf-8')).exists()]
     if not paths:
         raise ValueError('No repository files found.')
     ignored=subprocess.run(['git','check-ignore','--no-index','--stdin','-z'],cwd=PROJECT,

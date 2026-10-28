@@ -3,7 +3,7 @@ param([switch]$ParallelDownload)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'scripts\streaming-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\kafka-job-bridge.ps1')
     $runtime = Get-DotaRuntime
     $kafka = Get-Content (Join-Path $PSScriptRoot 'configs\kafka-wsl.json') -Raw | ConvertFrom-Json
     $cache = Join-Path $PSScriptRoot 'artifacts\cache'
@@ -50,8 +50,8 @@ try {
     }
     $linuxArchive = ConvertTo-DotaLinuxPath -WindowsPath $archive -Runtime $runtime
     $linuxChecksum = ConvertTo-DotaLinuxPath -WindowsPath $checksum -Runtime $runtime
-    Invoke-DotaStreamingPython -Job 'streaming/kafka_lab.py' -JobArgs @('setup','--archive-path',$linuxArchive,'--checksum-path',$linuxChecksum)
-    $managerPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'streaming\kafka_lab.py') -Runtime $runtime
+    Invoke-DotaStreamingPython -Job 'streaming/kafka_broker_manager.py' -JobArgs @('setup','--archive-path',$linuxArchive,'--checksum-path',$linuxChecksum)
+    $managerPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'streaming\kafka_broker_manager.py') -Runtime $runtime
     $linuxRepo = $managerPath.Substring(0, $managerPath.LastIndexOf('/streaming/'))
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec test -x "$linuxRepo/.venv-streaming/bin/python"
     if ($LASTEXITCODE -ne 0) {

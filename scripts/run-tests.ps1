@@ -4,11 +4,14 @@ param()
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $repoRoot = Split-Path $PSScriptRoot -Parent
+    $summaryTest=ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot 'tests\test_ci_summary.py') -Runtime $runtime
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python $summaryTest
+    if ($LASTEXITCODE -ne 0) { throw 'CI summary checks failed.' }
     foreach ($testName in @('test_prepare_match_drafts.py', 'test_draft_stats.py',
-                            'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py', 'test_streaming.py')) {
+                            'test_ml_features.py', 'test_ml_training.py', 'test_ml_inference.py', 'test_web_export.py', 'test_streaming_checkpoint_recovery.py')) {
       $testPath = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $repoRoot "tests\$testName") -Runtime $runtime
       & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec env `
         "JAVA_HOME=$($runtime.java_home)" `
@@ -32,7 +35,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Web API tests failed.' }
     & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $webPython "$linuxRepo/tests/test_streaming_api.py"
     if ($LASTEXITCODE -ne 0) { throw 'Streaming API tests failed.' }
-    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python "$linuxRepo/tests/test_orchestration.py"
+    & wsl.exe --distribution $runtime.distribution --user $runtime.user --exec $runtime.spark_python "$linuxRepo/tests/test_workflow_job_runner.py"
     if ($LASTEXITCODE -ne 0) { throw 'Orchestration runner tests failed.' }
     $airflowConfig=Get-Content (Join-Path $repoRoot 'configs\airflow-wsl.json') -Raw | ConvertFrom-Json
     $airflowPython="$($airflowConfig.root)/venv/bin/python"
@@ -43,7 +46,7 @@ try {
         $airflowPython "$linuxRepo/tests/test_airflow_dags.py"
       if ($LASTEXITCODE -ne 0) { throw 'Airflow SDK DAG tests failed.' }
     }
-    else { Write-Host 'Airflow DAG parse checks skipped: run setup-step7.ps1 first. CI runs these in a separate environment.' }
+    else { Write-Host 'Airflow DAG parse checks skipped: run install-airflow.ps1 first. CI runs these in a separate environment.' }
     if (Get-Command node -ErrorAction SilentlyContinue) {
       & node (Join-Path $repoRoot 'tests\test_web_logic.mjs')
       if ($LASTEXITCODE -ne 0) { throw 'Web display rule tests failed.' }

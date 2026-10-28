@@ -7,7 +7,7 @@ import sys
 import time
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from orchestration.runner import write
+from orchestration.workflow_job_runner import write
 
 
 def sample():

@@ -8,8 +8,8 @@ import tempfile
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from pyspark.sql import SparkSession
-from streaming.common import canonical, digest, event_for, unpack, validate_event
-from streaming.sink import ReplaySink
+from streaming.replay_event_contract import canonical, digest, event_for, unpack, validate_event
+from streaming.replay_batch_processor import ReplaySink
 from web.snapshot import PROJECT, write_json
 
 

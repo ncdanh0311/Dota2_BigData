@@ -8,7 +8,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try {
-    . (Join-Path $PSScriptRoot 'scripts\wsl-common.ps1')
+    . (Join-Path $PSScriptRoot 'scripts\wsl-runtime-bridge.ps1')
     $runtime = Get-DotaRuntime
     $job = ConvertTo-DotaLinuxPath -WindowsPath (Join-Path $PSScriptRoot 'ml\train_draft_model.py') -Runtime $runtime
     $jobArgs = @('--input', $InputPath, '--output-root', $OutputRoot, '--seed', "$Seed")

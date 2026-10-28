@@ -7,7 +7,7 @@ import uuid
 
 from pyspark.sql import functions as F
 from analytics.draft_stats import assert_same_table, fs_for
-from streaming.common import VERSION, atomic_publish, canonical, digest, envelope, now, unpack, validate_event
+from streaming.replay_event_contract import VERSION, atomic_publish, canonical, digest, envelope, now, unpack, validate_event
 
 ARCHIVE_SCHEMA = '''topic string, partition int, offset long, kafka_timestamp string,
     raw_key string, raw_value string, raw_sha256 string, reason string, match_id long,

@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from streaming.common import PROJECT, load_catalog, unpack, now, safe_id
+from streaming.replay_event_contract import PROJECT, load_catalog, unpack, now, safe_id
 from web.snapshot import write_json
 
 
