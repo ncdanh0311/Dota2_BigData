@@ -18,7 +18,7 @@ và kiểm chứng trước khi hiển thị trên website.
 | Website chỉ hiển thị kết quả đã tính | Đọc bảng Gold; không tự tính lại SQL ở frontend |
 | Performance/Price theo phí chuyển nhượng | Không áp dụng: nguồn Dota không có giá hoặc phí |
 | So sánh CLB/cầu thủ theo mùa | Không làm với schema hiện tại vì thiếu các định danh và thời gian |
-| Neo4j phục vụ quan hệ | Chưa cần cho đồ án cá nhân; giữ Parquet, thêm SQLite khi làm website |
+| Neo4j phục vụ quan hệ | Chưa cần cho đồ án cá nhân; hiện giữ Parquet và snapshot JSON phục vụ website |
 | Tài liệu tham khảo không có ML | Chỉ áp dụng cho lớp phân tích; Dota vẫn giữ bước ML riêng đã thống nhất |
 
 Không đổi đề tài thành hệ thống chấm điểm tổng hợp hoặc chỉ phân tích mô tả.
@@ -149,7 +149,7 @@ vẫn hiển thị `Hero <id>`. Không dùng metadata hiện tại để suy di�
    không so sánh bằng thứ tự vật lý của Parquet.
 7. Xuất báo cáo và ca so sánh năm hero được chọn nhiều nhất, xác định từ dữ
    liệu thật; không chọn trước một hero rồi khẳng định nó mạnh nhất.
-8. Thêm `run-step3.ps1`, tests và tài liệu kết quả khi bắt đầu triển khai bước 3.
+8. Thêm `analyze-hero-statistics.ps1`, tests và tài liệu kết quả khi bắt đầu triển khai bước 3.
 
 Ưu tiên báo cáo bảng trước. Khi làm website, các biểu đồ nên có: tỷ lệ thắng
 hai bên, top 20 lượt chọn, pick rate so với win rate, so sánh hero theo bên và

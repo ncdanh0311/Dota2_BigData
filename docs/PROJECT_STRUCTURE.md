@@ -1,44 +1,50 @@
-# Tổ chức dự án và bài học từ repo tham khảo
+# Cấu trúc và cách vận hành dự án
 
-Nguồn tham khảo:
-https://github.com/DuyLinh0212/chicago-crime-bigdata-analysis
+Tên file mô tả công việc. Xem [bảng tên cũ → mới](FILE_NAME_GUIDE.md) và
+[đối chiếu đề xuất](PROPOSAL_COMPLETION_REVIEW.md). Số bước chỉ dùng để đọc lộ
+trình và tìm bằng chứng, không thay tên chức năng của lệnh chạy.
 
-Đã đọc README, cấu trúc thư mục, module điều phối pipeline, cấu hình Spark,
-kiểm thử WSL và workflow CI tại commit `b3dc08716141db93839fb0e501072112a0e35807`.
-Tham khảo tổ chức và cách vận hành; không nhập mã nghiệp vụ Chicago Crime
-hoặc dữ liệu của repo đó vào dự án Dota 2.
-
-| Cách làm ở repo tham khảo | Áp dụng cho Dota 2 |
+| Thư mục | Nội dung và điểm vào |
 |---|---|
-| `pipeline/` chứa job xử lý | Chuyển job chuẩn hóa vào `pipeline/` |
-| `scripts/` chứa bridge vận hành | Giữ quản lý HDFS, thêm bridge PowerShell chung |
-| `tests/` tách khỏi job thực tế | Chuyển fixture Spark sang `tests/` |
-| Cấu hình WSL ngoài mã | `configs/hdfs-wsl.json` cho user và đường dẫn runtime |
-| Metadata nguồn và checksum | Manifest ổn định trong `data/reference/` |
-| Kiểm chứng output và artifact CI | Giữ evidence nhỏ; workflow chạy rule tests |
-| Luồng ingest/analytics/Airflow riêng | Chưa tạo chức năng giả khi bước đó chưa triển khai |
+| `pipeline/` | `prepare_match_drafts.py`: CSV snapshot → Silver một trận một dòng |
+| `analytics/` | `draft_stats.py`: Silver → Gold thống kê hero, bên và cặp |
+| `ml/` | `train_draft_model.py`, `predict_draft.py`: train LR và inference độc lập |
+| `web/` | `export_snapshot.py`, `app.py`, `serve.py`: snapshot, API và web server |
+| `streaming/` | `prepare_replay_catalog.py`, `publish_match_events.py`, `consume_match_events.py`: catalog → Kafka → thống kê |
+| `orchestration/` | `pipeline_dag_definitions.py`, `workflow_job_runner.py`: DAG gọi job, receipt, retry và timeout |
+| `orchestration/dags/` | Hai DAG ID ổn định: `dota_batch_pipeline`, `dota_replay_demo` |
+| `scripts/` | HDFS manager, bridge WSL, kiểm thử và nghiệm thu |
+| `configs/` | Runtime WSL/HDFS/Kafka/Airflow và Spark connector |
+| `data/reference/` | Manifest/schema nguồn; không chứa dataset CSV lớn |
+| `tests/` | Fixture tính tay, API, model save/load và checkpoint recovery |
+| `evidence/` | Báo cáo/ảnh nhỏ, phân biệt fixture với run thật |
+| `artifacts/` | Snapshot, bundle, log/cache và output local; Git bỏ qua |
+| `.github/workflows/` | CI Spark/web, Airflow và chất lượng repo tách biệt |
 
-Repo tham khảo bỏ qua toàn bộ `evidence/` và xuất artifact CI. Dota 2 hiện có
-bằng chứng chạy thật cần xem trực tiếp khi nộp môn học, nên giữ các báo cáo nhỏ
-trong Git, chỉ bỏ log/dump/cache. Đây là lựa chọn có chủ đích, không sao chép
-nguyên `.gitignore` của repo tham khảo.
+## Dữ liệu và runtime
 
-## Xử lý folder evidence ở thư mục cha
+Raw, Parquet và model native ở HDFS. Runtime HDFS/Kafka/Airflow ở filesystem
+Linux của WSL theo `configs/`. Website đọc JSON local, không gọi Spark/HDFS trong
+request. `PROJECT` xác định từ vị trí module; đổi tên file không đổi root dự án.
 
-Đã copy `D:\BigDataTH_Project\evidence` vào repo `Dota2_BigData\evidence` và
-đối chiếu SHA-256 từng file. Bản ở thư mục cha được giữ làm bản dự phòng.
-Mã runtime xác định root từ vị trí file nên các lần chạy mới ghi báo cáo vào
-repo mới. Manifest pipeline được đọc từ `data/reference/source_manifest.json`.
+Không đổi NameNode/block UUID, run ID, đường dẫn HDFS, topic/catalog, checkpoint
+hoặc checksum artifact cũ. Source path trong evidence là đường dẫn tại thời điểm
+chạy; dùng bảng tên file để tìm lệnh hiện tại. Không cần nạp lại dataset để đổi tên.
 
-HDFS storage vẫn ở `/home/danh/dota-hdfs`, không đổi NameNode, block hoặc UUID.
-Không cần tải lại dataset hoặc chạy lại chuẩn hóa chỉ vì đổi cấu trúc folder.
+Evidence ở thư mục cha `D:\BigDataTH_Project\evidence` từng được copy và đối
+chiếu SHA-256 vào repo, giữ làm dự phòng. Các run mới ghi vào evidence trong repo.
+Manifest nguồn vẫn đọc từ `data/reference/source_manifest.json`.
 
 ## CI hiện tại
 
-Workflow `Spark rule checks` cài dependency, kiểm tra cú pháp Python và chạy
-22 dòng fixture normalization cùng 199 trận fixture analytics. Không yêu cầu
-WSL/HDFS trên runner. Artifact chỉ là kết quả rule tests. Toàn bộ pipeline
-thật vẫn chạy trên WSL qua PowerShell.
+| Workflow | Thực hiện |
+|---|---|
+| `spark-web-tests.yml` | Spark/ML fixture, API, JavaScript, export snapshot và streaming recovery |
+| `airflow-dag-tests.yml` | Runner receipt/retry/timeout, cache offline và parse DAG bằng SDK pin |
+| `repository-quality.yml` | JSON, quy tắc file Git, giới hạn file, PowerShell syntax và test summary |
 
-Chưa có CI toàn cụm, tự động phân tích, Kafka hoặc Airflow. Chỉ thêm các luồng
-đó sau khi triển khai và kiểm chứng từng bước trên dự án Dota 2.
+CI dọn báo cáo fixture cũ trước khi chạy, tee log với bash pipefail, viết Job
+Summary và upload artifact 14 ngày. Missing/unreadable report không được coi là
+PASS. CI không dựng HDFS/Kafka hoặc xử lý toàn bộ 90.530 trận; bằng chứng WSL thật
+nằm riêng trong evidence. Chi tiết so sánh với Chicago và lý do giữ evidence
+nhỏ trong Git ở [báo cáo đối chiếu](PROPOSAL_COMPLETION_REVIEW.md).

@@ -28,7 +28,7 @@ Từ PowerShell:
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\setup-step7.ps1
+.\install-airflow.ps1
 .\start-airflow.ps1
 ```
 
@@ -127,10 +127,10 @@ Có thể kiểm tra bằng REST helper, chạy với Python hệ thống WSL. H
 khẩu riêng và không in token; ví dụ từ thư mục repo trong WSL:
 
 ```bash
-python3 orchestration/control.py trigger --dag-id dota_replay_demo \
+python3 orchestration/airflow_run_control.py trigger --dag-id dota_replay_demo \
   --run-id demo-manual-001 --conf '{"limit":1000,"rate":5,"demo_fail_once":true}'
-python3 orchestration/control.py tasks --dag-id dota_replay_demo --run-id demo-manual-001
-python3 orchestration/control.py wait --dag-id dota_replay_demo --run-id demo-manual-001
+python3 orchestration/airflow_run_control.py tasks --dag-id dota_replay_demo --run-id demo-manual-001
+python3 orchestration/airflow_run_control.py wait --dag-id dota_replay_demo --run-id demo-manual-001
 ```
 
 Helper không tạo lịch định kỳ. Khi `wait` kết thúc, nó lưu trạng thái run/task
@@ -138,19 +138,19 @@ Helper không tạo lịch định kỳ. Khi `wait` kết thúc, nó lưu trạn
 
 ## 6. Kiểm thử và bằng chứng
 
-`tests/test_orchestration.py` dùng fixture local, kiểm tra receipt/checksum,
+`tests/test_workflow_job_runner.py` dùng fixture local, kiểm tra receipt/checksum,
 namespace retry, producer retry cùng catalog, dừng job con khi timeout và cache
 ảnh không gọi mạng. `tests/test_airflow_dags.py` parse bằng SDK pin, kiểm tra DAG,
 manual schedule, pool, concurrency và finalizer; cấm launch job/kết nối mạng khi
 parse. Không import PySpark hoặc Kafka client trong tiến trình parse DAG.
 
 Lệnh kiểm thử chung `scripts/run-tests.ps1` có thêm kiểm tra runner và DAG (DAG
-cần setup Airflow trước). Workflow `.github/workflows/airflow.yml` có môi trường
+cần setup Airflow trước). Workflow `.github/workflows/airflow-dag-tests.yml` có môi trường
 Airflow riêng, không cần HDFS,
 Kafka hoặc dữ liệu thật. Workflow chạy các kiểm thử fixture khi push lên GitHub;
 xem kết quả ở [GitHub Actions](https://github.com/ncdanh0311/Dota2_BigData/actions).
 Dataset, model và snapshot lớn tiếp tục nằm local/HDFS, không đưa lên Git.
-Workflow Spark/web ở `checks.yml`; `repository.yml` kiểm tra JSON, quy tắc file
+Workflow Spark/web ở `spark-web-tests.yml`; `repository-quality.yml` kiểm tra JSON, quy tắc file
 Git và cú pháp PowerShell. Các workflow có concurrency để tránh chạy chồng các
 lượt cũ của cùng workflow/ref.
 
@@ -160,9 +160,9 @@ Không trộn kiểm thử fixture với các run 90.530 trận hoặc replay Ka
 Hai lệnh kiểm chứng các run đã chạy, từ WSL tại thư mục repo:
 
 ```bash
-python3 orchestration/verify_demo.py --batch-run-id step7-batch-real-v1 \
+python3 orchestration/verify_pipeline_runs.py --batch-run-id step7-batch-real-v1 \
   --replay-run-id step7-replay-retry-v1 --failure-run-id step7-preflight-offline-v1
-.venv-web/bin/python scripts/verify-step7-web.py --batch-run-id step7-batch-real-v1 \
+.venv-web/bin/python scripts/verify_orchestrated_website.py --batch-run-id step7-batch-real-v1 \
   --replay-run-id step7-replay-retry-v1
 ```
 

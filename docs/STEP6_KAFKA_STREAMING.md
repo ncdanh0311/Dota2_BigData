@@ -34,17 +34,17 @@ Không tuyên bố đây là triển khai tối ưu cho luồng không giới h�
 
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
-.\setup-step6.ps1
+.\install-kafka.ps1
 .\start-hadoop.ps1
 .\start-kafka.ps1
 
 # Chọn run ID mới; replay-demo-v1 đã có trên máy hiện tại.
-.\prepare-step6.ps1 -RunId replay-demo-v2 -Limit 1000
+.\prepare-match-replay.ps1 -RunId replay-demo-v2 -Limit 1000
 ```
 
 Setup tải archive Kafka chính thức qua Windows từ `dlcdn.apache.org`, kiểm SHA-512
 trong WSL trước giải nén, cài producer và kiểm tra connector. Nếu đường tải Apache
-chậm, có thể dùng `setup-step6.ps1 -ParallelDownload`: tải range có giới hạn song song,
+chậm, có thể dùng `install-kafka.ps1 -ParallelDownload`: tải range có giới hạn song song,
 ghép theo đúng thứ tự rồi vẫn kiểm toàn bộ SHA-512. Cache nằm trong `artifacts/cache`.
 Lượt setup lặp lại đã kiểm chứng giữ cluster ID/storage; start không tự format.
 
@@ -60,7 +60,7 @@ Mở ba PowerShell tại thư mục repo:
 
 ```powershell
 # Terminal 1: consumer liên tục, Ctrl+C để dừng.
-.\run-step6.ps1 -RunId replay-demo-v2
+.\consume-match-events.ps1 -RunId replay-demo-v2
 ```
 
 ```powershell
@@ -163,7 +163,7 @@ còn khoảng 2,399 GiB khả dụng, chưa dùng swap. Các RSS theo tiến tr�
 
 ## Kiểm thử, bằng chứng và trạng thái Git
 
-`tests/test_streaming.py` dùng Structured Streaming file source + checkpoint thật,
+`tests/test_streaming_checkpoint_recovery.py` dùng Structured Streaming file source + checkpoint thật,
 thử crash sau archive commit, restart, duplicate, quarantine và restore JSON.
 `tests/test_streaming_api.py` kiểm trạng thái API, checksum/JSON lỗi và giữ nguyên
 Gold/prediction. Node unit check hiện có vẫn đạt; website không cần build frontend.
@@ -171,7 +171,7 @@ Gold/prediction. Node unit check hiện có vẫn đạt; website không cần b
 ```powershell
 # Kiểm chứng snapshot thật theo catalog, không cần Spark.
 wsl -d Ubuntu -u danh --cd /mnt/d/BigDataTH_Project/Dota2_BigData `
-  --exec .venv-streaming/bin/python scripts/verify-step6.py `
+  --exec .venv-streaming/bin/python scripts/verify_replay_statistics.py `
   --run-id replay-demo-v1 --expected-records 2000
 
 # Toàn bộ fixture; không cần Kafka/HDFS cho fixtures.

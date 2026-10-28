@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "command_file_references": 56,
+  "internal_imports": 87,
+  "workflow_yaml": 3,
+  "bash_steps": 20,
+  "scope": "source references and workflow syntax; no services launched",
+  "verified_at_utc": "2026-10-28T03:02:19.843180+00:00",
+  "renamed_files": 30,
+  "regression_command": "scripts/run-tests.ps1",
+  "regression_exit_code": 0,
+  "regression_scope": [
+    "normalization",
+    "Gold SQL",
+    "ML features/training/native reload/portable parity",
+    "web export/API/display",
+    "streaming checkpoint recovery",
+    "workflow runner",
+    "Airflow SDK parse",
+    "CI summary failure cases"
+  ],
+  "powershell_files": 20,
+  "inline_workflow_powershell": "PASS",
+  "gitignore_nested_runtime_and_source": "PASS",
+  "real_snapshot_no_network": "PASS",
+  "historical_evidence": "preserved; current recheck in separate maintenance folder"
+}

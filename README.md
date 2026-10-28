@@ -1,4 +1,4 @@
-# Dota 2 Big Data — HDFS và Spark
+# Dota 2 Big Data — Phân tích và dự đoán đội hình
 
 Đồ án cá nhân môn Thực hành Big Data: xây dựng nền tảng phân tích đội hình và
 dự đoán xác suất thắng của hai đội Radiant/Dire trước trận.
@@ -6,6 +6,10 @@ dự đoán xác suất thắng của hai đội Radiant/Dire trước trận.
 **Đã hoàn thành:** nạp HDFS, chuẩn hóa đội hình, phân tích Spark SQL, mô hình
 Logistic Regression, website DotaLens, Kafka replay + Spark Structured Streaming
 và điều phối bằng Airflow với hai DAG chạy thủ công.
+
+Tên lệnh mô tả chức năng: xem [bảng tên file cũ → mới](docs/FILE_NAME_GUIDE.md).
+[Đối chiếu đề xuất gốc](docs/PROPOSAL_COMPLETION_REVIEW.md) ghi rõ phần đã đạt MVP,
+phần điều chỉnh phạm vi và các mục chưa làm; không tuyên bố toàn bộ mở rộng đã xong.
 
 ## Kết quả đã kiểm chứng
 
@@ -90,18 +94,18 @@ tests/                        Fixture và kiểm thử quy tắc chuẩn hóa
 .github/workflows/            CI riêng cho Spark/web, Airflow và cấu trúc repo
 start-hadoop.ps1              Bật cụm HDFS
 stop-hadoop.ps1               Tắt cụm HDFS, giữ nguyên dữ liệu
-run-step2.ps1                 Chạy chuẩn hóa từ PowerShell
-run-step3.ps1                 Chạy phân tích Spark SQL từ Silver
-run-step4.ps1                 Huấn luyện và kiểm chứng Logistic Regression
+prepare-match-drafts.ps1                 Chạy chuẩn hóa từ PowerShell
+analyze-hero-statistics.ps1                 Chạy phân tích Spark SQL từ Silver
+train-draft-model.ps1                 Huấn luyện và kiểm chứng Logistic Regression
 predict-draft.ps1             Dự đoán bằng JSON, không khởi động Spark
-prepare-step5.ps1             Chuẩn bị snapshot website từ các run hoàn tất
+export-web-snapshot.ps1             Chuẩn bị snapshot website từ các run hoàn tất
 start-web.ps1                 Chạy website local từ snapshot, dừng bằng Ctrl+C
-setup-step6.ps1               Cài Kafka riêng và kiểm tra connector, SHA-512
+install-kafka.ps1               Cài Kafka riêng và kiểm tra connector, SHA-512
 start-kafka.ps1 / stop-kafka.ps1 Bật/tắt Kafka, giữ nguyên dữ liệu
-prepare-step6.ps1              Tạo catalog và topic của phiên replay mới
-run-step6.ps1                  Consumer Structured Streaming có checkpoint
+prepare-match-replay.ps1              Tạo catalog và topic của phiên replay mới
+consume-match-events.ps1                  Consumer Structured Streaming có checkpoint
 replay-matches.ps1             Phát lại catalog qua Kafka, mặc định 5 trận/giây
-setup-step7.ps1                Cài Airflow trong venv WSL riêng theo constraints
+install-airflow.ps1                Cài Airflow trong venv WSL riêng theo constraints
 start-airflow.ps1 / stop-airflow.ps1 Bật/tắt Airflow local, giữ lịch sử DAG
 ```
 
@@ -126,13 +130,13 @@ không di chuyển block hoặc metadata trong `/home/danh/dota-hdfs`.
 
 ```powershell
 # Chạy lại vào tên output mới; mặc định chặn ghi đè v1 đã tồn tại.
-.\run-step2.ps1 -OutputPath hdfs://localhost:9000/dota/processed/match_drafts_v2
+.\prepare-match-drafts.ps1 -OutputPath hdfs://localhost:9000/dota/processed/match_drafts_v2
 
 # Phân tích Silver v1, tự tạo run ID mới (ngưỡng hero/cặp mặc định 100).
-.\run-step3.ps1
+.\analyze-hero-statistics.ps1
 
 # Huấn luyện từ Silver v1; lưu model theo run ID mới.
-.\run-step4.ps1
+.\train-draft-model.ps1
 
 # Model đã train trên máy hiện tại; dùng Python + bundle local, không cần Spark.
 .\predict-draft.ps1 -RunId step4-20261027-v1 `
@@ -152,8 +156,8 @@ Nếu PowerShell chặn script, dùng `powershell.exe -NoProfile -ExecutionPolic
 Bypass -File .\start-hadoop.ps1` hoặc thay tên script cần chạy.
 
 Với máy mới, đọc [hướng dẫn HDFS](docs/HDFS_CONFIGURATION.md): tạo cấu hình
-riêng bằng `hdfs_lab.py setup`, start, download, ingest, verify; sau đó chạy
-`run-step2.ps1`. Không format lại NameNode đã có metadata.
+riêng bằng `scripts/hdfs_cluster_manager.py setup`, start, download, ingest, verify; sau đó chạy
+`prepare-match-drafts.ps1`. Không format lại NameNode đã có metadata.
 
 Chi tiết: [chuẩn hóa bằng Spark](docs/STEP2_DATA_PREPARATION.md).
 Phân tích: [hướng dẫn bước 3](docs/STEP3_DRAFT_ANALYTICS.md). Chỉ tiêu thụ run
@@ -170,7 +174,7 @@ Streaming: [hướng dẫn bước 6](docs/STEP6_KAFKA_STREAMING.md). Mở web v
 thì prepare một run ID mới. Broker, HDFS và consumer chỉ cần khi cập nhật luồng;
 website vẫn đọc kết quả local sau khi các tiến trình đó dừng.
 
-Airflow: [hướng dẫn bước 7](docs/STEP7_AIRFLOW.md). Chạy `setup-step7.ps1` một
+Airflow: [hướng dẫn bước 7](docs/STEP7_AIRFLOW.md). Chạy `install-airflow.ps1` một
 lần, `start-airflow.ps1`, mở [http://localhost:8080](http://localhost:8080) rồi
 trigger `dota_batch_pipeline` hoặc `dota_replay_demo`. DAG không tự bật HDFS/Kafka;
 bật các dịch vụ trước khi trigger. Xem [bằng chứng bước 7](evidence/step7/RESULTS.md)
@@ -190,15 +194,17 @@ bật các dịch vụ trước khi trigger. Xem [bằng chứng bước 7](evid
 
 | Workflow | Nội dung |
 |---|---|
-| [checks.yml](.github/workflows/checks.yml) | Python 3.11, Java 17: fixture Spark, ML, web và streaming/checkpoint |
-| [airflow.yml](.github/workflows/airflow.yml) | Python 3.14, Airflow trong môi trường riêng: runner, cache ảnh offline và parse hai DAG |
-| [repository.yml](.github/workflows/repository.yml) | JSON hợp lệ, file Git không trùng quy tắc ignore/không quá 10 MiB, cú pháp script PowerShell |
+| [spark-web-tests.yml](.github/workflows/spark-web-tests.yml) | Python 3.11, Java 17: fixture Spark, ML, web và streaming/checkpoint |
+| [airflow-dag-tests.yml](.github/workflows/airflow-dag-tests.yml) | Python 3.14, Airflow trong môi trường riêng: runner, cache ảnh offline và parse hai DAG |
+| [repository-quality.yml](.github/workflows/repository-quality.yml) | JSON hợp lệ, file Git không trùng quy tắc ignore/không quá 10 MiB, cú pháp script PowerShell |
 
 Các workflow chạy khi push `main`, khi mở/cập nhật pull request hoặc chạy thủ
 công từ [GitHub Actions](https://github.com/ncdanh0311/Dota2_BigData/actions).
 Mỗi workflow hủy lượt cũ còn chạy trên cùng ref khi có lượt mới. CI dùng fixture,
 không khởi động WSL/HDFS/Kafka hoặc đòi dataset/model thật; báo cáo fixture được
 đính kèm vào run Spark/Airflow, giữ 14 ngày.
+Mỗi run có Job Summary và log test tải về; báo cáo fixture cũ được xóa trước
+khi chạy để tránh nhầm với kết quả mới. CI không thay thế bằng chứng chạy thật.
 
 `.gitignore` bỏ qua virtualenv, cache, log/PID, checkpoint, database/tài khoản
 Airflow local, dữ liệu HDFS/Kafka local, model nhị phân và gói cài tải về.

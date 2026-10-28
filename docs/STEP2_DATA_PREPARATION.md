@@ -25,19 +25,19 @@ CSV gốc không thay đổi. Chưa chia train/test, chưa huấn luyện mô h�
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
 .\start-hadoop.ps1
-.\run-step2.ps1
+.\prepare-match-drafts.ps1
 ```
 
 Nếu execution policy chặn, chạy riêng phiên lệnh với:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\BigDataTH_Project\Dota2_BigData\run-step2.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File D:\BigDataTH_Project\Dota2_BigData\prepare-match-drafts.ps1
 ```
 
 Chạy lại với output mới:
 
 ```powershell
-.\run-step2.ps1 -OutputPath hdfs://localhost:9000/dota/processed/match_drafts_v2
+.\prepare-match-drafts.ps1 -OutputPath hdfs://localhost:9000/dota/processed/match_drafts_v2
 ```
 
 Script cũng nhận `-InputPath` (một CSV HDFS, cùng header Zenodo v3).

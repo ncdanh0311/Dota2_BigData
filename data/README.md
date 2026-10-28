@@ -8,5 +8,5 @@ Không commit CSV hoặc Parquet vào repo. Dữ liệu nằm trong HDFS:
 
 `reference/source_manifest.json` chứa URL, checksum, dung lượng, header và số
 dòng nguồn đã kiểm chứng. Pipeline đọc file này làm tham chiếu schema.
-Lệnh `python3 scripts/hdfs_lab.py download` cập nhật manifest sau khi file tải
+Lệnh `python3 scripts/hdfs_cluster_manager.py download` cập nhật manifest sau khi file tải
 khớp MD5 công bố. Xem hướng dẫn HDFS trong `docs/` để tải và nạp dữ liệu.

@@ -87,30 +87,30 @@ Script gắn với user, Hadoop và các đường dẫn trong bảng cấu hìn
 cd /mnt/d/BigDataTH_Project/Dota2_BigData
 
 # Chỉ cần lần đầu: tạo cấu hình riêng.
-python3 scripts/hdfs_lab.py setup
+python3 scripts/hdfs_cluster_manager.py setup
 
 # Start tự format khi storage NameNode hoàn toàn trống.
 # Nếu đã có VERSION thì giữ metadata, không format lại.
-python3 scripts/hdfs_lab.py start
+python3 scripts/hdfs_cluster_manager.py start
 
 # Tải bằng 16 HTTP Range; ghép và đối chiếu MD5 công bố.
-python3 scripts/hdfs_lab.py download
+python3 scripts/hdfs_cluster_manager.py download
 
 # Tạo thư mục HDFS và nạp file, không ghi đè file đã có.
-python3 scripts/hdfs_lab.py ingest
+python3 scripts/hdfs_cluster_manager.py ingest
 
 # Kiểm tra node, block, replica và SHA-256 toàn bộ file.
-python3 scripts/hdfs_lab.py verify
+python3 scripts/hdfs_cluster_manager.py verify
 
 # Kiểm tra dữ liệu sau khi dừng/bật lại cả cụm.
-python3 scripts/hdfs_lab.py restart-test
+python3 scripts/hdfs_cluster_manager.py restart-test
 
 # Dừng DN3, đọc toàn bộ file, bật DN3 và kiểm tra lại.
-python3 scripts/hdfs_lab.py failure-test
+python3 scripts/hdfs_cluster_manager.py failure-test
 
 # Xem trạng thái / dừng cụm khi không sử dụng.
-python3 scripts/hdfs_lab.py status
-python3 scripts/hdfs_lab.py stop
+python3 scripts/hdfs_cluster_manager.py status
+python3 scripts/hdfs_cluster_manager.py stop
 ```
 
 Không chạy `setup`, `restart-test`, `failure-test`, `start` hoặc `stop` đồng thời.

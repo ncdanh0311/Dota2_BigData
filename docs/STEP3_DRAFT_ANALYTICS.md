@@ -5,13 +5,13 @@
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
 .\start-hadoop.ps1
-.\run-step3.ps1
+.\analyze-hero-statistics.ps1
 ```
 
 Mỗi lần chạy mặc định tạo run ID UTC kèm hậu tố ngẫu nhiên. Có thể chỉ định:
 
 ```powershell
-.\run-step3.ps1 -RunId demo-analysis-01 -MinHeroMatches 100 -MinPairMatches 100
+.\analyze-hero-statistics.ps1 -RunId demo-analysis-01 -MinHeroMatches 100 -MinPairMatches 100
 ```
 
 Các tham số khác: `-InputPath` và `-OutputRoot`. CLI Python tương ứng nhận

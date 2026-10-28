@@ -31,7 +31,7 @@ Clone repo trên máy khác cần dựng HDFS/dữ liệu bước 1–4 rồi ch
 
 ```powershell
 .\start-hadoop.ps1
-.\prepare-step5.ps1 -GoldRunId step3-20261026-v2 `
+.\export-web-snapshot.ps1 -GoldRunId step3-20261026-v2 `
   -ModelRunId step4-20261027-v1 -SnapshotId web-demo-v2
 .\start-web.ps1 -SnapshotId web-demo-v2
 ```
@@ -121,7 +121,7 @@ khóa thao tác sửa và nút dự đoán. Website luôn ghi giới hạn dữ 
 
 # Sau khi có snapshot: kiểm chứng web thật, trong khi HDFS đang dừng.
 wsl -d Ubuntu -u danh --cd /mnt/d/BigDataTH_Project/Dota2_BigData `
-  --exec .venv-web/bin/python scripts/verify-step5.py `
+  --exec .venv-web/bin/python scripts/verify_web_snapshot.py `
   --snapshot-id web-demo-v1 --require-hdfs-down
 ```
 

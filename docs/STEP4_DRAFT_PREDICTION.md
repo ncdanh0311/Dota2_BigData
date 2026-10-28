@@ -5,13 +5,13 @@
 ```powershell
 cd D:\BigDataTH_Project\Dota2_BigData
 .\start-hadoop.ps1
-.\run-step4.ps1
+.\train-draft-model.ps1
 ```
 
 Mặc định tạo run ID UTC ngẫu nhiên. Có thể đặt rõ:
 
 ```powershell
-.\run-step4.ps1 -RunId demo-ml-01 -Seed 42
+.\train-draft-model.ps1 -RunId demo-ml-01 -Seed 42
 ```
 
 Tham số: `-InputPath`, `-OutputRoot`, `-RunId`, `-Seed`; CLI Python tương ứng
