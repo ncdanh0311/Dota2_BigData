@@ -49,7 +49,11 @@ def main():
                 browser = p.chromium.launch(channel='chrome', headless=True, args=['--no-sandbox'])
                 page = browser.new_page(viewport={'width': 1440, 'height': 1000}, device_scale_factor=1)
                 page.goto('http://127.0.0.1:9870/dfshealth.html#tab-datanode')
-                page.get_by_text('Live Nodes', exact=False).first.wait_for()
+                # "Live Nodes" belongs to the hidden Overview tab; wait for this tab's table.
+                page.locator('#table-datanodes').wait_for(state='visible')
+                info = page.request.get('http://127.0.0.1:9870/jmx?qry=Hadoop:service=NameNode,name=NameNodeInfo').json()
+                assert len(json.loads(info['beans'][0]['LiveNodes'])) == 3
+                assert page.locator('#table-datanodes tbody tr').count() == 3
                 page.screenshot(path=str(target/'hdfs-three-datanodes.png'), full_page=True)
                 page.goto('http://127.0.0.1:8000')
                 page.locator('#stats-page').wait_for(state='visible')

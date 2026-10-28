@@ -57,6 +57,8 @@ def validate_params(kind,params):
     if split.scheme!='hdfs' or split.netloc!='localhost:9000' or not split.path.startswith(prefix) or '..' in Path(split.path).parts:
         raise ValueError('Input must be a named project HDFS URI.')
     if kind=='batch':
+        if not isinstance(result['assets_snapshot_id'],str):
+            raise ValueError('Asset snapshot ID must be a string; empty means download fresh assets.')
         if result['assets_snapshot_id']:
             safe_id(result['assets_snapshot_id'])
     elif (type(result['limit']) is not int or not 1<=result['limit']<=90530 or

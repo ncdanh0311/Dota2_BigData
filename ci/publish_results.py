@@ -24,13 +24,20 @@ def redact(text, secrets):
 
 def collect():
     from orchestration.runtime_config import load_config
+    target = OUT/'evidence'
+    target.mkdir(parents=True, exist_ok=True)
+    # Dependency/bootstrap failures still need downloadable runner logs.
+    if (OUT/'logs').exists():
+        shutil.copytree(OUT/'logs', target/'runner-logs', dirs_exist_ok=True)
+    if (OUT/'screenshots').exists():
+        shutil.copytree(OUT/'screenshots', target/'screenshots', dirs_exist_ok=True)
+    if not os.environ.get('DOTA_CI_ROOT') or not os.environ.get('DOTA_AIRFLOW_CONFIG'):
+        return
     root = Path(os.environ['DOTA_CI_ROOT']).resolve()
     config = load_config('airflow')
     runtime = Path(config['root'])/'runtime'
     password_file = runtime/'simple_auth_manager_passwords.json.generated'
     secrets = list(read(password_file).values()) if password_file.exists() else []
-    target = OUT/'evidence'
-    target.mkdir(parents=True, exist_ok=True)
     sources = [(PROJECT/'evidence', target/'reports'),
                (PROJECT/'artifacts/airflow', target/'airflow-attempts'),
                (root/'hdfs/logs', target/'hdfs-logs'),
@@ -52,12 +59,6 @@ def collect():
     launcher = root/'airflow/launcher.log'
     if launcher.exists():
         (target/'airflow-launcher.log').write_text(redact(launcher.read_text(errors='replace'), secrets), encoding='utf-8')
-    if (OUT/'logs').exists():
-        shutil.copytree(OUT/'logs', target/'runner-logs', dirs_exist_ok=True)
-    if (OUT/'screenshots').exists():
-        shutil.copytree(OUT/'screenshots', target/'screenshots', dirs_exist_ok=True)
-
-
 def index_artifacts(kind, status):
     for group in ['evidence', 'reports', 'silver', 'streaming']:
         root = OUT/group
@@ -160,6 +161,13 @@ def summary(kind, status, root=OUT):
         '| `checkpoint-kafka-…` | Bronze, checkpoint, catalog và thống kê replay (Kafka) |', '',
         'Mở mục **Artifacts** bên dưới để tải ZIP; giữ 14 ngày. HDFS/Kafka/Airflow được dọn sau job. '
         'Artifact lỗi chỉ chứa phần đã sinh để chẩn đoán.', '']
+    if status != 'success':
+        lines += ['### Chẩn đoán bước chưa đạt', '']
+        for log in sorted((root/'logs').glob('*.log')):
+            tail = log.read_text(errors='replace').splitlines()[-20:]
+            if any(word in '\n'.join(tail) for word in ['Traceback', 'Error', 'AssertionError']):
+                lines += [f'**{log.name}**', '', '```text',
+                          '\n'.join(tail).replace('```', "'''"), '```', '']
     return '\n'.join(lines), failed
 
 

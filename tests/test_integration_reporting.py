@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ci.prepare_runtime import configure, bootstrap
-from ci.publish_results import summary, index_artifacts, verify_artifact, redact
+from ci.publish_results import summary, index_artifacts, verify_artifact, redact, collect
 from orchestration.runtime_config import load_config
 
 
@@ -76,6 +76,15 @@ class IntegrationReportingTests(unittest.TestCase):
 
     def test_private_runtime_values_redacted(self):
         self.assertEqual(redact('password=private-value', ['private-value']), 'password=[REDACTED]')
+
+    def test_bootstrap_failure_still_collects_runner_logs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'logs').mkdir()
+            (root/'logs/dependencies.log').write_text('dependency failed')
+            with patch('ci.publish_results.OUT', root), patch.dict(os.environ, {}, clear=True):
+                collect()
+            self.assertEqual((root/'evidence/runner-logs/dependencies.log').read_text(), 'dependency failed')
 
 
 if __name__ == '__main__':
